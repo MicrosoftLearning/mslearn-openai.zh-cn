@@ -9,7 +9,7 @@ Azure OpenAI 服务模型可以使用自然语言提示为你生成代码、修�
 
 该练习大约需要 25 分钟。
 
-## 准备工作
+## 开始之前
 
 你将需要使用已被批准访问 Azure OpenAI 服务的 Azure 订阅。
 
@@ -36,7 +36,8 @@ Azure OpenAI 服务模型可以使用自然语言提示为你生成代码、修�
 
 1. 在 Azure OpenAI 资源的“概述”页上，使用“浏览”按钮在新的浏览器选项卡中打开 Azure OpenAI Studio。或者直接导航到 [Azure OpenAI Studio](https://oai.azure.com/?azure-portal=true) 。
 2. 在 Azure OpenAI Studio 中，使用以下设置创建新部署：
-    - **模型名称**：gpt-35-turbo
+    - 模型：gpt-35-turbo
+    - 模型版本：使用默认版本
     - **部署名称**：35turbo
 
 > **注意**：针对功能和性能间不同的权衡情况，每个 Azure OpenAI 模型都会得到相应的优化。 在本练习中，我们将使用 GPT-3 模型系列中的 3.5 Turbo 模型系列，该系列高度支持两种语言和代码理解 。
@@ -231,7 +232,7 @@ Azure OpenAI 服务模型可以使用自然语言提示为你生成代码、修�
 
 1. 在代码编辑器中展开 `sample-code` 文件夹，并简要观察适用于所选语言的函数和应用。 这些文件将用于应用中的任务。
 1. 在 Cloud Shell Bash 终端中，导航到首选语言的文件夹。
-1. 运行应用程序。
+1. 运行应用。
 
     - **C#** ：`dotnet run`
     - **Python**：`python code-generation.py`

@@ -13,7 +13,7 @@ lab:
 
 该练习大约需要 25 分钟。
 
-## 准备工作
+## 开始之前
 
 你将需要使用已被批准访问 Azure OpenAI 服务的 Azure 订阅。
 
@@ -40,7 +40,8 @@ lab:
 
 1. 在 Azure OpenAI 资源的“概述”页上，使用“浏览”按钮在新的浏览器选项卡中打开 Azure OpenAI Studio。或者直接导航到 [Azure OpenAI Studio](https://oai.azure.com/?azure-portal=true) 。
 2. 在 Azure OpenAI Studio 中，使用以下设置创建新部署：
-    - 模型名称：gpt-35-turbo
+    - 模型：gpt-35-turbo
+    - 模型版本：使用默认版本
     - 部署名称：text-turbo
 
 > 注意：针对功能和性能间不同的权衡情况，每个 Azure OpenAI 模型都会得到相应的优化。 在本练习中，我们将使用 GPT-3 模型系列中的 3.5 Turbo 模型系列，该系列高度支持语言理解 。 本练习仅使用单个模型，但部署和使用其他部署的模型的方式是相同的。
