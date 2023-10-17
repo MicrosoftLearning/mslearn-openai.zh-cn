@@ -9,7 +9,7 @@ Azure OpenAI 服务将 OpenAI 开发的生成式 AI 模型引入 Azure 平台，
 
 此练习大约需要 30 分钟。
 
-## 开始之前
+## 准备工作
 
 你将需要使用已被批准访问 Azure OpenAI 服务的 Azure 订阅。
 
@@ -33,7 +33,7 @@ Azure OpenAI 服务将 OpenAI 开发的生成式 AI 模型引入 Azure 平台，
 
 Azure OpenAI 提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户，可用于部署、管理和探索模型。 你将使用 Azure OpenAI Studio 部署模型，开始探索 Azure OpenAI。
 
-1. 在 Azure OpenAI 资源的“概述”页上，使用“浏览”按钮在新的浏览器选项卡中打开 Azure OpenAI Studio 。
+1. 在 Azure OpenAI 资源的“概述”页上，使用“转到 Azure OpenAI Studio”按钮在新的浏览器标签页中打开 Azure OpenAI Studio 。
 2. 在 Azure OpenAI Studio 中，使用以下设置创建新部署：
     - 模型：gpt-35-turbo
     - 模型版本：自动更新为默认值
