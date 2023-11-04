@@ -23,7 +23,7 @@ lab:
 1. 登录到 [Azure 门户](https://portal.azure.com?azure-portal=true)。
 2. 请使用以下设置创建 Azure OpenAI 资源：
     - 订阅：已被批准访问 Azure OpenAI 服务的 Azure 订阅。
-    - **资源组**：使用你所选择的名称创建新资源组。
+    - 资源组：选择现有的资源组，或者使用所选的名称创建新的资源组。
     - 区域：任选一个可用的区域。
     - 名称：所选项的唯一名称。
     - 定价层：标准版 S0
@@ -98,11 +98,11 @@ lab:
 
 现在，你已添加数据，请提出与之前相同的问题，查看响应有何不同。
 
-```code
+```
 I'd like to take a trip to New York. Where should I stay?
 ```
 
-```code
+```
 What are some facts about New York?
 ```
 
