@@ -9,7 +9,7 @@ Azure OpenAI 服务将 OpenAI 开发的生成式 AI 模型引入 Azure 平台，
 
 此练习大约需要 30 分钟。
 
-## 准备工作
+## 开始之前
 
 你将需要使用已被批准访问 Azure OpenAI 服务的 Azure 订阅。
 
@@ -23,7 +23,7 @@ Azure OpenAI 服务将 OpenAI 开发的生成式 AI 模型引入 Azure 平台，
 1. 登录到 [Azure 门户](https://portal.azure.com)。
 2. 请使用以下设置创建 Azure OpenAI 资源：
     - 订阅：已被批准访问 Azure OpenAI 服务的 Azure 订阅。
-    - **资源组**：使用你所选择的名称创建新资源组。
+    - 资源组：选择现有的资源组，或者用你选择的名称新建一个。
     - 区域：任选一个可用的区域。
     - 名称：所选项的唯一名称。
     - 定价层：标准版 S0
@@ -33,10 +33,10 @@ Azure OpenAI 服务将 OpenAI 开发的生成式 AI 模型引入 Azure 平台，
 
 Azure OpenAI 提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户，可用于部署、管理和探索模型。 你将使用 Azure OpenAI Studio 部署模型，开始探索 Azure OpenAI。
 
-1. 在 Azure OpenAI 资源的“概述”页上，使用“转到 Azure OpenAI Studio”按钮在新的浏览器标签页中打开 Azure OpenAI Studio 。
+1. 在 Azure OpenAI 资源的“概述”**** 页面上，使用“转到 Azure OpenAI Studio”**** 按钮在新的浏览器标签页中打开 Azure OpenAI Studio。
 2. 在 Azure OpenAI Studio 中，使用以下设置创建新部署：
     - 模型：gpt-35-turbo
-    - 模型版本：自动更新为默认值
+    - **模型版本**：自动更新为默认值
     - 部署名称：my-gpt-model
 
 > 注意：Azure OpenAI 包含多个模型，每个模型针对功能和性能的不同平衡进行优化。 在本练习中，你将使用 GPT-35-Turbo 模型，这是一个很好的常规模型，用于汇总和生成自然语言和代码。 有关 Azure OpenAI 中可用模型的详细信息，请参阅 Azure OpenAI 文档中的[模型](https://learn.microsoft.com/azure/cognitive-services/openai/concepts/models)。
@@ -60,12 +60,12 @@ Azure OpenAI 提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户�
 
 ## 使用聊天操场
 
-聊天操场为 GPT 3.5 及更高版本的模型提供聊天机器人界面。 它使用 ChatCompletions API，而不是旧的完成 API。 
+聊天操场为 GPT 3.5 及更高版本的模型提供聊天机器人界面。 它使用 ChatCompletions API，而不是旧的完成 API。
 
-1. 在“操场”部分选择“聊天”页，并确保在右侧配置窗格中选择了 my-gpt-model 模型。  
-2. 在“助理设置”部分的“系统消息”框中，将当前文本替换为以下语句：`The system is an AI teacher that helps people learn about AI`。 
+1. 在“操场”部分选择“聊天”页，并确保在右侧配置窗格中选择了 my-gpt-model 模型。
+2. 在“助理设置”部分的“系统消息”框中，将当前文本替换为以下语句：`The system is an AI teacher that helps people learn about AI`。
 
-3. 在“系统消息”框下方，单击“添加少量示例”，然后在指定的框中输入以下消息和响应： 
+3. 在“系统消息”框下方，单击“添加少量示例”，然后在指定的框中输入以下消息和响应：
 
     - 用户：`What are different types of artificial intelligence?`
     - 助手：`There are three main types of artificial intelligence: Narrow or Weak AI (such as virtual assistants like Siri or Alexa, image recognition software, and spam filters), General or Strong AI (AI designed to be as intelligent as a human being. This type of AI does not currently exist and is purely theoretical), and Artificial Superintelligence (AI that is more intelligent than any human being and can perform tasks that are beyond human comprehension. This type of AI is also purely theoretical and has not yet been developed).`
@@ -80,7 +80,7 @@ Azure OpenAI 提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户�
 
 7. 查看响应，然后提交以下消息以继续对话：`How is it related to machine learning?`
 8. 查看响应，指出上一个交互的上下文会保留（以便模型理解“它”是指人工智能）。
-9. 使用“查看代码”按钮查看交互的代码。 提示包括系统消息、用户和助手消息的少样本示例，以及到目前为止聊天会话中用户和助手消息的顺序。    
+9. 使用“查看代码”按钮查看交互的代码。 提示包括系统消息、用户和助手消息的少样本示例，以及到目前为止聊天会话中用户和助手消息的顺序。
 
 ## 探索提示和参数
 
@@ -115,9 +115,9 @@ Azure OpenAI 提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户�
 
 除了生成自然语言响应外，还可以使用 GPT 模型生成代码。
 
-1. 在“助手设置”窗格中，选择“空示例”模板以重置系统消息。 
+1. 在“助手设置”窗格中，选择“空示例”模板以重置系统消息。
 2. 输入系统消息：`You are a Python developer.` 并保存更改。
-3. 在“聊天会话”窗格中，选择“清除聊天”以清除聊天历史记录并启动新会话。 
+3. 在“聊天会话”窗格中，选择“清除聊天”以清除聊天历史记录并启动新会话。
 4. 提交以下用户消息：
 
     ```
