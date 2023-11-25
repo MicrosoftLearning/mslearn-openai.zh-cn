@@ -23,7 +23,7 @@ lab:
 1. 登录到 [Azure 门户](https://portal.azure.com)。
 2. 请使用以下设置创建 Azure OpenAI 资源：
     - 订阅：已被批准访问 Azure OpenAI 服务的 Azure 订阅。
-    - **资源组**：使用你所选择的名称创建新资源组。
+    - 资源组：选择现有的资源组，或者用你选择的名称新建一个。
     - 区域：任选一个可用的区域。
     - 名称：所选项的唯一名称。
     - 定价层：标准版 S0
@@ -52,9 +52,19 @@ lab:
 
 2. 首次打开 Cloud Shell 时，系统可能会提示你选择要使用的 shell 类型（Bash 或 PowerShell）。 选择 Bash。 如果未看到此选项，请跳过该步骤。  
 
-3. 如果系统提示你为 Cloud Shell 创建存储，请确保已指定订阅，然后选择“创建存储”。 等待存储创建完毕，此过程大约需要一分钟。
+3. 如果系统提示为 Cloud Shell 创建存储，请选择“显示高级设置”，然后选择以下设置：
+    - **订阅**：你的订阅
+    - Cloud Shell 区域：选择任何可用区域
+    - 显示 VNET 隔离设置：未选中
+    - 资源组：使用预配了 Azure OpenAI 资源的现有资源组
+    - 存储帐户：新建具有唯一名称的存储帐户
+    - 文件共享：新建具有唯一名称的文件共享
 
-4. 请确保 Cloud Shell 窗格左上角指示的 shell 类型已切换到 Bash。 如果是 PowerShell，请使用下拉菜单切换到 Bash。
+    等待存储创建完毕，此过程大约需要一分钟。
+
+    > **注意**：如果已在 Azure 订阅中设置了 Cloud Shell，则可能需要使用 ⚙️ 菜单中的“重置用户设置”选项，以确保已安装最新版本的 Python 和 .NET Framework。
+
+4. 请确保 Cloud Shell 窗格左上角指示的 shell 类型为 Bash。 如果是 PowerShell，请使用下拉菜单切换到 Bash。
 
 5. 终端启动后，输入以下命令以下载示例应用程序并将其保存到名为“`azure-openai`”的文件夹中。
 
@@ -96,7 +106,7 @@ code .
 
     ```bash
    cd CSharp
-   dotnet add package Azure.AI.OpenAI --prerelease
+   dotnet add package Azure.AI.OpenAI --version 1.0.0-beta.5
     ```
 
     **Python**
