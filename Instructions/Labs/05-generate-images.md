@@ -24,7 +24,7 @@ Azure OpenAI 服务包括名为 DALL-E 的图像生成模型。 可以使用此�
 2. 请使用以下设置创建 Azure OpenAI 资源：
     - 订阅：已被批准访问 Azure OpenAI 服务的 Azure 订阅。
     - 资源组：选择现有的资源组，或者用你选择的名称新建一个。
-    - **区域**：选择 **EastUS** 作为区域
+    - **区域**：选择“EastUS”**** 作为区域
     - 名称：所选项的唯一名称。
     - 定价层：标准版 S0
 3. 等待部署完成。 然后在 Azure 门户中转至部署的 Azure OpenAI 资源。
@@ -61,7 +61,7 @@ Azure OpenAI 服务提供了一个 REST API，可用于提交关于内容生成�
 3. 如果系统提示为 Cloud Shell 创建存储，请选择“显示高级设置”，然后选择以下设置：
     - **订阅**：你的订阅
     - Cloud Shell 区域：选择任何可用区域
-    - 显示 VNET 隔离设置：未选中
+    - **显示 VNET 隔离设置**：未选中
     - 资源组：使用预配了 Azure OpenAI 资源的现有资源组
     - 存储帐户：新建具有唯一名称的存储帐户
     - 文件共享：新建具有唯一名称的文件共享
@@ -75,8 +75,8 @@ Azure OpenAI 服务提供了一个 REST API，可用于提交关于内容生成�
 5. 终端启动后，输入以下命令下载要使用的应用程序代码。
 
     ```bash
-   rm -r azure-openai -f
-   git clone https://github.com/MicrosoftLearning/mslearn-openai azure-openai
+    rm -r azure-openai -f
+    git clone https://github.com/MicrosoftLearning/mslearn-openai azure-openai
     ```
 
     文件将下载到名为“azure-openai”的文件夹中。 已提供适用于 C# 和 Python 的应用程序。 这两个应用具有相同的功能。
@@ -86,20 +86,22 @@ Azure OpenAI 服务提供了一个 REST API，可用于提交关于内容生成�
     **Python**
 
     ```bash
-   cd azure-openai/Labfiles/05-image-generation/Python
+    cd azure-openai/Labfiles/05-image-generation/Python
     ```
 
     **C#**
 
     ```bash
-   cd azure-openai/Labfiles/05-image-generation/CSharp
+    cd azure-openai/Labfiles/05-image-generation/CSharp
     ```
 
 7. 使用以下命令打开内置的代码编辑器，并查看要使用的代码文件。
 
     ```bash
-   code .
+    code .
     ```
+
+    > **提示**：有关使用其在 Azure Cloud Shell 环境中处理文件的更多详细信息，请参阅 [Azure Cloud Shell 代码编辑器文档](https://learn.microsoft.com/azure/cloud-shell/using-cloud-shell-editor)。
 
 ### 配置应用程序
 
@@ -117,7 +119,7 @@ Azure OpenAI 服务提供了一个 REST API，可用于提交关于内容生成�
 3. 如果使用 Python，则还需要安装用于读取配置文件的 python-dotenv 包 。 在控制台提示窗格中，确保当前文件夹为 ~/azure-openai/Labfiles/05-image-generation/Python。 然后输入此命令：
 
     ```bash
-   pip install python-dotenv
+    pip install python-dotenv
     ```
 
 ### 查看应用程序代码
@@ -148,13 +150,13 @@ Azure OpenAI 服务提供了一个 REST API，可用于提交关于内容生成�
     **Python**
 
     ```bash
-   python generate-image.py
+    python generate-image.py
     ```
 
     **C#**
 
     ```bash
-   dotnet run
+    dotnet run
     ```
 
 2. 出现提示时，输入图像的说明。 例如“A giraffe flying a kite”（放风筝的长颈鹿）。

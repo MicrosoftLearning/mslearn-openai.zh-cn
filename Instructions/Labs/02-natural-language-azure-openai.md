@@ -35,12 +35,18 @@ lab:
 若要使用 Azure OpenAI API，必须先部署一个通过 Azure OpenAI Studio 使用的模型。 部署好模型后，我们将在应用中引用该模型。
 
 1. 在 Azure OpenAI 资源的“概述”页上，使用“浏览”按钮在新的浏览器选项卡中打开 Azure OpenAI Studio 。
-2. 在 Azure OpenAI Studio 中，使用以下设置创建新部署：
-    - 模型：gpt-35-turbo
-    - 模型版本：使用默认版本
-    - 部署名称：text-turbo
+2. 在 Azure OpenAI Studio 中的“部署”**** 页上，查看现有模型部署。 如果没有模型部署，请使用以下设置创建新的“gpt-35-turbo-16k”**** 模型部署：
+    - **模型**：gpt-35-turbo-16k
+    - **模型版本**：自动更新为默认值
+    - **部署名称**：你选择的唯一名称**
+    - **高级选项**
+        - **内容筛选器**：默认
+        - **每分钟令牌速率限制**：5K\*
+        - **启用动态配额**：已启用
 
-> 注意：针对功能和性能间不同的权衡情况，每个 Azure OpenAI 模型都会得到相应的优化。 在本练习中，我们将使用 GPT-3 模型系列中的 3.5 Turbo 模型系列，该系列高度支持语言理解 。 本练习仅使用单个模型，但部署和使用其他部署的模型的方式是相同的。
+    > \*每分钟 5,000 个令牌的速率限制足以完成此练习，同时也为使用同一订阅的其他人留出容量。
+
+> **备注**：在某些区域中，新的模型部署界面不显示“模型版本”**** 选项。 在这种情况下，请不要担心，无需设置此选项并继续
 
 ## 在 Cloud Shell 中设置应用程序
 
@@ -79,17 +85,19 @@ lab:
    cd azure-openai/Labfiles/02-nlp-azure-openai
     ```
 
-已提供适用于 C# 和 Python 的应用程序，以及用于测试汇总情况的示例文本文件。 这两个应用具有相同的功能。
+7. 运行以下命令打开内置代码编辑器：
 
-打开内置的代码编辑器，并观察要使用模型进行汇总的文本文件（位于 `text-files/sample-text.txt`）。 运行以下命令，在代码编辑器中打开实验室文件。
+    ```bash
+    code .
+    ```
 
-```bash
-code .
-```
+8. 在代码编辑器中，展开“text-files”**** 文件夹并选择“sample-text.txt”**** 以查看将使用模型来进行总结的文本。
+
+    > **提示**：有关使用其在 Azure Cloud Shell 环境中处理文件的更多详细信息，请参阅 [Azure Cloud Shell 代码编辑器文档](https://learn.microsoft.com/azure/cloud-shell/using-cloud-shell-editor)。
 
 ## 配置应用程序
 
-在本练习中，你将使用 Azure OpenAI 资源完成应用程序的一些关键部分以进行启用。
+在本练习中，你将使用 Azure OpenAI 资源完成应用程序的一些关键部分以进行启用。 已提供适用于 C# 和 Python 的应用程序。 这两个应用具有相同的功能。
 
 1. 在代码编辑器中，根据语言首选项展开 CSharp 或 Python 文件夹 。
 
@@ -98,23 +106,23 @@ code .
     - C#：`appsettings.json`
     - Python： `.env`
     
-3. 更新配置值，以包括创建的 Azure OpenAI 资源的终结点和密钥值，以及部署的模型名称（`text-turbo`） 。 保存文件。
+3. 更新配置值，以包括你所创建的 Azure OpenAI 资源中的终结点**** 和密钥****，以及部署的模型名称。 保存文件。
 
-4. 导航到首选语言的文件夹并安装必要的包
+4. 在控制台窗格中，输入以下命令以导航到首选语言对应的文件夹并安装必要的包
 
     **C#**
 
     ```bash
    cd CSharp
-   dotnet add package Azure.AI.OpenAI --version 1.0.0-beta.5
+   dotnet add package Azure.AI.OpenAI --version 1.0.0-beta.9
     ```
 
     **Python**
 
     ```bash
-   cd Python
-   pip install python-dotenv
-   pip install openai
+    cd Python
+    pip install python-dotenv
+    pip install openai==1.2.0
     ```
 
 5. 导航到首选语言文件夹、选择代码文件并添加必要的库。
@@ -122,68 +130,67 @@ code .
     **C#**
 
     ```csharp
-   // Add Azure OpenAI package
-   using Azure.AI.OpenAI;
+    // Add Azure OpenAI package
+    using Azure.AI.OpenAI;
     ```
 
     **Python**
 
     ```python
-   # Add OpenAI import
-   import openai
+    # Add OpenAI import
+    from openai import AzureOpenAI
     ```
 
-5. 打开首选语言对应的应用程序代码，并添加生成请求所需的代码，该代码指定模型的各种参数，例如 `prompt` 和 `temperature`。
+6. 打开首选语言对应的应用程序代码，并添加生成请求所需的代码，该代码指定模型的各种参数，例如 `prompt` 和 `temperature`。
 
     **C#**
 
     ```csharp
-   // Initialize the Azure OpenAI client
-   OpenAIClient client = new OpenAIClient(new Uri(oaiEndpoint), new AzureKeyCredential(oaiKey));
-
-   // Build completion options object
-   ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions()
-   {
-       Messages =
-       {
-          new ChatMessage(ChatRole.System, "You are a helpful assistant. Summarize the following text in 60 words or less."),
-          new ChatMessage(ChatRole.User, text),
-       },
-       MaxTokens = 120,
-       Temperature = 0.7f,
-   };
-
-   // Send request to Azure OpenAI model
-   ChatCompletions response = client.GetChatCompletions(
-       deploymentOrModelName: oaiModelName, 
-       chatCompletionsOptions);
-   string completion = response.Choices[0].Message.Content;
-
-   Console.WriteLine("Summary: " + completion + "\n");
+    // Initialize the Azure OpenAI client
+    OpenAIClient client = new OpenAIClient(new Uri(oaiEndpoint), new AzureKeyCredential(oaiKey));
+    
+    // Build completion options object
+    ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions()
+    {
+        Messages =
+        {
+            new ChatMessage(ChatRole.System, "You are a helpful assistant."),
+            new ChatMessage(ChatRole.User, "Summarize the following text in 20 words or less:\n" + text),
+        },
+        MaxTokens = 120,
+        Temperature = 0.7f,
+        DeploymentName = oaiModelName
+    };
+    
+    // Send request to Azure OpenAI model
+    ChatCompletions response = client.GetChatCompletions(chatCompletionsOptions);
+    string completion = response.Choices[0].Message.Content;
+    
+    Console.WriteLine("Summary: " + completion + "\n");
     ```
 
     **Python**
 
     ```python
-   # Set OpenAI configuration settings
-   openai.api_type = "azure"
-   openai.api_base = azure_oai_endpoint
-   openai.api_version = "2023-03-15-preview"
-   openai.api_key = azure_oai_key
-
-   # Send request to Azure OpenAI model
-   print("Sending request for summary to Azure OpenAI endpoint...\n\n")
-   response = openai.ChatCompletion.create(
-       engine=azure_oai_model,
-       temperature=0.7,
-       max_tokens=120,
-       messages=[
-          {"role": "system", "content": "You are a helpful assistant. Summarize the following text in 60 words or less."},
-           {"role": "user", "content": text}
-       ]
-   )
-
-   print("Summary: " + response.choices[0].message.content + "\n")
+    # Initialize the Azure OpenAI client
+    client = AzureOpenAI(
+            azure_endpoint = azure_oai_endpoint, 
+            api_key=azure_oai_key,  
+            api_version="2023-05-15"
+            )
+    
+    # Send request to Azure OpenAI model
+    response = client.chat.completions.create(
+        model=azure_oai_model,
+        temperature=0.7,
+        max_tokens=120,
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": "Summarize the following text in 20 words or less:\n" + text}
+        ]
+    )
+    
+    print("Summary: " + response.choices[0].message.content + "\n")
     ```
 
 ## 运行应用程序

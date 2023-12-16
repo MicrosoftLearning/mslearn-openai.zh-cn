@@ -35,18 +35,25 @@ Azure OpenAI 服务模型可以使用自然语言提示为你生成代码、修�
 若要使用 Azure OpenAI API 来生成代码，必须先部署一个通过 Azure OpenAI Studio 使用的模型。 部署后，我们将使用该模型和操场，并在应用中引用该模型。
 
 1. 在 Azure OpenAI 资源的“概述”页上，使用“浏览”按钮在新的浏览器选项卡中打开 Azure OpenAI Studio。或者直接导航到 [Azure OpenAI Studio](https://oai.azure.com/?azure-portal=true) 。
-2. 在 Azure OpenAI Studio 中，使用以下设置创建新部署：
-    - 模型：gpt-35-turbo
-    - 模型版本：使用默认版本
-    - **部署名称**：35turbo
+2. 在 Azure OpenAI Studio 中的“部署”**** 页上，查看现有模型部署。 如果没有模型部署，请使用以下设置创建新的“gpt-35-turbo-16k”**** 模型部署：
+    - **模型**：gpt-35-turbo-16k
+    - **模型版本**：自动更新为默认值
+    - **部署名称**：你选择的唯一名称**
+    - **高级选项**
+        - **内容筛选器**：默认
+        - **每分钟令牌速率限制**：5K\*
+        - **启用动态配额**：已启用
 
-> **注意**：针对功能和性能间不同的权衡情况，每个 Azure OpenAI 模型都会得到相应的优化。 在本练习中，我们将使用 GPT-3 模型系列中的 3.5 Turbo 模型系列，该系列高度支持两种语言和代码理解 。
+    > \*每分钟 5,000 个令牌的速率限制足以完成此练习，同时也为使用同一订阅的其他人留出容量。
+
+> **备注**：在某些区域中，新的模型部署界面不显示“模型版本”**** 选项。 在这种情况下，请不要担心，无需设置此选项并继续
 
 ## 在聊天操场中生成代码
 
 在将其用于应用之前，请检查 Azure OpenAI 如何在聊天操场中生成和解释代码。
 
 1. 在 [Azure OpenAI Studio](https://oai.azure.com/?azure-portal=true) 中导航到左窗格中的聊天操场。
+1. 1. 在“配置”**** 中，确保已选择模型部署。
 1. 在顶部的“助手设置”部分中，选择“默认”系统消息模板 。
 1. 在“聊天会话”部分中输入以下提示，然后按 Enter。
 
@@ -102,27 +109,29 @@ Azure OpenAI 服务模型可以使用自然语言提示为你生成代码、修�
 5. 终端启动后，输入以下命令以下载示例应用程序并将其保存到名为“`azure-openai`”的文件夹中。
 
     ```bash
-   rm -r azure-openai -f
-   git clone https://github.com/MicrosoftLearning/mslearn-openai azure-openai
+    rm -r azure-openai -f
+    git clone https://github.com/MicrosoftLearning/mslearn-openai azure-openai
     ```
 
 6. 文件将下载到名为“azure-openai”的文件夹中。 使用以下命令导航到本练习的实验室文件。
 
     ```bash
-   cd azure-openai/Labfiles/04-code-generation
+    cd azure-openai/Labfiles/04-code-generation
     ```
 
-    已提供适用于 C# 和 Python 的应用程序，以及我们将在本实验室中使用的示例代码。
-
-    打开内置代码编辑器，可以看到我们将在 `sample-code` 中使用的代码文件。 运行以下命令，在代码编辑器中打开实验室文件。
+7. 运行以下命令打开内置代码编辑器：
 
     ```bash
-   code .
+    code .
     ```
+
+8. 在代码编辑器中，展开“示例代码”**** 文件夹并查看应用程序将使用模型改进的代码文件。
+
+    > **提示**：有关使用其在 Azure Cloud Shell 环境中处理文件的更多详细信息，请参阅 [Azure Cloud Shell 代码编辑器文档](https://learn.microsoft.com/azure/cloud-shell/using-cloud-shell-editor)。
 
 ## 配置应用程序
 
-在本练习中，你将使用 Azure OpenAI 资源完成应用程序的一些关键部分以进行启用。
+在本练习中，你将使用 Azure OpenAI 资源完成应用程序的一些关键部分以进行启用。 已提供适用于 C# 和 Python 的应用程序。
 
 1. 在代码编辑器中，展开首选语言的语言文件夹。
 
@@ -131,67 +140,64 @@ Azure OpenAI 服务模型可以使用自然语言提示为你生成代码、修�
     - **C#** ：`appsettings.json`
     - **Python**：`.env`
 
-3. 更新配置值，以包括创建的 Azure OpenAI 资源的终结点和密钥值，以及部署名称（`35turbo`） 。 保存文件。
+3. 更新配置值，以包括你所创建的 Azure OpenAI 资源中的终结点**** 和密钥****，以及部署名称。 保存文件。
 
-4. 导航到首选语言的文件夹并安装必要的包。
+4. 在控制台窗格中，输入以下命令以导航到首选语言对应的文件夹并安装必要的包。
 
     **C#**
 
     ```bash
-   cd CSharp
-   dotnet add package Azure.AI.OpenAI --version 1.0.0-beta.5
+    cd CSharp
+    dotnet add package Azure.AI.OpenAI --version 1.0.0-beta.9
     ```
 
     **Python**
 
     ```bash
-   cd Python
-   pip install python-dotenv
-   pip install openai
+    cd Python
+    pip install python-dotenv
+    pip install openai==1.2.0
     ```
 
 5. 在此文件夹中选择所选语言对应的代码文件，并添加必要的库。
 
-    **C#**
-
-    `Program.cs`
+    **C#** ：Program.cs
 
     ```csharp
-   // Add Azure OpenAI package
-   using Azure.AI.OpenAI;
+    // Add Azure OpenAI package
+    using Azure.AI.OpenAI;
     ```
 
-    **Python**
-
-    `code-generation.py`
+    **Python**：code-generation.py
 
     ```python
-   # Add OpenAI import
-   import openai
+    # Add OpenAI import
+    from openai import AzureOpenAI
     ```
 
 6. 添加配置客户端所需的代码。
 
-    **C#**
+    **C#** ：Program.cs
 
     ```csharp
-   // Initialize the Azure OpenAI client
-   OpenAIClient client = new OpenAIClient(new Uri(oaiEndpoint), new AzureKeyCredential(oaiKey));
+    // Initialize the Azure OpenAI client
+    OpenAIClient client = new OpenAIClient(new Uri(oaiEndpoint), new AzureKeyCredential(oaiKey));
     ```
 
-    **Python**
+    **Python**：code-generation.py
 
     ```python
-   # Set OpenAI configuration settings
-   openai.api_type = "azure"
-   openai.api_base = azure_oai_endpoint
-   openai.api_version = "2023-05-15"
-   openai.api_key = azure_oai_key
+    # Set OpenAI configuration settings
+    client = AzureOpenAI(
+            azure_endpoint = azure_oai_endpoint, 
+            api_key=azure_oai_key,  
+            api_version="2023-05-15"
+            )
     ```
 
 7. 在调用 Azure OpenAI 模型的函数中，添加代码以设置格式并将请求发送到模型。
 
-    **C#**
+    **C#** ：Program.cs
 
     ```csharp
     // Create chat completion options
@@ -204,34 +210,32 @@ Azure OpenAI 服务模型可以使用自然语言提示为你生成代码、修�
         },
         Temperature = 0.7f,
         MaxTokens = 1000,
+        DeploymentName = oaiModelName
     };
 
     // Get response from Azure OpenAI
-    Response<ChatCompletions> response = await client.GetChatCompletionsAsync(
-        oaiModelName,
-        chatCompletionsOptions
-    );
+    Response<ChatCompletions> response = await client.GetChatCompletionsAsync(chatCompletionsOptions);
 
     ChatCompletions completions = response.Value;
     string completion = completions.Choices[0].Message.Content;
     ```
 
-    **Python**
+    **Python**：code-generation.py
 
     ```python
-   # Build the messages array
-   messages =[
-       {"role": "system", "content": system_message},
-       {"role": "user", "content": user_message},
-   ]
-
-   # Call the Azure OpenAI model
-   response = openai.ChatCompletion.create(
-       engine=model,
-       messages=messages,
-       temperature=0.7,
-       max_tokens=1000
-   )
+    # Build the messages array
+    messages =[
+        {"role": "system", "content": system_message},
+        {"role": "user", "content": user_message},
+    ]
+    
+    # Call the Azure OpenAI model
+    response = client.chat.completions.create(
+        model=model,
+        messages=messages,
+        temperature=0.7,
+        max_tokens=1000
+    )
     ```
 
 ## 运行应用程序
