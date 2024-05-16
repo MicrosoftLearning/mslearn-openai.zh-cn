@@ -1,82 +1,82 @@
 ---
 lab:
-    title: 'Generate and improve code with Azure OpenAI Service'
+  title: 使用 Azure OpenAI 服务生成和改进代码
 ---
 
-# Generate and improve code with Azure OpenAI Service
+# 使用 Azure OpenAI 服务生成和改进代码
 
-The Azure OpenAI Service models can generate code for you using natural language prompts, fixing bugs in completed code, and providing code comments. These models can also explain and simplify existing code to help you understand what it does and how to improve it.
+Azure OpenAI 服务模型可以使用自然语言提示为你生成代码、修复已完成代码中的 bug，并提供代码注释。 这些模型还可以解释和简化现有代码，以帮助你了解它的作用以及如何改进它。
 
-In scenario for this exercise, you will perform the role of a software developer exploring how to use generative AI to make coding tasks easier and more efficient. The techniques used in the exercise can be applied to other code files, programming languages, and use cases.
+在本练习的方案中，你将承担软件开发人员的角色，探索如何使用生成式 AI 更轻松高效地完成编码任务。 练习中使用的技术可以应用于其他代码文件、编程语言和用例。
 
-This exercise will take approximately **25** minutes.
+该练习大约需要 25 分钟。
 
-## Provision an Azure OpenAI resource
+## 预配 Azure OpenAI 资源
 
-If you don't already have one, provision an Azure OpenAI resource in your Azure subscription.
+如果还没有 Azure OpenAI 资源，请在 Azure 订阅中预配 Azure OpenAI 资源。
 
-1. Sign into the **Azure portal** at `https://portal.azure.com`.
-2. Create an **Azure OpenAI** resource with the following settings:
-    - **Subscription**: *Select an Azure subscription that has been approved for access to the Azure OpenAI service*
-    - **Resource group**: *Choose or create a resource group*
-    - **Region**: *Make a **random** choice from any of the following regions*\*
-        - Australia East
-        - Canada East
-        - East US
-        - East US 2
-        - France Central
-        - Japan East
-        - North Central US
-        - Sweden Central
-        - Switzerland North
-        - UK South
-    - **Name**: *A unique name of your choice*
-    - **Pricing tier**: Standard S0
+1. 登录到 Azure 门户，地址为 ****。
+2. 请使用以下设置创建 Azure OpenAI 资源：
+    - 订阅****：*选择已被批准访问 Azure OpenAI 服务的 Azure 订阅*
+    - **资源组**：*创建或选择资源组*
+    - 区域****：从以下任何区域中进行随机选择******\*
+        - 澳大利亚东部
+        - 加拿大东部
+        - 美国东部
+        - 美国东部 2
+        - 法国中部
+        - 日本东部
+        - 美国中北部
+        - 瑞典中部
+        - 瑞士北部
+        - 英国南部
+    - **名称**：所选项的唯一名称**
+    - **定价层**：标准版 S0
 
-    > \* Azure OpenAI resources are constrained by regional quotas. The listed regions include default quota for the model type(s) used in this exercise. Randomly choosing a region reduces the risk of a single region reaching its quota limit in scenarios where you are sharing a subscription with other users. In the event of a quota limit being reached later in the exercise, there's a possibility you may need to create another resource in a different region.need to create another resource in a different region.
+    > \* Azure OpenAI 资源受区域配额约束。 列出的区域包括本练习中使用的模型类型的默认配额。 在与其他用户共享订阅的情况下，随机选择一个区域可以降低单个区域达到配额限制的风险。 如果稍后在练习中达到配额限制，可能需要在不同的区域中创建另一个资源。
 
-3. Wait for deployment to complete. Then go to the deployed Azure OpenAI resource in the Azure portal.
+3. 等待部署完成。 然后在 Azure 门户中转至部署的 Azure OpenAI 资源。
 
-## Deploy a model
+## 部署模型
 
-Azure OpenAI provides a web-based portal named **Azure OpenAI Studio**, that you can use to deploy, manage, and explore models. You'll start your exploration of Azure OpenAI by using Azure OpenAI Studio to deploy a model.
+Azure OpenAI 提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户，可用于部署、管理和探索模型。 你将使用 Azure OpenAI Studio 部署模型，开始探索 Azure OpenAI。
 
-1. On the **Overview** page for your Azure OpenAI resource, use the **Go to Azure OpenAI Studio** button to open Azure OpenAI Studio in a new browser tab.
-2. In Azure OpenAI Studio, on the **Deployments** page, view your existing model deployments. If you don't already have one, create a new deployment of the **gpt-35-turbo-16k** model with the following settings:
-    - **Model**: gpt-35-turbo-16k *(if the 16k model isn't available, choose gpt-35-turbo)*
-    - **Model version**: Auto-update to default
-    - **Deployment name**: *A unique name of your choice. You'll use this name later in the lab.*
-    - **Advanced options**
-        - **Content filter**: Default
-        - **Deployment type**: Standard
-        - **Tokens per minute rate limit**: 5K\*
-        - **Enable dynamic quota**: Enabled
+1. 在 Azure OpenAI 资源的“概述”**** 页上，使用“转到 Azure OpenAI Studio”**** 按钮在新的浏览器选项卡中打开 Azure OpenAI Studio。
+2. 在 Azure OpenAI Studio 中的“部署”**** 页上，查看现有模型部署。 如果没有模型部署，请使用以下设置创建新的“gpt-35-turbo-16k”**** 模型部署：
+    - **模型**：gpt-35-turbo-16k *（如果 16k 模型不可用，请选择 gpt-35-turbo）*
+    - **模型版本**：自动更新为默认值
+    - **部署名称**：*所选的唯一名称。稍后将在实验室中使用此名称。*
+    - **高级选项**
+        - **内容筛选器**：默认
+        - **部署类型**：标准
+        - **每分钟令牌速率限制**：5K\*
+        - **启用动态配额**：已启用
 
-    > \* A rate limit of 5,000 tokens per minute is more than adequate to complete this exercise while leaving capacity for other people using the same subscription.
+    > \*每分钟 5,000 个令牌的速率限制足以完成此练习，同时也为使用同一订阅的其他人留出容量。
 
-## Generate code in chat playground
+## 在聊天操场中生成代码
 
-Before using in your app, examine how Azure OpenAI can generate and explain code in the chat playground.
+在将其用于应用之前，请检查 Azure OpenAI 如何在聊天操场中生成和解释代码。
 
-1. In the **Azure OpenAI Studio** at `https://oai.azure.com`, in the **Playground** section, select the **Chat** page. The **Chat** playground page consists of three main sections:
-    - **Setup** - used to set the context for the model's responses.
-    - **Chat session** - used to submit chat messages and view responses.
-    - **Configuration** - used to configure settings for the model deployment.
-2. In the **Configuration** section, ensure that your model deployment is selected.
-3. In the **Setup** area, set the system message to `You are a programming assistant helping write code` and apply the changes.
-4. In the **Chat session**, submit the following query:
+1. 在位于 `https://oai.azure.com` 的 **Azure OpenAI Studio** 中，在“操场”部分中选择“聊天”页。******** “聊天”操场页面由三个主要部分组成****：
+    - ****“设置”- 用于设置模型的响应的上下文。
+    - ****“聊天会话”- 用于提交聊天消息和查看响应。
+    - ****“配置”- 用于配置模型部署的设置。
+2. 在“配置”**** 部分中，确保已选择模型部署。
+3. **** 在“设置”区域中，将系统消息设置为 `You are a programming assistant helping write code` 并应用更改。
+4. **** 在“聊天会话”中提交以下查询：
 
     ```
     Write a function in python that takes a character and a string as input, and returns how many times the character appears in the string
     ```
 
-    The model will likely respond with a function, with some explanation of what the function does and how to call it.
+    模型通常会响应一个函数，并说明该函数的作用和调用方式。
 
-5. Next, send the prompt `Do the same thing, but this time write it in C#`.
+5. 接下来，发送提示 `Do the same thing, but this time write it in C#`。
 
-    The model likely responded very similarly as the first time, but this time coding in C#. You can ask it again for a different language of your choice, or a function to complete a different task such as reversing the input string.
+    模型响应的内容可能与第一次非常相似，但这次是用 C# 编码。 可以再次对其发出请求以获取你选择的其他语言，或获取函数来完成其他任务，例如反转输入字符串。
 
-6. Next, let's explore using AI to understand code. Submit the following prompt as the user message.
+6. 接下来，我们将探讨如何使用 AI 来理解代码。 以用户消息的形式提交以下提示。
 
     ```
     What does the following function do?  
@@ -102,68 +102,68 @@ Before using in your app, examine how Azure OpenAI can generate and explain code
             return result  
     ```
 
-    The model should describe what the function does, which is to multiply two numbers together by using a loop.
+    模型应描述函数的作用，即使用循环将两个数字相乘。
 
-7. Submit the prompt `Can you simplify the function?`.
+7. 提交提示 `Can you simplify the function?`。
 
-    The model should write a simpler version of the function.
+    该模型应编写函数的简化版本。
 
-8. Submit the prompt: `Add some comments to the function.`
+8. 提交提示：`Add some comments to the function.`
 
-    The model adds comments to the code.
+    模型将注释添加到代码。
 
-## Prepare to develop an app in Visual Studio Code
+## 准备在 Visual Studio Code 中开发应用
 
-Now let's explore how you could build a custom app that uses Azure OpenAI service to generate code. You'll develop your app using Visual Studio Code. The code files for your app have been provided in a GitHub repo.
+现在，我们来探讨如何构建使用 Azure OpenAI 服务生成代码的自定义应用。 你将使用 Visual Studio Code 开发应用。 应用程序的代码文件已在 GitHub repo 中提供。
 
-> **Tip**: If you have already cloned the **mslearn-openai** repo, open it in Visual Studio code. Otherwise, follow these steps to clone it to your development environment.
+> **提示**：如果已克隆 **mslearn-openai** 存储库，请在 Visual Studio Code 中打开它。 否则，请按照以下步骤将其克隆到开发环境中。
 
-1. Start Visual Studio Code.
-2. Open the palette (SHIFT+CTRL+P) and run a **Git: Clone** command to clone the `https://github.com/MicrosoftLearning/mslearn-openai` repository to a local folder (it doesn't matter which folder).
-3. When the repository has been cloned, open the folder in Visual Studio Code.
+1. 启动 Visual Studio Code。
+2. 打开面板 (SHIFT+CTRL+P) 并运行“**Git：克隆**”命令，以将 `https://github.com/MicrosoftLearning/mslearn-openai` 存储库克隆到本地文件夹（任意文件夹均可）。
+3. 克隆存储库后，在 Visual Studio Code 中打开文件夹。
 
-    > **Note**: If Visual Studio Code shows you a pop-up message to prompt you to trust the code you are opening, click on **Yes, I trust the authors** option in the pop-up.
+    > **注意**：如果 Visual Studio Code 显示一条弹出消息，提示你信任打开的代码，请单击弹出窗口中的“是，我信任该作者”选项****。
 
-4. Wait while additional files are installed to support the C# code projects in the repo.
+4. 等待其他文件安装完毕，以支持存储库中的 C# 代码项目。
 
-    > **Note**: If you are prompted to add required assets to build and debug, select **Not Now**.
+    > **注意**：如果系统提示你添加生成和调试所需的资产，请选择**以后再说**。
 
-## Configure your application
+## 配置应用程序
 
-Applications for both C# and Python have been provided, as well as a sample text file you'll use to test the summarization. Both apps feature the same functionality. First, you'll complete some key parts of the application to enable using your Azure OpenAI resource.
+已提供适用于 C# 和 Python 的应用程序，以及用于测试汇总情况的示例文本文件。 这两个应用具有相同的功能。 首先，你将使用 Azure OpenAI 资源完成要启用的应用程序的一些关键部件。
 
-1. In Visual Studio Code, in the **Explorer** pane, browse to the **Labfiles/04-code-generation** folder and expand the **CSharp** or **Python** folder depending on your language preference. Each folder contains the language-specific files for an app into which you're you're going to integrate Azure OpenAI functionality.
-2. Right-click the **CSharp** or **Python** folder containing your code files and open an integrated terminal. Then install the Azure OpenAI SDK package by running the appropriate command for your language preference:
+1. 在 Visual Studio Code 的“资源管理器”窗格中，浏览到“Labfiles/04-code-generation”文件夹，然后根据语言首选项展开“CSharp”文件夹或“Python”文件夹****************。 每个文件夹都包含要集成 Azure OpenAI 功能的应用程序的特定语言文件。
+2. 右键单击包含代码文件的“CSharp”或“Python”文件夹，并打开集成终端。******** 然后通过运行适用于语言首选项的命令，安装 Azure OpenAI SDK 包：
 
-    **C#**:
+    **C#：**
 
     ```
     dotnet add package Azure.AI.OpenAI --version 1.0.0-beta.14
     ```
 
-    **Python**:
+    **Python**：
 
     ```
     pip install openai==1.13.3
     ```
 
-3. In the **Explorer** pane, in the **CSharp** or **Python** folder, open the configuration file for your preferred language
+3. 在“资源管理器”窗格中****，在“CSharp”或“Python”文件夹中，打开首选语言的配置文件********
 
-    - **C#**: appsettings.json
-    - **Python**: .env
+    - **C#** ：appsettings.json
+    - **Python**：.env
     
-4. Update the configuration values to include:
-    - The  **endpoint** and a **key** from the Azure OpenAI resource you created (available on the **Keys and Endpoint** page for your Azure OpenAI resource in the Azure portal)
-    - The **deployment name** you specified for your model deployment (available in the **Deployments** page in Azure OpenAI Studio).
-5. Save the configuration file.
+4. 更新配置值以包括：
+    - 创建的 Azure OpenAI 资源的终结点**** 和密钥****（位于 Azure 门户中 Azure OpenAI 资源的“密钥和终结点”**** 页）
+    - 为模型部署指定的 **部署名称**（在 Azure OpenAI Studio 的“部署”页中提供****）。
+5. 保存此配置文件。
 
-## Add code to use your Azure OpenAI service model
+## 添加代码以使用 Azure OpenAI 服务模型
 
-Now you're ready to use the Azure OpenAI SDK to consume your deployed model.
+现在，你已准备好使用 Azure OpenAI SDK 来使用已部署的模型。
 
-1. In the **Explorer** pane, in the **CSharp** or **Python** folder, open the code file for your preferred language. In the function that calls the Azure OpenAI model, under the comment ***Format and send the request to the model***, add the code to format and send the request to the model.
+1. 在“资源管理器”窗格中****，在“CSharp”或“Python”文件夹中，打开首选语言的代码文件********。 ****** 在调用 Azure OpenAI 模型的函数中，在注释“设置请求格式并将其发送到模型”下，添加代码来设置请求格式并将其发送到模型。
 
-    **C#**: Program.cs
+    **C#** ：Program.cs
 
     ```csharp
     // Format and send the request to the model
@@ -186,7 +186,7 @@ Now you're ready to use the Azure OpenAI SDK to consume your deployed model.
     string completion = completions.Choices[0].Message.Content;
     ```
 
-    **Python**: code-generation.py
+    **Python**：code-generation.py
 
     ```python
     # Format and send the request to the model
@@ -204,55 +204,55 @@ Now you're ready to use the Azure OpenAI SDK to consume your deployed model.
     )
     ```
 
-4. Save the changes to the code file.
+4. 保存代码文件中的更改。
 
-## Run the application
+## 运行应用程序
 
-Now that your app has been configured, run it to try generating code for each use case. The use case is numbered in the app, and can be run in any order.
+现在已完成应用配置，请运行它，尝试为每个用例生成代码。 用例在应用中是有编号的，且能按任何顺序运行。
 
-> **Note**: Some users may experience rate limiting if calling the model too frequently. If you hit an error about a token rate limit, wait for a minute then try again.
+> **注意**：如果过于频繁地调用模型，部分用户可能会受到速率限制。 如果遇到有关令牌速率限制的错误，请等待一分钟，然后重试。
 
-1. In the **Explorer** pane, expand the **Labfiles/04-code-generation/sample-code** folder and review the function and the *go-fish* app for your language. These files will be used for the tasks in the app.
-2. In the interactive terminal pane, ensure the folder context is the folder for your preferred language. Then enter the following command to run the application.
+1. **** 在“资源管理器”窗格中，展开“Labfiles/04-code-generation/sample-code”文件夹，并查看语言的函数和 *go-fish* 应用****。 这些文件将用于应用中的任务。
+2. 在交互式终端窗格中，确保文件夹上下文是首选语言的文件夹。 然后，输入以下命令来创建应用程序。
 
-    - **C#**: `dotnet run`
-    - **Python**: `python code-generation.py`
+    - **C#** ：`dotnet run`
+    - **Python**：`python code-generation.py`
 
-    > **Tip**: You can use the **Maximize panel size** (**^**) icon in the terminal toolbar to see more of the console text.
+    > **提示**：可以使用 **终端工具栏中的“最大化面板大小** ”图标**^** 查看更多控制台文本。
 
-3. Choose option **1** to add comments to your code and enter the following prompt. Note, the response might take a few seconds for each of these tasks.
+3. 选择选项“1”以向代码添加注释，并输入以下提示****。 请注意，其中每个任务的响应可能需要几秒钟的时间。
 
     ```prompt
     Add comments to the following function. Return only the commented code.\n---\n
     ```
 
-    The results will be put into **result/app.txt**. Open that file up, and compare it to the function file in **sample-code**.
+    结果将放入 **result/app.txt** 中。 打开该文件，并将其与 **sample-code** 中的函数文件进行比较。
 
-4. Next, choose option **2** to write unit tests for that same function and enter the following prompt.
+4. 接下来，选择选项“2”以编写同一函数的单元测试，并输入以下提示****。
 
     ```prompt
     Write four unit tests for the following function.\n---\n
     ```
 
-    The results will replace what was in **result/app.txt**, and details four unit tests for that function.
+    结果将会替换 **result/app.txt** 中的内容，并详细说明该函数的四个单元测试。
 
-5. Next, choose option **3** to fix bugs in an app for playing Go Fish. Enter the following prompt.
+5. 接下来请选择选项 3 以修复 Go Fish 应用的 bug。 输入以下提示。
 
     ```prompt
     Fix the code below for an app to play Go Fish with the user. Return only the corrected code.\n---\n
     ```
 
-    The results will replace what was in **result/app.txt**, and should have very similar code with a few things corrected.
+    结果将会替换 **result/app.txt** 中的内容，并且应该具有非常类似的代码，并更正了一些内容。
 
-    - **C#**: Fixes are made on line 30 and 59
-    - **Python**: Fixes are made on line 18 and 31
+    - **C#** ：修正第 30 行和第 59 行的内容
+    - **Python**：修正第 18 行和第 31 行的内容
 
-    The app for Go Fish in **sample-code** can be run if you replace the lines that contain bugs with the response from Azure OpenAI. If you run it without the fixes, it will not work correctly.
+    如果将包含 bug 的行替换为 Azure OpenAI 的响应，则可以运行 **sample-code** 中的 Go Fish 应用。 如果在未修复的情况下运行，该应用将无法正常工作。
     
-    > **Note**: It's important to note that even though the code for this Go Fish app was corrected for some syntax, it's not a strictly accurate representation of the game. If you look closely, there are issues with not checking if the deck is empty when drawing cards, not removing pairs from the players hand when they get a pair, and a few other bugs that require understanding of card games to realize. This is a great example of how useful generative AI models can be to assist with code generation, but can't be trusted as correct and need to be verified by the developer.
+    > **注意**：请务必注意，即使此 Go Fish 应用的代码已针对某些语法进行了更正，但严格来说这并不是该游戏的准确表示形式。 如果你仔细观察，就会发现在抽牌时不会检查牌组是否为空、在玩家拿到一对牌时不从玩家手中移除对子，以及其他一些需要了解纸牌游戏才能意识到的 bug。 这是一个很好的示例，说明生成式 AI 模型在帮助代码生成方面是多么有用，但也不能完全信任它，需要由开发人员对其生成的内容进行验证。
 
-    If you would like to see the full response from Azure OpenAI, you can set the **printFullResponse** variable to `True`, and rerun the app.
+    如果想要查看 Azure OpenAI 的完整响应，可以将 **printFullResponse** 变量设置为 `True`，然后重新运行应用。
 
-## Clean up
+## 清理
 
-When you're done with your Azure OpenAI resource, remember to delete the deployment or the entire resource in the **Azure portal** at `https://portal.azure.com`.
+使用完 Azure OpenAI 资源后，请记得在位于 `https://portal.azure.com` 的 **Azure 门户** 中删除部署或整个资源。
