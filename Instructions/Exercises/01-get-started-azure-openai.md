@@ -1,111 +1,111 @@
 ---
 lab:
-    title: 'Get started with Azure OpenAI service'
+  title: Azure OpenAI 服务入门
 ---
 
-# Get started with Azure OpenAI service
+# Azure OpenAI 服务入门
 
-Azure OpenAI Service brings the generative AI models developed by OpenAI to the Azure platform, enabling you to develop powerful AI solutions that benefit from the security, scalability, and integration of services provided by the Azure cloud platform. In this exercise, you'll learn how to get started with Azure OpenAI by provisioning the service as an Azure resource and using Azure OpenAI Studio to deploy and explore generative AI models.
+Azure OpenAI 服务将 OpenAI 开发的生成式 AI 模型引入 Azure 平台，使你能够开发功能强大的 AI 解决方案，这些解决方案受益于 Azure 云平台提供的服务的安全性、可伸缩性和集成。 在本练习中，你将了解如何通过将服务预配为 Azure 资源并使用 Azure OpenAI Studio 部署和探索生成式 AI 模型来开始使用 Azure OpenAI。
 
-In the scenario for this exercise, you will perform the role of a software developer who has been tasked to implement an AI agent that can use generative AI to help a marketing organization improve its effectiveness at reaching customers and advertising new products. The techniques used in the exercise can be applied to any scenario where an organization wants to use generative AI models to help employees be more effective and productive.
+在本练习的场景中，你将扮演一名负责实施 AI 代理的软件开发人员，该代理可以使用生成式 AI 帮助营销组织改善发掘客户和宣传新产品的效率。 可将本练习中使用的方法应用于组织中期望使用生成式 AI 模型来帮助员工提高效率和生产力的任何方案。
 
-This exercise takes approximately **30** minutes.
+此练习大约需要 **30** 分钟。
 
-## Provision an Azure OpenAI resource
+## 预配 Azure OpenAI 资源
 
-If you don't already have one, provision an Azure OpenAI resource in your Azure subscription.
+在 Azure 订阅中预配一个 Azure OpenAI 资源（如果没有）。
 
-1. Sign into the **Azure portal** at `https://portal.azure.com`.
-2. Create an **Azure OpenAI** resource with the following settings:
-    - **Subscription**: *Select an Azure subscription that has been approved for access to the Azure OpenAI service*
-    - **Resource group**: *Choose or create a resource group*
-    - **Region**: *Make a **random** choice from any of the following regions*\*
-        - Australia East
-        - Canada East
-        - East US
-        - East US 2
-        - France Central
-        - Japan East
-        - North Central US
-        - Sweden Central
-        - Switzerland North
-        - UK South
-    - **Name**: *A unique name of your choice*
-    - **Pricing tier**: Standard S0
+1. 登录到 Azure 门户，地址为 ****。
+2. 请使用以下设置创建 Azure OpenAI 资源：
+    - 订阅****：选择已获准访问 Azure OpenAI 服务的 Azure 订阅**
+    - **资源组**：*创建或选择资源组*
+    - 区域****：从以下任何区域中进行随机选择******\*
+        - 澳大利亚东部
+        - 加拿大东部
+        - 美国东部
+        - 美国东部 2
+        - 法国中部
+        - 日本东部
+        - 美国中北部
+        - 瑞典中部
+        - 瑞士北部
+        - 英国南部
+    - **名称**：所选项的唯一名称**
+    - **定价层**：标准版 S0
 
-    > \* Azure OpenAI resources are constrained by regional quotas. The listed regions include default quota for the model type(s) used in this exercise. Randomly choosing a region reduces the risk of a single region reaching its quota limit in scenarios where you are sharing a subscription with other users. In the event of a quota limit being reached later in the exercise, there's a possibility you may need to create another resource in a different region.
+    > \* Azure OpenAI 资源受区域配额约束。 列出的区域包括本练习中使用的模型类型的默认配额。 在与其他用户共享订阅的情况下，随机选择一个区域可以降低单个区域达到配额限制的风险。 如果稍后在练习中达到配额限制，你可能需要在不同的区域中创建另一个资源。
 
-3. Wait for deployment to complete. Then go to the deployed Azure OpenAI resource in the Azure portal.
+3. 等待部署完成。 然后在 Azure 门户中转至部署的 Azure OpenAI 资源。
 
-## Deploy a model
+## 部署模型
 
-Azure OpenAI service provides a web-based portal named **Azure OpenAI Studio**, that you can use to deploy, manage, and explore models. You'll start your exploration of Azure OpenAI by using Azure OpenAI Studio to deploy a model.
+Azure OpenAI 服务提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户用于部署、管理和探索模型。**** 你将使用 Azure OpenAI Studio 部署模型，开始探索 Azure OpenAI。
 
-> **Note**: As you use Azure OpenAI Studio, message boxes suggesting tasks for you to perform may be displayed. You can close these and follow the steps in this exercise.
+> **注意**：使用 Azure OpenAI Studio 时，可能会显示建议你执行任务的消息框。 可以关闭这些消息框并按照本练习中的步骤进行操作。
 
-1. In the Azure portal, on the **Overview** page for your Azure OpenAI resource, use the **Go to Azure OpenAI Studio** button to open Azure OpenAI Studio in a new browser tab.
+1. 在 Azure 门户中 Azure OpenAI 资源的“概述”页面上，使用“转到 Azure OpenAI Studio”按钮在新的浏览器选项卡中打开 Azure OpenAI Studio********。
 
-    After the new tab opens, you can close any banner notifications for new preview services that are displayed at the top of the Azure OpenAI Studio page.
+    新选项卡打开后，可以关闭 Azure OpenAI Studio 页面顶部显示的新预览服务的任何横幅通知。
 
-1. In Azure OpenAI Studio, in the pane on the left, select the **Deployments** page and view your existing model deployments. If you don't already have one, create a new deployment of the **gpt-35-turbo-16k** model with the following settings:
-    - **Model**: gpt-35-turbo-16k *(if the 16k model isn't available, choose gpt-35-turbo)*
-    - **Model version**: Auto-update to default
-    - **Deployment name**: *A unique name of your choice*
-    - **Advanced options**
-        - **Content filter**: Default
-        - **Deployment type**: Standard
-        - **Tokens per minute rate limit**: 5K\*
-        - **Enable dynamic quota**: Enabled
+1. 在 Azure OpenAI Studio 的左侧窗格中，选择“部署”页面并查看现有模型部署****。 如果没有模型部署，请使用以下设置创建新的“gpt-35-turbo-16k”**** 模型部署：
+    - 模型：gpt-35-turbo-16k（如果 16k 模型不可用，请选择 gpt-35-turbo）******
+    - **模型版本**：自动更新为默认值
+    - **部署名称**：你选择的唯一名称**
+    - **高级选项**
+        - **内容筛选器**：默认
+        - **部署类型**：标准
+        - **每分钟令牌速率限制**：5K\*
+        - **启用动态配额**：已启用
 
-    > \* A rate limit of 5,000 tokens per minute is more than adequate to complete this exercise while leaving capacity for other people using the same subscription.
+    > \*每分钟 5,000 个令牌的速率限制足以完成此练习，同时也为使用同一订阅的其他人留出容量。
 
-## Use the Chat playground
+## 使用聊天操场
 
-Now that you've deployed a model, you can use it to generate responses based on natural language prompts. The *Chat* playground in Azure OpenAI Studio provides a chatbot interface for GPT 3.5 and higher models.
+部署模型后，可以使用它根据自然语言提示生成响应。 Azure OpenAI Studio 中的“聊天”操场为 GPT 3.5 及更高版本的模型提供了聊天机器人界面**。
 
-> **Note:** The *Chat* playground uses the *ChatCompletions* API rather than the older *Completions* API that is used by the *Completions* playground. The Completions playground is provided for compatibility with older models.
+> **注意：**“聊天”操场使用 ChatCompletions API，而不是“完成”操场使用的旧版 Completions API********。 提供“完成”操场的目的是为了与旧模型兼容。
 
-1. In the **Playground** section, select the **Chat** page. The **Chat** playground page consists of three main panels (which may be arranged right-to-left horizontally, or top-to-bottom vertically depending on your screen resolution):
-    - **Setup** - used to set the context for the model's responses.
-    - **Chat session** - used to submit chat messages and view responses.
-    - **Configuration** - used to configure settings for the model deployment.
-1. In the **Configuration** panel, ensure that your gpt-35-turbo-16k model deployment is selected.
-1. In the **Setup** panel, review the default **System message**, which should be *You are an AI assistant that helps people find information.* The system message is included in prompts submitted to the model, and provides context for the model's responses; setting expectations about how an AI agent based on the model should interact with the user.
-1. In the **Chat session** panel, enter the user query `How can I use generative AI to help me market a new product?`
+1. 在“操场”部分，选择“聊天”页面********。 “聊天”操场页面由三个主要面板组成（可能从右到左水平排列，也可能从上到下垂直排列，具体取决于屏幕分辨率）****：
+    - 设置 - 用于设置模型响应的上下文****。
+    - 聊天会话 - 用于提交聊天消息和查看响应****。
+    - 配置 - 用于配置模型部署的设置****。
+1. 在“配置”面板中，确保选择了 gpt-35-turbo-16k 模型部署****。
+1. 在“设置”面板中查看默认的“系统消息”，该消息应是“你是帮助人们查找信息的 AI 助手”**********。 系统消息包含在提交给模型的提示中，并为模型的响应提供上下文；设置有关基于模型的 AI 代理如何与用户交互的期望。
+1. 在“聊天会话”面板中，输入用户查询 ****`How can I use generative AI to help me market a new product?`
 
-    > **Note**: You may receive a response that the API deployment is not yet ready. If so, wait for a few minutes and try again.
+    > 注意：可能会收到 API 部署尚未就绪的响应。 如果是，请等待几分钟，然后重试。
 
-1. Review the response, noting that the model has generated a cohesive natural language answer that is relevant to the query with which it was prompted.
-1. Enter the user query `What skills do I need if I want to develop a solution to accomplish this?`.
-1. Review the response, noting that the chat session has retained the conversational context (so "this" is interpreted as a generative AI solution for marketing). This contextualization is achieved by including the recent conversation history in each successive prompt submission, so the prompt sent to the model for the second query included the original query and response as well as the new user input.
-1. In the **Chat session** panel toolbar, select **Clear chat** and confirm that you want to restart the chat session.
-1. Enter the query `Can you help me find resources to learn those skills?` and review the response, which should be a valid natural language answer, but since the previous chat history has been lost, the answer is likely to be about finding generic skilling resources rather than being related to the specific skills needed to build a generative AI marketing solution.
+1. 查看响应，注意模型已生成与提示的查询相关的内聚自然语言答案。
+1. 输入用户查询 `What skills do I need if I want to develop a solution to accomplish this?`。
+1. 查看响应，注意聊天会话已保留对话上下文（因此“这”被解释为用于营销的生成式 AI 解决方案）。 这种上下文化是通过在每个连续提示提交中包含最近的对话历史记录来实现的，因此发送到模型的第二个查询的提示包含原始查询和响应以及新的用户输入。
+1. 在“聊天会话”面板工具栏中，选择“清除聊天”并确认你要重启聊天会话********。
+1. 输入查询 `Can you help me find resources to learn those skills?` 并查看响应，该响应应该是有效的自然语言答案，但由于之前的聊天记录已丢失，因此答案可能与查找常规技能资源相关，而不是与构建生成式 AI 营销解决方案所需的特定技能相关。
 
-## Experiment with system messages, prompts, and few-shot examples
+## 试着使用系统消息、提示和少样本示例
 
-So far, you've engaged in a chat conversation with your model based on the default system message. You can customize the system setup to have more control over the kinds of responses generated by your model.
+到目前为止，你已根据默认系统消息与模型进行了聊天对话。 你可以自定义系统设置，以便更好地控制模型生成的响应类型。
 
-1. In the **Setup** panel, under **Use a system message template**, select the **Marketing Writing Assistant** template and confirm that you want to update the system message.
-1. Review the new system message, which describes how an AI agent should use the model to respond.
-1. In the **Chat session** panel, enter the user query `Create an advertisement for a new scrubbing brush`.
-1. Review the response, which should include advertising copy for a scrubbing brush. The copy may be quite extensive and creative.
+1. 在“设置”面板中的“使用系统消息模板”下，选择“营销写作助手”模板并确认你要更新系统消息************。
+1. 查看新的系统消息，其中描述了 AI 代理应如何使用模型做出响应。
+1. 在“聊天会话”面板中，输入用户查询 ****`Create an advertisement for a new scrubbing brush`。
+1. 查看响应，其中应包含毛刷的广告文案。 该文案的内容可能相当宽泛但富有创意。
 
-    In a real scenario, a marketing professional would likely already know the name of the scrubbing brush product as well as have some ideas about key features that should be highlighted in an advert. To get the most useful results from a generative AI model, users need to design their prompts to include as much pertinent information as possible.
+    在真实场景中，营销专业人员可能已经知道毛刷产品的名称，并且对广告中应强调的关键功能有一些想法。 为了从生成式 AI 模型中获得最有用的结果，用户需要设计提示以包含尽可能多的相关信息。
 
-1. Enter the prompt `Revise the advertisement for a scrubbing brush named "Scrubadub 2000", which is made of carbon fiber and reduces cleaning times by half compared to ordinary scrubbing brushes`.
-1. Review the response, which should take into account the additional information you provided about the scrubbing brush product.
+1. 输入提示 `Revise the advertisement for a scrubbing brush named "Scrubadub 2000", which is made of carbon fiber and reduces cleaning times by half compared to ordinary scrubbing brushes`。
+1. 查看响应，其中应考虑到提供的有关毛刷产品的其他信息。
 
-    The response should now be more useful, but to have even more control over the output from the model, you can provide one or more *few-shot* examples on which responses should be based.
+    现在，响应应该更有用，但为了更好地控制模型的输出，可以提供一个或多个少样本示例作为响应的基础**。
 
-1. In the **Setup** panel, under **Examples**, select **Add**. Then type the following message and response in the designated boxes:
+1. 在“设置”面板中的“示例”下，选择“添加”************。 然后在指定的框中键入以下消息和响应：
 
-    **User**:
+    **用户**:
     
     ```
     Write an advertisement for the lightweight "Ultramop" mop, which uses patented absorbent materials to clean floors.
     ```
     
-    **Assistant**:
+    **助手：**
     
     ```
     Welcome to the future of cleaning!
@@ -118,53 +118,53 @@ So far, you've engaged in a chat conversation with your model based on the defau
     Check out this and other products on our website at www.contoso.com.
     ```
 
-1. Use the **Apply changes** button to save the examples and start a new session.
-1. In the **Chat session** section, enter the user query `Create an advertisement for the Scrubadub 2000 - a new scrubbing brush made of carbon fiber that reduces cleaning time by half`.
-1. Review the response, which should be a new advert for the "Scrubadub 2000" that is modeled on the "Ultramop" example provided in the system setup.
+1. 使用“应用更改”按钮保存示例并启动新会话****。
+1. 在“聊天会话”部分，输入用户查询 ****`Create an advertisement for the Scrubadub 2000 - a new scrubbing brush made of carbon fiber that reduces cleaning time by half`。
+1. 查看响应，它应该是“Scrubadub 2000”的新广告，该广告是基于系统设置中提供的“Ultramop”示例建模的。
 
-## Experiment with parameters
+## 试着使用参数
 
-You've explored how the system message, examples, and prompts can help refine the responses returned by the model. You can also use parameters to control model behavior.
+你已了解系统消息、示例和提示如何帮助优化模型返回的响应。 你还可以使用参数来控制模型行为。
 
-1. In the **Configuration** panel, select the **Parameters** tab and set the following parameter values:
-    - **Max response**: 1000
-    - **Temperature**: 1
+1. 在“配置”面板中，选择“参数”选项卡并设置以下参数值********：
+    - 最大响应****：1000
+    - **温度**：1
 
-1. In the **Chat session** section, use the **Clear chat** button to reset the chat session. Then enter the user query `Create an advertisement for a cleaning sponge` and review the response. The resulting advertisement copy should include a maximum of 1000 text tokens, and include some creative elements - for example, the model may have invented a product name for the sponge and made some claims about its features.
-1. Use the **Clear chat** button to reset the chat session again, and then re-enter the same query as before (`Create an advertisement for a cleaning sponge`) and review the response. The response may be different from the previous response.
-1. In the **Configuration** panel, on the **Parameters** tab, change the **Temperature** parameter value to 0.
-1. In the **Chat session** section, use the **Clear chat** button to reset the chat session again, and then re-enter the same query as before (`Create an advertisement for a cleaning sponge`) and review the response. This time, the response may not be quite so creative.
-1. Use the **Clear chat** button to reset the chat session one more time, and then re-enter the same query as before (`Create an advertisement for a cleaning sponge`) and review the response; which should be very similar (if not identical) to the previous response.
+1. 在“聊天会话”部分，使用“清除聊天”按钮重置聊天会话********。 然后输入用户查询 `Create an advertisement for a cleaning sponge` 并查看响应。 生成的广告文案应包含最多 1000 个文本标记，并包含一些创意元素 - 例如，模型可能为海绵创造了一个产品名称，并对其功能做出了一些声明。
+1. 使用“清除聊天”按钮再次重置聊天会话，然后重新输入与前面相同的查询 (****`Create an advertisement for a cleaning sponge`) 并查看响应。 该响应可能与之前的响应不同。
+1. 在“配置”面板中的“参数”选项卡上，将“温度”参数值更改为 0************。
+1. 在“聊天会话”部分，使用“清除聊天”按钮再次重置聊天会话，然后重新输入与前面相同的查询 (********`Create an advertisement for a cleaning sponge`) 并查看响应。 这一次，响应可能不是很有创意。
+1. 使用“清除聊天”按钮再次重置聊天会话，然后重新输入与前面相同的查询 (****`Create an advertisement for a cleaning sponge`) 并查看响应；该响应应该与之前的响应非常相似（甚至相同）。
 
-    The **Temperature** parameter controls the degree to which the model can be creative in its generation of a response. A low value results in a consistent response with little random variation, while a high value encourages the model to add creative elements its output; which may affect the accuracy and realism of the response.
+    “温度”参数控制模型在生成响应时的创新程度****。 较小值会导致一致且几乎不会随机变化的响应，而较大值则鼓励模型在其输出中添加创意元素；这可能会影响响应的准确度和真实性。
 
-## Deploy your model to a web app
+## 将模型部署到 Web 应用
 
-Now that you've explored some of the capabilities of a generative AI model in the Azure OpenAI Studio playground, you can deploy an Azure web app to provide a basic AI agent interface through which users can chat with the model.
+在 Azure OpenAI Studio 操场中了解生成式 AI 模型的某些功能后，接下来可以部署一个 Azure Web 应用来提供基本的 AI 代理界面，用户可以通过该界面与模型聊天。
 
-1. At the top right of the **Chat** playground page, in the **Deploy to** menu, select **A new web app**.
-1. In the **Deploy to a web app** dialog box, create a new web app with the following settings:
-    - **Name**: *A unique name*
-    - **Subscription**: *Your Azure subscription*
-    - **Resource group**: *The resource group in which you provisioned your Azure OpenAI resource*
-    - **Locations**: *The region where you provisioned your Azure OpenAI resource*
-    - **Pricing plan**: Free (F1) - *If this is not available, select Basic (B1)*
-    - **Enable chat history in the web app**: <u>Un</u>selected
-    - **I acknowledge that web apps will incur usage to my account**: Selected
-1. Deploy the new web app and wait for deployment to complete (which may take 10 minutes or so)
-1. After your web app has deployed successfully, use the button at the top right of the **Chat** playground page to launch the web app. The app may take a few minutes to launch. If prompted, accept the permissions request.
-1. In the web app, enter the following chat message:
+1. 在“聊天”操场页面右上角的“部署到”菜单中，选择一个新的 Web 应用************。
+1. 在“部署到 Web 应用”对话框中，使用以下设置创建新的 Web 应用****：
+    - **名称**：唯一名称**
+    - **订阅**：*Azure 订阅*
+    - 资源组****：*在其中预配了 Azure OpenAI 资源的资源组*
+    - **位置**：*在其中预配了 Azure OpenAI 资源的区域*
+    - 定价计划****：免费(F1) - 如果此选项不可用，请选择“基本(B1)”**
+    - 在 Web 应用中启用聊天历史记录****：未选定<u></u>
+    - **** 我确认 Web 应用会在帐户中使用：已选择
+1. 部署新的 Web 应用并等待部署完成（可能需要 10 分钟左右）
+1. 成功部署 Web 应用后，使用“聊天”操场页面右上角的按钮启动该 Web 应用****。 该应用可能需要几分钟时间才能启动完成。 如果出现提示，请接受权限请求。
+1. 在 Web 应用中输入以下聊天消息：
 
     ```
     Write an advertisement for the new "WonderWipe" cloth that attracts dust particulates and can be used to clean any household surface.
     ```
 
-1. Review the response.
+1. 查看回应。
 
-    > **Note**: You deployed the *model* to a web app, but this deployment doesn't include the system settings and parameters you set in the playground; so the response may not reflect the examples you specified in the playground. In a real scenario, you would add logic to your application to modify the prompt so that it includes the appropriate contextual data for the kinds of response you want to generate. This kind of customization is beyond the scope of this introductory-level exercise, but you can learn about prompt engineering techniques and Azure OpenAI APIs in other exercises and product documentation.
+    > **注意**：你已将模型部署到 Web 应用，但此部署不包括在操场中设置的系统设置和参数；因此响应可能不会反映操场中指定的示例**。 在实际场景中，你可以向应用程序添加逻辑来修改提示，使其包含适合你想要生成的响应类型的上下文数据。 这种自定义操作超出了本入门级练习的范围，但你可以在其他练习和产品文档中了解提示工程技术和 Azure OpenAI API。
 
-1. When you have finished experimenting with your model in the web app, close the web app tab in your browser to return to Azure OpenAI Studio.
+1. 在 Web 应用中完成模型试验后，关闭浏览器中的 Web 应用选项卡以返回到 Azure OpenAI Studio。
 
-## Clean up
+## 清理
 
-When you're done with your Azure OpenAI resource, remember to delete the deployment or the entire resource in the **Azure portal** at `https://portal.azure.com`.
+使用完 Azure OpenAI 资源后，请记得在 **Azure 门户** (`https://portal.azure.com`) 中删除部署或整个资源。
