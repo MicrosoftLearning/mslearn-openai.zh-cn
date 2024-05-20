@@ -1,70 +1,70 @@
 ---
 lab:
-    title: 'Utilize prompt engineering in your app'
+  title: 在应用中利用提示工程
 ---
 
-# Utilize prompt engineering in your app
+# 在应用中利用提示工程
 
-When working with the Azure OpenAI Service, how developers shape their prompt greatly impacts how the generative AI model will respond. Azure OpenAI models are able to tailor and format content, if requested in a clear and concise way. In this exercise, you'll learn how different prompts for similar content help shape the AI model's response to better satisfy your requirements.
+使用 Azure OpenAI 服务时，开发人员如何塑造其提示会极大地影响生成式 AI 模型的响应方式。 Azure OpenAI 模型能够以清晰简洁的方式定制内容并设置内容格式。 在本练习中，你将了解针对类似内容的不同提示如何帮助塑造 AI 模型的响应，以更好地满足你的要求。
 
-In scenario for this exercise, you will perform the role of a software developer working on a wildlife marketing campaign. You are exploring how to use generative AI to improve advertising emails and categorize articles that might apply to your team. The prompt engineering techniques used in the exercise can be applied similarly for a variety of use cases.
+在本练习的方案中，你将担任从事野生动物营销活动的软件开发人员职位。 你正在探索如何使用生成式 AI 来改进广告电子邮件和对可能适用于团队的文章进行分类。 练习中使用的提示工程技术同样适用于各种用例。
 
-This exercise will take approximately **30** minutes.
+该练习大约需要 **30** 分钟。
 
-## Provision an Azure OpenAI resource
+## 预配 Azure OpenAI 资源
 
-If you don't already have one, provision an Azure OpenAI resource in your Azure subscription.
+如果还没有 Azure OpenAI 资源，请在 Azure 订阅中预配 Azure OpenAI 资源。
 
-1. Sign into the **Azure portal** at `https://portal.azure.com`.
-2. Create an **Azure OpenAI** resource with the following settings:
-    - **Subscription**: *Select an Azure subscription that has been approved for access to the Azure OpenAI service*
-    - **Resource group**: *Choose or create a resource group*
-    - **Region**: *Make a **random** choice from any of the following regions*\*
-        - Australia East
-        - Canada East
-        - East US
-        - East US 2
-        - France Central
-        - Japan East
-        - North Central US
-        - Sweden Central
-        - Switzerland North
-        - UK South
-    - **Name**: *A unique name of your choice*
-    - **Pricing tier**: Standard S0
+1. 登录到 Azure 门户，地址为 ****。
+2. 请使用以下设置创建 Azure OpenAI 资源：
+    - 订阅****：*选择已被批准访问 Azure OpenAI 服务的 Azure 订阅*
+    - **资源组**：*创建或选择资源组*
+    - 区域****：从以下任何区域中进行随机选择******\*
+        - 澳大利亚东部
+        - 加拿大东部
+        - 美国东部
+        - 美国东部 2
+        - 法国中部
+        - 日本东部
+        - 美国中北部
+        - 瑞典中部
+        - 瑞士北部
+        - 英国南部
+    - **名称**：所选项的唯一名称**
+    - **定价层**：标准版 S0
 
-    > \* Azure OpenAI resources are constrained by regional quotas. The listed regions include default quota for the model type(s) used in this exercise. Randomly choosing a region reduces the risk of a single region reaching its quota limit in scenarios where you are sharing a subscription with other users. In the event of a quota limit being reached later in the exercise, there's a possibility you may need to create another resource in a different region.
+    > \* Azure OpenAI 资源受区域配额约束。 列出的区域包括本练习中使用的模型类型的默认配额。 在与其他用户共享订阅的情况下，随机选择一个区域可以降低单个区域达到配额限制的风险。 如果稍后在练习中达到配额限制，你可能需要在不同的区域中创建另一个资源。
 
-3. Wait for deployment to complete. Then go to the deployed Azure OpenAI resource in the Azure portal.
+3. 等待部署完成。 然后在 Azure 门户中转至部署的 Azure OpenAI 资源。
 
-## Deploy a model
+## 部署模型
 
-Azure OpenAI provides a web-based portal named **Azure OpenAI Studio**, that you can use to deploy, manage, and explore models. You'll start your exploration of Azure OpenAI by using Azure OpenAI Studio to deploy a model.
+Azure OpenAI 提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户，可用于部署、管理和探索模型。 你将使用 Azure OpenAI Studio 部署模型，开始探索 Azure OpenAI。
 
-1. On the **Overview** page for your Azure OpenAI resource, use the **Go to Azure OpenAI Studio** button to open Azure OpenAI Studio in a new browser tab.
-2. In Azure OpenAI Studio, on the **Deployments** page, view your existing model deployments. If you don't already have one, create a new deployment of the **gpt-35-turbo-16k** model with the following settings:
-    - **Model**: gpt-35-turbo-16k *(if the 16k model isn't available, choose gpt-35-turbo)*
-    - **Model version**: Auto-update to default
-    - **Deployment name**: *A unique name of your choice. You'll use this name later in the lab.*
-    - **Advanced options**
-        - **Content filter**: Default
-        - **Deployment type**: Standard
-        - **Tokens per minute rate limit**: 5K\*
-        - **Enable dynamic quota**: Enabled
+1. 在 Azure OpenAI 资源的“概述”**** 页上，使用“转到 Azure OpenAI Studio”**** 按钮在新的浏览器选项卡中打开 Azure OpenAI Studio。
+2. 在 Azure OpenAI Studio 中的“部署”**** 页上，查看现有模型部署。 如果没有模型部署，请使用以下设置创建新的“gpt-35-turbo-16k”**** 模型部署：
+    - **模型**：gpt-35-turbo-16k *（如果 16k 模型不可用，请选择 gpt-35-turbo）*
+    - **模型版本**：自动更新为默认值
+    - **部署名称**：*所选的唯一名称。稍后将在实验室中使用此名称。*
+    - **高级选项**
+        - **内容筛选器**：默认
+        - **部署类型**：标准
+        - **每分钟令牌速率限制**：5K\*
+        - **启用动态配额**：已启用
 
-    > \* A rate limit of 5,000 tokens per minute is more than adequate to complete this exercise while leaving capacity for other people using the same subscription.
+    > \*每分钟 5,000 个令牌的速率限制足以完成此练习，同时也为使用同一订阅的其他人留出容量。
 
-## Explore prompt engineering techniques
+## 了解提示工程技术
 
-Let's start by exploring some prompt engineering techniques in the Chat playground.
+我们首先在聊天操场中探索一些提示工程技术。
 
-1. In **Azure OpenAI Studio** at `https://oai.azure.com`, in the **Playground** section, select the **Chat** page. The **Chat** playground page consists of three main sections:
-    - **Setup** - used to set the context for the model's responses.
-    - **Chat session** - used to submit chat messages and view responses.
-    - **Configuration** - used to configure settings for the model deployment.
-2. In the **Configuration** section, ensure that your model deployment is selected.
-3. In the **Setup** area, select the default system message template to set the context for the chat session. The default system message is *You are an AI assistant that helps people find information*.
-4. In the **Chat session**, submit the following query:
+1. 在位于 `https://oai.azure.com` 的 **Azure OpenAI Studio** 中，在“操场”部分中选择“聊天”页。******** “聊天”操场页面由三个主要部分组成****：
+    - ****“设置”- 用于设置模型的响应的上下文。
+    - ****“聊天会话”- 用于提交聊天消息和查看响应。
+    - ****“配置”- 用于配置模型部署的设置。
+2. 在“配置”**** 部分中，确保已选择模型部署。
+3. 在“设置”区域中，选择默认系统消息模板以设置聊天会话的上下文****。 默认系统消息是 *你是 帮助用户查找信息的 AI 助手*。
+4. **** 在“聊天会话”中提交以下查询：
 
     ```
     What kind of article is this?
@@ -78,13 +78,13 @@ Let's start by exploring some prompt engineering techniques in the Chat playgrou
     Much remains to be determined about how daily life will change as people adjust to a drier normal. But officials are warning the situation is dire and could lead to even more severe limits later in the year.
     ```
 
-    The response provides a description of the article. However, suppose you want a more specific format for article categorization.
+    响应提供了文章的说明。 但假设你需要更具体的文章分类格式。
 
-5. In the **Setup** section change the system message to `You are a news aggregator that categorizes news articles.`
+5. **** 在“设置”部分中，将系统消息更改为 `You are a news aggregator that categorizes news articles.`
 
-6. Under the new system message, in the **Examples** section, select the **Add** button. Then add the following example.
+6. 在新系统消息下，在“示例”部分中选择“添加”按钮********。 然后，添加以下示例。
 
-    **User:**
+    **用户**:
     
     ```
     What kind of article is this?
@@ -98,15 +98,15 @@ Let's start by exploring some prompt engineering techniques in the Chat playgrou
     The Chicago Cyclones' two hits came in the 2nd and the 5th innings but were unable to get the runner home to score.
     ```
     
-    **Assistant:**
+    **助手：**
     
     ```
     Sports
       ```
 
-7. Add another example with the following text.
+7. 添加另一个包含以下文本的示例。
 
-    **User:**
+    **用户：**
     
     ```
     Categorize this article:
@@ -121,15 +121,15 @@ Let's start by exploring some prompt engineering techniques in the Chat playgrou
     From Robin Kline's history-making win to a full performance by none other than Casey Jensen herself, don't miss tomorrows rerun of all the festivities.
     ```
     
-    **Assistant:**
+    **助手：**
     
     ```
     Entertainment
     ```
 
-8. Use the **Apply changes** button at the top of the **Setup** section to update the system message.
+8. 使用“设置”部分顶部的“应用更改”按钮更新系统消息********。
 
-9. In the **Chat session** section, resubmit the following prompt:
+9. **** 在“聊天会话”部分中，重新提交以下提示：
 
     ```
     What kind of article is this?
@@ -143,22 +143,11 @@ Let's start by exploring some prompt engineering techniques in the Chat playgrou
     Much remains to be determined about how daily life will change as people adjust to a drier normal. But officials are warning the situation is dire and could lead to even more severe limits later in the year.
     ```
 
-    The combination of a more specific system message and some examples of expected queries and responses results in a consistent format for the results.
+    更具体的系统消息和预期查询和响应的一些示例的组合可以生成格式一致的结果。
 
-10. In the **Setup** section, change the system message back to the default template, which should be `You are an AI assistant that helps people find information.` with no examples. Then apply the changes.
+10. **** 在“设置”部分中，将系统消息更改回默认模板，它应是不包含示例的 `You are an AI assistant that helps people find information.`。 然后应用更改。
 
-11. In the **Chat session** section, submit the following prompt:
-
-    ```
-    # 1. Create a list of animals
-    # 2. Create a list of whimsical names for those animals
-    # 3. Combine them randomly into a list of 25 animal and name pairs
-    ```
-
-    The model will likely respond with an answer to satisfy the prompt, split into a numbered list. This is an appropriate response, but suppose what you actually wanted was for the model to write a Python program that performs the tasks you described?
-
-12. Change the system message to `You are a coding assistant helping write python code.` and apply the changes.
-13. Resubmit the following prompt to the model:
+11. **** 在“聊天会话”部分中，提交以下提示：
 
     ```
     # 1. Create a list of animals
@@ -166,83 +155,94 @@ Let's start by exploring some prompt engineering techniques in the Chat playgrou
     # 3. Combine them randomly into a list of 25 animal and name pairs
     ```
 
-    The model should correctly respond with python code doing what the comments requested.
+    模型可能会用一个答案进行响应以满足提示，拆分为编号列表。 这是一个适当的响应，但假设你实际上是希望模型编写执行所描述任务的 Python 程序，该怎么办？
 
-## Prepare to develop an app in Visual Studio Code
+12. 将系统消息更改为 `You are a coding assistant helping write python code.` 并应用更改。
+13. 将以下提示重新提交到模型：
 
-Now let's explore the use of prompt engineering in an app that uses the Azure OpenAI service SDK. You'll develop your app using Visual Studio Code. The code files for your app have been provided in a GitHub repo.
+    ```
+    # 1. Create a list of animals
+    # 2. Create a list of whimsical names for those animals
+    # 3. Combine them randomly into a list of 25 animal and name pairs
+    ```
 
-> **Tip**: If you have already cloned the **mslearn-openai** repo, open it in Visual Studio code. Otherwise, follow these steps to clone it to your development environment.
+    模型应使用 python 代码正确响应，以执行注释所请求的操作。
 
-1. Start Visual Studio Code.
-2. Open the palette (SHIFT+CTRL+P) and run a **Git: Clone** command to clone the `https://github.com/MicrosoftLearning/mslearn-openai` repository to a local folder (it doesn't matter which folder).
-3. When the repository has been cloned, open the folder in Visual Studio Code.
+## 准备在 Visual Studio Code 中开发应用
 
-    > **Note**: If Visual Studio Code shows you a pop-up message to prompt you to trust the code you are opening, click on **Yes, I trust the authors** option in the pop-up.
+现在，我们来探讨如何在使用 Azure OpenAI 服务 SDK 的应用中使用提示工程。 你将使用 Visual Studio Code 开发应用。 应用程序的代码文件已在 GitHub repo 中提供。
 
-4. Wait while additional files are installed to support the C# code projects in the repo.
+> **提示**：如果已克隆 **mslearn-openai** 存储库，请在 Visual Studio Code 中打开它。 否则，请按照以下步骤将其克隆到开发环境中。
 
-    > **Note**: If you are prompted to add required assets to build and debug, select **Not Now**.
+1. 启动 Visual Studio Code。
+2. 打开面板 (SHIFT+CTRL+P) 并运行“**Git：克隆**”命令，以将 `https://github.com/MicrosoftLearning/mslearn-openai` 存储库克隆到本地文件夹（任意文件夹均可）。
+3. 克隆存储库后，在 Visual Studio Code 中打开文件夹。
 
-## Configure your application
+    > **注意**：如果 Visual Studio Code 显示一条弹出消息，提示你信任打开的代码，请单击弹出窗口中的“是，我信任该作者”选项****。
 
-Applications for both C# and Python have been provided, and both apps feature the same functionality. First, you'll complete some key parts of the application to enable using your Azure OpenAI resource with asynchronous API calls.
+4. 等待其他文件安装完毕，以支持存储库中的 C# 代码项目。
 
-1. In Visual Studio Code, in the **Explorer** pane, browse to the **Labfiles/03-prompt-engineering** folder and expand the **CSharp** or **Python** folder depending on your language preference. Each folder contains the language-specific files for an app into which you're you're going to integrate Azure OpenAI functionality.
-2. Right-click the **CSharp** or **Python** folder containing your code files and open an integrated terminal. Then install the Azure OpenAI SDK package by running the appropriate command for your language preference:
+    > **注意**：如果系统提示你添加生成和调试所需的资产，请选择**以后再说**。
 
-    **C#**:
+## 配置应用程序
+
+C# 和 Python 的应用程序都已提供，并且这两个应用具有相同的功能。 首先，你将通过异步 API 调用使用 Azure OpenAI 资源完成要启用的应用程序的一些关键部件。
+
+1. 在 Visual Studio Code 的“资源管理器”窗格中，浏览到“Labfiles/03-prompt-engineering”文件夹，然后根据语言首选项展开“CSharp”文件夹或“Python”文件夹****************。 每个文件夹都包含要集成 Azure OpenAI 功能的应用程序的特定语言文件。
+2. 右键单击包含代码文件的“CSharp”或“Python”文件夹，并打开集成终端。******** 然后通过运行适用于语言首选项的命令，安装 Azure OpenAI SDK 包：
+
+    **C#：**
 
     ```
     dotnet add package Azure.AI.OpenAI --version 1.0.0-beta.14
     ```
 
-    **Python**:
+    **Python**：
 
     ```
     pip install openai==1.13.3
     ```
 
-3. In the **Explorer** pane, in the **CSharp** or **Python** folder, open the configuration file for your preferred language
+3. 在“资源管理器”窗格中****，在“CSharp”或“Python”文件夹中，打开首选语言的配置文件********
 
-    - **C#**: appsettings.json
-    - **Python**: .env
+    - **C#** ：appsettings.json
+    - **Python**：.env
     
-4. Update the configuration values to include:
-    - The  **endpoint** and a **key** from the Azure OpenAI resource you created (available on the **Keys and Endpoint** page for your Azure OpenAI resource in the Azure portal)
-    - The **deployment name** you specified for your model deployment (available in the **Deployments** page in Azure OpenAI Studio).
-5. Save the configuration file.
+4. 更新配置值以包括：
+    - 创建的 Azure OpenAI 资源的终结点**** 和密钥****（位于 Azure 门户中 Azure OpenAI 资源的“密钥和终结点”**** 页）
+    - 为模型部署指定的 **部署名称**（在 Azure OpenAI Studio 的“部署”页中提供****）。
+5. 保存此配置文件。
 
-## Add code to use the Azure OpenAI service
+## 添加代码以使用 Azure OpenAI 服务
 
-Now you're ready to use the Azure OpenAI SDK to consume your deployed model.
+现在，你已准备好使用 Azure OpenAI SDK 来使用已部署的模型。
 
-1. In the **Explorer** pane, in the **CSharp** or **Python** folder, open the code file for your preferred language, and replace the comment ***Add Azure OpenAI package*** with code to add the Azure OpenAI SDK library:
+1. ****************** 在“资源管理器”窗格的“CSharp”和“Python”文件夹中，打开首选语言的代码文件，并将注释“添加 Azure OpenAI 包”替换为代码以添加 Azure OpenAI SDK 库：
 
-    **C#**: Program.cs
+    **C#** ：Program.cs
 
     ```csharp
     // Add Azure OpenAI package
     using Azure.AI.OpenAI;
     ```
 
-    **Python**: prompt-engineering.py
+    **Python**：prompt-engineering.py
 
     ```python
     # Add Azure OpenAI package
     from openai import AsyncAzureOpenAI
     ```
 
-2. In the code file, find the comment ***Configure the Azure OpenAI client***, and add code to configure the Azure OpenAI client:
+2. 在代码文件中，找到注释“配置 Azure OpenAI 客户端”******，并添加代码以配置 Azure OpenAI 客户端：
 
-    **C#**: Program.cs
+    **C#** ：Program.cs
 
     ```csharp
     // Configure the Azure OpenAI client
     OpenAIClient client = new OpenAIClient(new Uri(oaiEndpoint), new AzureKeyCredential(oaiKey));
     ```
 
-    **Python**: prompt-engineering.py
+    **Python**：prompt-engineering.py
 
     ```python
     # Configure the Azure OpenAI client
@@ -253,9 +253,9 @@ Now you're ready to use the Azure OpenAI SDK to consume your deployed model.
         )
     ```
 
-3. In the function that calls the Azure OpenAI model, under the comment ***Format and send the request to the model***, add the code to format and send the request to the model.
+3. ****** 在调用 Azure OpenAI 模型的函数中，在注释“设置请求格式并将其发送到模型”下，添加代码来设置请求格式并将其发送到模型。
 
-    **C#**: Program.cs
+    **C#** ：Program.cs
 
     ```csharp
     // Format and send the request to the model
@@ -275,7 +275,7 @@ Now you're ready to use the Azure OpenAI SDK to consume your deployed model.
     Response<ChatCompletions> response = await client.GetChatCompletionsAsync(chatCompletionsOptions);
     ```
 
-    **Python**: prompt-engineering.py
+    **Python**：prompt-engineering.py
 
     ```python
     # Format and send the request to the model
@@ -295,44 +295,44 @@ Now you're ready to use the Azure OpenAI SDK to consume your deployed model.
     )
     ```
 
-4. Save the changes to the code file.
+4. 保存代码文件中的更改。
 
-## Run your application
+## 运行应用程序
 
-Now that your app has been configured, run it to send your request to your model and observe the response. You'll notice the only difference between the different options is the content of the prompt, all other parameters (such as token count and temperature) remain the same for each request.
+配置应用后，请运行应用以将请求发送到模型并观察响应。 你会注意到，不同选项之间的唯一区别是提示的内容，所有其他参数（如标记计数和温度）对于每个请求保持不变。
 
-1. In the folder of your preferred language, open `system.txt` in Visual Studio Code. For each of the interations, you'll enter the **System message** in this file and save it. Each iteration will pause first for you to change the system message.
-1. In the interactive terminal pane, ensure the folder context is the folder for your preferred language. Then enter the following command to run the application.
+1. 在首选语言的文件夹中，在 Visual Studio Code 中打开 `system.txt`。 对于每个交互，你将在此文件中输入 **系统消息** 并将其保存。 每次迭代都会先暂停，以便更改系统消息。
+1. 在交互式终端窗格中，确保文件夹上下文是首选语言的文件夹。 然后，输入以下命令来创建应用程序。
 
-    - **C#**: `dotnet run`
-    - **Python**: `python prompt-engineering.py`
+    - **C#** ：`dotnet run`
+    - **Python**：`python prompt-engineering.py`
 
-    > **Tip**: You can use the **Maximize panel size** (**^**) icon in the terminal toolbar to see more of the console text.
+    > **提示**：可以使用 **终端工具栏中的“最大化面板大小** ”图标**^** 查看更多控制台文本。
 
-1. For the first iteration, enter the following prompts:
+1. 对于第一次迭代，请输入以下提示：
 
-    **System message**
+    **系统消息**
 
     ```prompt
     You are an AI assistant
     ```
 
-    **User message:**
+    **用户消息：**
 
     ```prompt
     Write an intro for a new wildlife Rescue
     ```
 
-1. Observe the output. The AI model will likely produce a good generic introduction to a wildlife rescue.
-1. Next, enter the following prompts which specify a format for the response:
+1. 观察输出。 AI 模型可能会对野生动物救援生成良好的通用介绍。
+1. 接下来，输入以下提示，以指定响应的格式：
 
-    **System message**
+    **系统消息**
 
     ```prompt
     You are an AI assistant helping to write emails
     ```
 
-    **User message:**
+    **用户消息：**
 
     ```prompt
     Write a promotional email for a new wildlife rescue, including the following: 
@@ -341,16 +341,16 @@ Now that your app has been configured, run it to send your request to your model
     - Call for donations to be given at our website
     ```
 
-1. Observe the output. This time, you'll likely see the format of an email with the specific animals included, as well as the call for donations.
-1. Next, enter the following prompts that additionally specify the content:
+1. 观察输出。 这一次，你可能会看到包含特定动物的电子邮件格式，以及捐款呼吁。
+1. 接下来，输入以下提示，以额外指定内容：
 
-    **System message**
+    **系统消息**
 
     ```prompt
     You are an AI assistant helping to write emails
     ```
 
-    **User message:**
+    **用户消息：**
 
     ```prompt
     Write a promotional email for a new wildlife rescue, including the following: 
@@ -360,16 +360,16 @@ Now that your app has been configured, run it to send your request to your model
     \n Include a list of the current animals we have at our rescue after the signature, in the form of a table. These animals include elephants, zebras, gorillas, lizards, and jackrabbits.
     ```
 
-1. Observe the output, and see how the email has changed based on your clear instructions.
-1. Next, enter the following prompts where we add details about tone to the system message:
+1. 观察输出，并查看电子邮件是如何根据明确的说明更改的。
+1. 接下来，输入以下提示，我们会在此处将有关语气的详细信息添加到系统消息：
 
-    **System message**
+    **系统消息**
 
     ```prompt
     You are an AI assistant that helps write promotional emails to generate interest in a new business. Your tone is light, chit-chat oriented and you always include at least two jokes.
     ```
 
-    **User message:**
+    **用户消息：**
 
     ```prompt
     Write a promotional email for a new wildlife rescue, including the following: 
@@ -379,12 +379,12 @@ Now that your app has been configured, run it to send your request to your model
     \n Include a list of the current animals we have at our rescue after the signature, in the form of a table. These animals include elephants, zebras, gorillas, lizards, and jackrabbits.
     ```
 
-1. Observe the output. This time you'll likely see the email in a similar format, but with a much more informal tone. You'll likely even see jokes included!
-1. For the final iteration, we're deviating from email generation and exploring *grounding context*. Here you provide a simple system message, and change the app to provide the grounding context as the beginning of the user prompt. The app will then append the user input, and extract information from the grounding context to answer our user prompt.
-1. Open the file `grounding.txt` and briefly read the grounding context you'll be inserting.
-1. In your app immediately after the comment ***Format and send the request to the model*** and before any existing code, add the following code snippet to read text in from `grounding.txt` to augment the user prompt with the grounding context.
+1. 观察输出。 这一次，你可能会看到采用类似格式的电子邮件，但语气要随意得多。 你甚至可能会看到笑话！
+1. 对于最终迭代，我们将偏离电子邮件生成并探索 *锚定上下文*。 你在此处提供了简单的系统消息，并更改应用，以在用户提示开始时提供锚定上下文。 然后，应用将追加用户输入，并从锚定上下文中提取信息以回答用户提示。
+1. 打开文件 `grounding.txt` 并快速阅读要插入的锚定上下文。
+1. 在应用中的注释“设置请求格式并将其发送到模型”之后和任何现有代码之前******，添加以下从 `grounding.txt` 读取文本的代码片段，以使用锚定文本增强用户提示。
 
-    **C#**: Program.cs
+    **C#** ：Program.cs
 
     ```csharp
     // Format and send the request to the model
@@ -393,7 +393,7 @@ Now that your app has been configured, run it to send your request to your model
     userMessage = groundingText + userMessage;
     ```
 
-    **Python**: prompt-engineering.py
+    **Python**：prompt-engineering.py
 
     ```python
     # Format and send the request to the model
@@ -402,23 +402,23 @@ Now that your app has been configured, run it to send your request to your model
     user_message = grounding_text + user_message
     ```
 
-1. Save the file and rerun your app.
-1. Enter the following prompts (with the **system message** still being entered and saved in `system.txt`).
+1. 保存文件并重新运行应用。
+1. 输入以下提示（仍然输入 **系统消息** 并保存在 `system.txt` 中）。
 
-    **System message**
+    **系统消息**
 
     ```prompt
     You're an AI assistant who helps people find information. You'll provide answers from the text provided in the prompt, and respond concisely.
     ```
 
-    **User message:**
+    **用户消息：**
 
     ```prompt
     What animal is the favorite of children at Contoso?
     ```
 
-> **Tip**: If you would like to see the full response from Azure OpenAI, you can set the **printFullResponse** variable to `True`, and rerun the app.
+> **提示**：如果想要查看 Azure OpenAI 的完整响应，可以将 **printFullResponse** 变量设置为 `True`，然后重新运行应用。
 
-## Clean up
+## 清理
 
-When you're done with your Azure OpenAI resource, remember to delete the deployment or the entire resource in the **Azure portal** at `https://portal.azure.com`.
+使用完 Azure OpenAI 资源后，请记得在位于 `https://portal.azure.com` 的 **Azure 门户** 中删除部署或整个资源。

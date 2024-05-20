@@ -1,70 +1,70 @@
 ---
 lab:
-    title: 'Implement Retrieval Augmented Generation (RAG) with Azure OpenAI Service'
+  title: 使用 Azure OpenAI 服务实现检索增强生成 (RAG)
 ---
 
-# Implement Retrieval Augmented Generation (RAG) with Azure OpenAI Service
+# 使用 Azure OpenAI 服务实现检索增强生成 (RAG)
 
-The Azure OpenAI Service enables you to use your own data with the intelligence of the underlying LLM. You can limit the model to only use your data for pertinent topics, or blend it with results from the pre-trained model.
+通过 Azure OpenAI 服务，可将自己的数据与基础 LLM 的智能配合使用。 可以将模型限制为仅将数据用于相关主题，或将其与预先训练的模型的结果混合。
 
-In the scenario for this exercise, you will perform the role of a software developer working for Margie's Travel Agency. You will explore how to use generative AI to make coding tasks easier and more efficient. The techniques used in the exercise can be applied to other code files, programming languages, and use cases.
+在本练习的方案中，你将担任在 Margie’s 旅行社工作的软件开发人员职位。 你将了解如何使用生成式 AI 更轻松高效地完成编码任务。 练习中使用的技术可以应用于其他代码文件、编程语言和用例。
 
-This exercise will take approximately **20** minutes.
+该练习大约需要 20 分钟。
 
-## Provision an Azure OpenAI resource
+## 预配 Azure OpenAI 资源
 
-If you don't already have one, provision an Azure OpenAI resource in your Azure subscription.
+如果还没有 Azure OpenAI 资源，请在 Azure 订阅中预配 Azure OpenAI 资源。
 
-1. Sign into the **Azure portal** at `https://portal.azure.com`.
-2. Create an **Azure OpenAI** resource with the following settings:
-    - **Subscription**: *Select an Azure subscription that has been approved for access to the Azure OpenAI service*
-    - **Resource group**: *Choose or create a resource group*
-    - **Region**: *Make a **random** choice from any of the following regions*\*
-        - Australia East
-        - Canada East
-        - East US
-        - East US 2
-        - France Central
-        - Japan East
-        - North Central US
-        - Sweden Central
-        - Switzerland North
-        - UK South
-    - **Name**: *A unique name of your choice*
-    - **Pricing tier**: Standard S0
+1. 登录到 Azure 门户，地址为 ****。
+2. 请使用以下设置创建 Azure OpenAI 资源：
+    - 订阅****：*选择已被批准访问 Azure OpenAI 服务的 Azure 订阅*
+    - **资源组**：*创建或选择资源组*
+    - 区域****：从以下任何区域中进行随机选择******\*
+        - 澳大利亚东部
+        - 加拿大东部
+        - 美国东部
+        - 美国东部 2
+        - 法国中部
+        - 日本东部
+        - 美国中北部
+        - 瑞典中部
+        - 瑞士北部
+        - 英国南部
+    - **名称**：所选项的唯一名称**
+    - **定价层**：标准版 S0
 
-    > \* Azure OpenAI resources are constrained by regional quotas. The listed regions include default quota for the model type(s) used in this exercise. Randomly choosing a region reduces the risk of a single region reaching its quota limit in scenarios where you are sharing a subscription with other users. In the event of a quota limit being reached later in the exercise, there's a possibility you may need to create another resource in a different region.
+    > \* Azure OpenAI 资源受区域配额约束。 列出的区域包括本练习中使用的模型类型的默认配额。 在与其他用户共享订阅的情况下，随机选择一个区域可以降低单个区域达到配额限制的风险。 如果稍后在练习中达到配额限制，你可能需要在不同的区域中创建另一个资源。
 
-3. Wait for deployment to complete. Then go to the deployed Azure OpenAI resource in the Azure portal.
+3. 等待部署完成。 然后在 Azure 门户中转至部署的 Azure OpenAI 资源。
 
-## Deploy a model
+## 部署模型
 
-Azure OpenAI provides a web-based portal named **Azure OpenAI Studio**, that you can use to deploy, manage, and explore models. You'll start your exploration of Azure OpenAI by using Azure OpenAI Studio to deploy a model.
+Azure OpenAI 提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户，可用于部署、管理和探索模型。 你将使用 Azure OpenAI Studio 部署模型，开始探索 Azure OpenAI。
 
-1. On the **Overview** page for your Azure OpenAI resource, use the **Go to Azure OpenAI Studio** button to open Azure OpenAI Studio in a new browser tab.
-2. In Azure OpenAI Studio, on the **Deployments** page, view your existing model deployments. If you don't already have one, create a new deployment of the **gpt-35-turbo-16k** model with the following settings:
-    - **Model**: gpt-35-turbo-16k *(must be this model to use the features in this exercise)*
-    - **Model version**: Auto-update to default
-    - **Deployment name**: *A unique name of your choice. You'll use this name later in the lab.*
-    - **Advanced options**
-        - **Content filter**: Default
-        - **Deployment type**: Standard
-        - **Tokens per minute rate limit**: 5K\*
-        - **Enable dynamic quota**: Enabled
+1. 在 Azure OpenAI 资源的“概述”**** 页上，使用“转到 Azure OpenAI Studio”**** 按钮在新的浏览器选项卡中打开 Azure OpenAI Studio。
+2. 在 Azure OpenAI Studio 中的“部署”**** 页上，查看现有模型部署。 如果没有模型部署，请使用以下设置创建新的“gpt-35-turbo-16k”**** 模型部署：
+    - **模型**：gpt-35-turbo-16k *（必须是此模型才能使用此练习中的功能）*
+    - **模型版本**：自动更新为默认值
+    - **部署名称**：*所选的唯一名称。稍后将在实验室中使用此名称。*
+    - **高级选项**
+        - **内容筛选器**：默认
+        - **部署类型**：标准
+        - **每分钟令牌速率限制**：5K\*
+        - **启用动态配额**：已启用
 
-    > \* A rate limit of 5,000 tokens per minute is more than adequate to complete this exercise while leaving capacity for other people using the same subscription.
+    > \*每分钟 5,000 个令牌的速率限制足以完成此练习，同时也为使用同一订阅的其他人留出容量。
 
-## Observe normal chat behavior without adding your own data
+## 在不添加自己的数据的情况下观察正常的聊天行为
 
-Before connecting Azure OpenAI to your data, let's first observe how the base model responds to queries without any grounding data.
+在将 Azure OpenAI 连接到数据之前，先观察基本模型如何在没有任何锚定数据的情况下响应查询。
 
-1. In **Azure OpenAI Studio** at `https://oai.azure.com`, in the **Playground** section, select the **Chat** page. The **Chat** playground page consists of three main sections:
-    - **Setup** - used to set the context for the model's responses.
-    - **Chat session** - used to submit chat messages and view responses.
-    - **Configuration** - used to configure settings for the model deployment.
-2. In the **Configuration** section, ensure that your model deployment is selected.
-3. In the **Setup** area, select the default system message template to set the context for the chat session. The default system message is *You are an AI assistant that helps people find information*.
-4. In the **Chat session**, submit the following queries, and review the responses:
+1. 在位于 `https://oai.azure.com` 的 **Azure OpenAI Studio** 中，在“操场”部分中选择“聊天”页。******** “聊天”操场页面由三个主要部分组成****：
+    - ****“设置”- 用于设置模型的响应的上下文。
+    - ****“聊天会话”- 用于提交聊天消息和查看响应。
+    - ****“配置”- 用于配置模型部署的设置。
+2. 在“配置”**** 部分中，确保已选择模型部署。
+3. 在“设置”区域中，选择默认系统消息模板以设置聊天会话的上下文****。 默认系统消息是 *你是 帮助用户查找信息的 AI 助手*。
+4. **** 在“聊天会话”中提交以下查询，并查看响应：
 
     ```
     I'd like to take a trip to New York. Where should I stay?
@@ -74,52 +74,52 @@ Before connecting Azure OpenAI to your data, let's first observe how the base mo
     What are some facts about New York?
     ```
 
-    Try similar questions about tourism and places to stay for other locations that will be included in our grounding data, such as London, or San Francisco. You'll likely get complete responses about areas or neighborhoods, and some general facts about the city.
+    尝试询问类似的关于其他地点（将包含在我们的基础数据中，例如伦敦或旧金山）的旅游和住宿的问题。 你可能会得到关于地区或社区的完整响应，以及关于该城市的一些一般事实。
 
-## Connect your data in the chat playground
+## 在聊天操场中连接你的数据
 
-Now you'll add some data for a fictional travel agent company named *Margie's Travel*. Then you'll see how the Azure OpenAI model responds when using the brochures from Margie's Travel as grounding data.
+现在，你将为名为 *Margie's Travel* 的虚构旅行社公司添加一些数据。 然后，你将查看在将 Margie Travel 的宣传册用作锚定数据时，Azure OpenAI 模型将会如何响应。
 
-1. In a new browser tab, download an archive of brochure data from `https://aka.ms/own-data-brochures`. Extract the brochures to a folder on your PC.
-1. In Azure OpenAI Studio, in the **Chat** playground, in the **Setup** section, select **Add your data**.
-1. Select **Add a data source** and choose **Upload files**.
-1. You'll need to create a storage account and Azure AI Search resource. Under the dropdown for the storage resource, select **Create a new Azure Blob storage resource**, and create a storage account with the following settings. Anything not specified leave as the default.
+1. 在新的浏览器选项卡中，从 `https://aka.ms/own-data-brochures` 下载宣传册数据的存档。 将宣传册提取到电脑上的文件夹。
+1. 在 Azure OpenAI Studio 的“聊天操场”中的“设置”部分，选择“添加数据”************。
+1. 选择“添加数据源”，然后选择“上传文件”********。
+1. 需要创建存储帐户和 Azure AI 搜索资源。 在存储资源的下拉列表下，选择“创建新的 Azure Blob 存储资源”，并使用以下设置创建一个存储帐户。 未指定的任何内容将保留为默认值。
 
-    - **Subscription**: *Your Azure subscription*
-    - **Resource group**: *Select the same resource group as your Azure OpenAI resource*
-    - **Storage account name**: *Enter a unique name*
-    - **Region**: *Select the same region as your Azure OpenAI resource*
-    - **Redundancy**: Locally-redundant storage (LRS)
+    - **订阅**：*Azure 订阅*
+    - 资源组****：*选择与 Azure OpenAI 资源相同的资源组*
+    - **存储帐户名称**：输入唯一名称
+    - 区域****：*选择与 Azure OpenAI 资源相同的区域*
+    - **冗余**：本地冗余存储 (LRS)
 
-1. While the storage account resource is being created, return to Azure OpenAI Studio and select **Create a new Azure AI Search resource** with the following settings. Anything not specified leave as the default.
+1. 在创建存储帐户资源时，返回到 Azure OpenAI Studio，并使用以下设置选择“创建新的 Azure AI 搜索资源”****。 未指定的任何内容将保留为默认值。
 
-    - **Subscription**: *Your Azure subscription*
-    - **Resource group**: *Select the same resource group as your Azure OpenAI resource*
-    - **Service name**: *Enter a unique name*
-    - **Location**: *Select the same location as your Azure OpenAI resource*
-    - **Pricing tier**: Basic
+    - **订阅**：*Azure 订阅*
+    - 资源组****：*选择与 Azure OpenAI 资源相同的资源组*
+    - **服务名称**：输入唯一名称
+    - 位置****：*选择与 Azure OpenAI 资源相同的位置*
+    - **定价层**：基本
 
-1. Wait until your search resource has been deployed, then switch back to the Azure AI Studio.
-1. In the **Add data**, enter the following values for your data source, then select **Next**.
+1. 等待搜索资源部署完毕，然后切换回 Azure AI Studio。
+1. 在“添加数据”中，为数据源输入以下值，然后选择“下一步” 。
 
-    - **Select data source**: Upload files
-    - **Subscription**: Your Azure subscription
-    - **Select Azure Blob storage resource**: *Use the **Refresh** button to repopulate the list, and then choose the storage resource you created*
-        - Turn on CORS when prompted
-    - **Select Azure AI Search resource**: *Use the **Refresh** button to repopulate the list, and then choose the search resource you created*
-    - **Enter the index name**: `margiestravel`
-    - **Add vector search to this search resource**: unchecked
-    - **I acknowledge that connecting to an Azure AI Search account will incur usage to my account** : checked
+    - 选择数据源：上传文件
+    - 订阅：Azure 订阅
+    - **选择 Azure Blob 存储资源**。*使用“刷新”按钮重新填充列表，然后选择所创建的存储资源*****
+        - 出现提示时打开 CORS
+    - **选择 Azure AI 搜索资源***使用“刷新”按钮重新填充列表，然后选择所创建的搜索资源*****
+    - **输入索引名称**：`margiestravel`
+    - “向此搜索资源添加矢量搜索”：未勾选
+    - **我确认知晓连接到 Azure AI搜索帐户会导致我的帐户产生使用量**：已勾选
 
-1. On the **Upload files** page, upload the PDFs you downloaded, and then select **Next**.
-1. On the **Data management** page select the **Keyword** search type from the drop-down, and then select **Next**.
-1. On the **Review and finish** page select **Save and close**, which will add your data. This may take a few minutes, during which you need to leave your window open. Once complete, you'll see the data source, search resource, and index specified in the **Setup** section.
+1. 在“上传文件”页上，上传下载的 PDF，然后选择“下一步” 。
+1. 在“数据管理”页上，从下拉列表中选择“关键字”搜索类型，然后选择“下一步”  。
+1. 在“查看并完成”页上，选择“保存并关闭”，随即会添加数据 。 这可能需要几分钟时间，在此期间，你需要让窗口保持打开状态。 完成后，你将看到在“设置”部分中指定的数据源、搜索资源和索引****。
 
-    > **Tip**: Occasionally the connection between your new search index and Azure OpenAI Studio takes too long. If you've waited for a few minutes and it still hasn't connected, check your AI Search resources in Azure portal. If you see the completed index, you can disconnect the data connection in Azure OpenAI Studio and re-add it by specifying an Azure AI Search data source and selecting your new index.
+    > **提示**：新建搜索索引与 Azure OpenAI Studio 之间的连接偶尔会用时过长。 如果等待几分钟后仍未连接，请在 Azure 门户中检查 AI 搜索资源。 如果看到已完成的索引，则可以断开 Azure OpenAI Studio 中的数据连接，并通过指定 Azure AI 搜索数据源和选择新索引来重新添加它。
 
-## Chat with a model grounded in your data
+## 与基于你的数据的模型聊天
 
-Now that you've added your data, ask the same questions as you did previously, and see how the response differs.
+现在，你已添加数据，请提出与之前相同的问题，查看响应有何不同。
 
 ```
 I'd like to take a trip to New York. Where should I stay?
@@ -129,71 +129,71 @@ I'd like to take a trip to New York. Where should I stay?
 What are some facts about New York?
 ```
 
-You'll notice a very different response this time, with specifics about certain hotels and a mention of Margie's Travel, as well as references to where the information provided came from. If you open the PDF reference listed in the response, you'll see the same hotels as the model provided.
+这次你会看到一个非常不同的响应，包括有关某些酒店的详细信息和对 Margie's Travel 的提及，以及对所提供信息的来源的引用。 如果打开响应中列出的 PDF 引用，你将看到与提供的模型相同的酒店。
 
-Try asking it about other cities included in the grounding data, which are Dubai, Las Vegas, London, and San Francisco.
+尝试向它询问基础数据中包含的其他城市，如迪拜、拉斯维加斯、伦敦和旧金山。
 
-> **Note**: **Add your data** is still in preview and might not always behave as expected for this feature, such as giving the incorrect reference for a city not included in the grounding data.
+> 注意：“添加数据”仍处于预览状态，对于此功能，可能无法始终按预期运行，例如提供对未包含在基础数据中的城市的错误引用 。
 
-## Connect your app to your own data
+## 将应用连接到自己的数据
 
-Next, let's explore how to connect your app to use your own data.
+接下来，我们来探讨如何连接应用以使用自己的数据。
 
-### Prepare to develop an app in Visual Studio Code
+### 准备在 Visual Studio Code 中开发应用
 
-Now let's explore the use of your own data in an app that uses the Azure OpenAI service SDK. You'll develop your app using Visual Studio Code. The code files for your app have been provided in a GitHub repo.
+现在，我们来探索如何在使用 Azure OpenAI 服务 SDK 的应用中使用自己的数据。 你将使用 Visual Studio Code 开发应用。 应用程序的代码文件已在 GitHub repo 中提供。
 
-> **Tip**: If you have already cloned the **mslearn-openai** repo, open it in Visual Studio code. Otherwise, follow these steps to clone it to your development environment.
+> **提示**：如果已克隆 **mslearn-openai** 存储库，请在 Visual Studio Code 中打开它。 否则，请按照以下步骤将其克隆到开发环境中。
 
-1. Start Visual Studio Code.
-2. Open the palette (SHIFT+CTRL+P) and run a **Git: Clone** command to clone the `https://github.com/MicrosoftLearning/mslearn-openai` repository to a local folder (it doesn't matter which folder).
-3. When the repository has been cloned, open the folder in Visual Studio Code.
+1. 启动 Visual Studio Code。
+2. 打开面板 (SHIFT+CTRL+P) 并运行“**Git：克隆**”命令，以将 `https://github.com/MicrosoftLearning/mslearn-openai` 存储库克隆到本地文件夹（任意文件夹均可）。
+3. 克隆存储库后，在 Visual Studio Code 中打开文件夹。
 
-    > **Note**: If Visual Studio Code shows you a pop-up message to prompt you to trust the code you are opening, click on **Yes, I trust the authors** option in the pop-up.
+    > **注意**：如果 Visual Studio Code 显示一条弹出消息，提示你信任打开的代码，请单击弹出窗口中的“是，我信任该作者”选项****。
 
-4. Wait while additional files are installed to support the C# code projects in the repo.
+4. 等待其他文件安装完毕，以支持存储库中的 C# 代码项目。
 
-    > **Note**: If you are prompted to add required assets to build and debug, select **Not Now**.
+    > **注意**：如果系统提示你添加生成和调试所需的资产，请选择**以后再说**。
 
-## Configure your application
+## 配置应用程序
 
-Applications for both C# and Python have been provided, and both apps feature the same functionality. First, you'll complete some key parts of the application to enable using your Azure OpenAI resource.
+C# 和 Python 的应用程序都已提供，并且这两个应用具有相同的功能。 首先，你将使用 Azure OpenAI 资源完成要启用的应用程序的一些关键部件。
 
-1. In Visual Studio Code, in the **Explorer** pane, browse to the **Labfiles/06-use-own-data** folder and expand the **CSharp** or **Python** folder depending on your language preference. Each folder contains the language-specific files for an app into which you're going to integrate Azure OpenAI functionality.
-2. Right-click the **CSharp** or **Python** folder containing your code files and open an integrated terminal. Then install the Azure OpenAI SDK package by running the appropriate command for your language preference:
+1. 在 Visual Studio Code 的“资源管理器”窗格中，浏览到“Labfiles/06-use-own-data”文件夹，然后根据语言首选项展开“CSharp”文件夹或“Python”文件夹****************。 每个文件夹都包含要在其中集成 Azure OpenAI 功能的应用的语言特定文件。
+2. 右键单击包含代码文件的“CSharp”或“Python”文件夹，并打开集成终端。******** 然后通过运行适用于语言首选项的命令，安装 Azure OpenAI SDK 包：
 
-    **C#**:
+    **C#：**
 
     ```
     dotnet add package Azure.AI.OpenAI --version 1.0.0-beta.14
     ```
 
-    **Python**:
+    **Python**：
 
     ```
     pip install openai==1.13.3
     ```
 
-3. In the **Explorer** pane, in the **CSharp** or **Python** folder, open the configuration file for your preferred language
+3. 在“资源管理器”窗格中****，在“CSharp”或“Python”文件夹中，打开首选语言的配置文件********
 
-    - **C#**: appsettings.json
-    - **Python**: .env
+    - **C#** ：appsettings.json
+    - **Python**：.env
     
-4. Update the configuration values to include:
-    - The  **endpoint** and a **key** from the Azure OpenAI resource you created (available on the **Keys and Endpoint** page for your Azure OpenAI resource in the Azure portal)
-    - The **deployment name** you specified for your model deployment (available in the **Deployments** page in Azure OpenAI Studio).
-    - The endpoint for your search service (the **Url** value on the overview page for your search resource in the Azure portal).
-    - A **key** for your search resource (available in the **Keys** page for your search resource in the Azure portal - you can use either of the admin keys)
-    - The name of the search index (which should be `margiestravel`).
-1. Save the configuration file.
+4. 更新配置值以包括：
+    - 创建的 Azure OpenAI 资源的终结点**** 和密钥****（位于 Azure 门户中 Azure OpenAI 资源的“密钥和终结点”**** 页）
+    - 为模型部署指定的 **部署名称**（在 Azure OpenAI Studio 的“部署”页中提供****）。
+    - 搜索服务的终结点（Azure 门户中搜索资源概述页上的“URL”**** 值）。
+    - 搜索资源的密钥****（位于 Azure 门户中搜索资源的“密钥”**** 页 - 可以使用两个管理密钥中的任何一个）
+    - 搜索索引的名称（应为 `margiestravel`）。
+1. 保存此配置文件。
 
-### Add code to use the Azure OpenAI service
+### 添加代码以使用 Azure OpenAI 服务
 
-Now you're ready to use the Azure OpenAI SDK to consume your deployed model.
+现在，你已准备好使用 Azure OpenAI SDK 来使用已部署的模型。
 
-1. In the **Explorer** pane, in the **CSharp** or **Python** folder, open the code file for your preferred language, and replace the comment ***Configure your data source*** with code to add the Azure OpenAI SDK library:
+1. ****************** 在“资源管理器”窗格的“CSharp”和“Python”文件夹中，打开首选语言的代码文件，并将注释“配置数据源”替换为代码以添加 Azure OpenAI SDK 库：
 
-    **C#**: ownData.cs
+    **C#**：ownData.cs
 
     ```csharp
     // Configure your data source
@@ -205,7 +205,7 @@ Now you're ready to use the Azure OpenAI SDK to consume your deployed model.
     };
     ```
 
-    **Python**: ownData.py
+    **Python**：ownData.py
 
     ```python
     # Configure your data source
@@ -221,25 +221,25 @@ Now you're ready to use the Azure OpenAI SDK to consume your deployed model.
         )
     ```
 
-2. Review the rest of the code, noting the use of the *extensions* in the request body that is used to provide information about the data source settings.
+2. 查看代码的其余部分，注意如何在用于提供有关数据源设置信息的请求正文中使用该 *扩展*。
 
-3. Save the changes to the code file.
+3. 保存代码文件中的更改。
 
-## Run your application
+## 运行应用程序
 
-Now that your app has been configured, run it to send your request to your model and observe the response. You'll notice the only difference between the different options is the content of the prompt, all other parameters (such as token count and temperature) remain the same for each request.
+配置应用后，请运行应用以将请求发送到模型并观察响应。 你会注意到，不同选项之间的唯一区别是提示的内容，所有其他参数（如标记计数和温度）对于每个请求保持不变。
 
-1. In the interactive terminal pane, ensure the folder context is the folder for your preferred language. Then enter the following command to run the application.
+1. 在交互式终端窗格中，确保文件夹上下文是首选语言的文件夹。 然后，输入以下命令来创建应用程序。
 
-    - **C#**: `dotnet run`
-    - **Python**: `python ownData.py`
+    - **C#** ：`dotnet run`
+    - **Python**：`python ownData.py`
 
-    > **Tip**: You can use the **Maximize panel size** (**^**) icon in the terminal toolbar to see more of the console text.
+    > **提示**：可以使用 **终端工具栏中的“最大化面板大小** ”图标**^** 查看更多控制台文本。
 
-2. Review the response to the prompt `Tell me about London`, which should include an answer as well as some details of the data used to ground the prompt, which was obtained from your search service.
+2. 查看对于提示 `Tell me about London` 的响应，其中应包括答案以及用于锚定提示的数据的一些详细信息（获取自搜索服务）。
 
-    > **Tip**: If you want to see the citations from your search index, set the variable ***show citations*** near the top of the code file to **true**.
+    > **提示**：如果想要查看搜索索引中的引文，请将代码文件顶部附件的变量“显示引文”设置为“true”**********。
 
-## Clean up
+## 清理
 
-When you're done with your Azure OpenAI resource, remember to delete the resource in the **Azure portal** at `https://portal.azure.com`. Be sure to also include the storage account and search resource, as those can incur a relatively large cost.
+使用完 Azure OpenAI 资源后，请记得在位于 `https://portal.azure.com` 的 **Azure 门户** 中删除该资源。 务必同时包括存储帐户和搜索资源，因为这些内容会产生相对较大的成本。
