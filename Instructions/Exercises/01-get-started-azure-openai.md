@@ -13,11 +13,11 @@ Azure OpenAI 服务将 OpenAI 开发的生成式 AI 模型引入 Azure 平台，
 
 ## 预配 Azure OpenAI 资源
 
-在 Azure 订阅中预配一个 Azure OpenAI 资源（如果没有）。
+如果还没有 Azure OpenAI 资源，请在 Azure 订阅中预配 Azure OpenAI 资源。
 
 1. 登录到 Azure 门户，地址为 ****。
 2. 请使用以下设置创建 Azure OpenAI 资源：
-    - 订阅****：选择已获准访问 Azure OpenAI 服务的 Azure 订阅**
+    - 订阅****：*选择已被批准访问 Azure OpenAI 服务的 Azure 订阅*
     - **资源组**：*创建或选择资源组*
     - 区域****：从以下任何区域中进行随机选择******\*
         - 澳大利亚东部
@@ -48,7 +48,7 @@ Azure OpenAI 服务提供了一个名为 Azure OpenAI Studio 的基于 Web 的�
     新选项卡打开后，可以关闭 Azure OpenAI Studio 页面顶部显示的新预览服务的任何横幅通知。
 
 1. 在 Azure OpenAI Studio 的左侧窗格中，选择“部署”页面并查看现有模型部署****。 如果没有模型部署，请使用以下设置创建新的“gpt-35-turbo-16k”**** 模型部署：
-    - 模型：gpt-35-turbo-16k（如果 16k 模型不可用，请选择 gpt-35-turbo）******
+    - **模型**：gpt-35-turbo-16k *（如果 16k 模型不可用，请选择 gpt-35-turbo）*
     - **模型版本**：自动更新为默认值
     - **部署名称**：你选择的唯一名称**
     - **高级选项**
@@ -67,7 +67,7 @@ Azure OpenAI 服务提供了一个名为 Azure OpenAI Studio 的基于 Web 的�
 
 1. 在“操场”部分，选择“聊天”页面********。 “聊天”操场页面由三个主要面板组成（可能从右到左水平排列，也可能从上到下垂直排列，具体取决于屏幕分辨率）****：
     - 设置 - 用于设置模型响应的上下文****。
-    - 聊天会话 - 用于提交聊天消息和查看响应****。
+    - ****“聊天会话”- 用于提交聊天消息和查看响应。
     - 配置 - 用于配置模型部署的设置****。
 1. 在“配置”面板中，确保选择了 gpt-35-turbo-16k 模型部署****。
 1. 在“设置”面板中查看默认的“系统消息”，该消息应是“你是帮助人们查找信息的 AI 助手”**********。 系统消息包含在提交给模型的提示中，并为模型的响应提供上下文；设置有关基于模型的 AI 代理如何与用户交互的期望。
@@ -101,13 +101,13 @@ Azure OpenAI 服务提供了一个名为 Azure OpenAI Studio 的基于 Web 的�
 
     **用户**:
     
-    ```
+    ```prompt
     Write an advertisement for the lightweight "Ultramop" mop, which uses patented absorbent materials to clean floors.
     ```
     
     **助手：**
     
-    ```
+    ```prompt
     Welcome to the future of cleaning!
     
     The Ultramop makes light work of even the dirtiest of floors. Thanks to its patented absorbent materials, it ensures a brilliant shine. Just look at these features:
@@ -155,7 +155,7 @@ Azure OpenAI 服务提供了一个名为 Azure OpenAI Studio 的基于 Web 的�
 1. 成功部署 Web 应用后，使用“聊天”操场页面右上角的按钮启动该 Web 应用****。 该应用可能需要几分钟时间才能启动完成。 如果出现提示，请接受权限请求。
 1. 在 Web 应用中输入以下聊天消息：
 
-    ```
+    ```prompt
     Write an advertisement for the new "WonderWipe" cloth that attracts dust particulates and can be used to clean any household surface.
     ```
 
@@ -167,4 +167,4 @@ Azure OpenAI 服务提供了一个名为 Azure OpenAI Studio 的基于 Web 的�
 
 ## 清理
 
-使用完 Azure OpenAI 资源后，请记得在 **Azure 门户** (`https://portal.azure.com`) 中删除部署或整个资源。
+使用完 Azure OpenAI 资源后，请记得在位于 `https://portal.azure.com` 的 **Azure 门户** 中删除部署或整个资源。
