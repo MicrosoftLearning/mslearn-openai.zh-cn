@@ -66,7 +66,7 @@ Azure OpenAI 提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户�
 3. 在“设置”区域中，选择默认系统消息模板以设置聊天会话的上下文****。 默认系统消息是 *你是 帮助用户查找信息的 AI 助手*。
 4. **** 在“聊天会话”中提交以下查询：
 
-    ```
+    ```prompt
     What kind of article is this?
     ---
     Severe drought likely in California
@@ -86,7 +86,7 @@ Azure OpenAI 提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户�
 
     **用户**:
     
-    ```
+    ```prompt
     What kind of article is this?
     ---
     New York Baseballers Wins Big Against Chicago
@@ -100,7 +100,7 @@ Azure OpenAI 提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户�
     
     **助手：**
     
-    ```
+    ```prompt
     Sports
       ```
 
@@ -108,7 +108,7 @@ Azure OpenAI 提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户�
 
     **用户：**
     
-    ```
+    ```prompt
     Categorize this article:
     ---
     Joyous moments at the Oscars
@@ -123,7 +123,7 @@ Azure OpenAI 提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户�
     
     **助手：**
     
-    ```
+    ```prompt
     Entertainment
     ```
 
@@ -131,7 +131,7 @@ Azure OpenAI 提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户�
 
 9. **** 在“聊天会话”部分中，重新提交以下提示：
 
-    ```
+    ```prompt
     What kind of article is this?
     ---
     Severe drought likely in California
@@ -149,7 +149,7 @@ Azure OpenAI 提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户�
 
 11. **** 在“聊天会话”部分中，提交以下提示：
 
-    ```
+    ```prompt
     # 1. Create a list of animals
     # 2. Create a list of whimsical names for those animals
     # 3. Combine them randomly into a list of 25 animal and name pairs

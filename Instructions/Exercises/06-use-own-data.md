@@ -66,11 +66,11 @@ Azure OpenAI 提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户�
 3. 在“设置”区域中，选择默认系统消息模板以设置聊天会话的上下文****。 默认系统消息是 *你是 帮助用户查找信息的 AI 助手*。
 4. **** 在“聊天会话”中提交以下查询，并查看响应：
 
-    ```
+    ```prompt
     I'd like to take a trip to New York. Where should I stay?
     ```
 
-    ```
+    ```prompt
     What are some facts about New York?
     ```
 
@@ -121,11 +121,11 @@ Azure OpenAI 提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户�
 
 现在，你已添加数据，请提出与之前相同的问题，查看响应有何不同。
 
-```
+```prompt
 I'd like to take a trip to New York. Where should I stay?
 ```
 
-```
+```prompt
 What are some facts about New York?
 ```
 
