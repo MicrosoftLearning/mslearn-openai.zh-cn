@@ -39,17 +39,19 @@ lab:
 
 ## 部署模型
 
-Azure OpenAI 提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户，可用于部署、管理和探索模型。 你将使用 Azure OpenAI Studio 部署模型，开始探索 Azure OpenAI。
+Azure 提供了一个名为 **Azure AI Studio** 的基于 Web 的门户，可用于部署、管理和探索模型。 你将通过使用 Azure OpenAI Studio 部署模型，开始探索 Azure OpenAI。
 
-1. 在 Azure OpenAI 资源的“概述”**** 页上，使用“转到 Azure OpenAI Studio”**** 按钮在新的浏览器选项卡中打开 Azure OpenAI Studio。
-2. 在 Azure OpenAI Studio 中的“部署”**** 页上，查看现有模型部署。 如果没有模型部署，请使用以下设置创建新的“gpt-35-turbo-16k”**** 模型部署：
+> **备注**：使用 Azure AI Studio 时，可能会显示建议你执行任务的消息框。 可以关闭这些消息框并按照本练习中的步骤进行操作。
+
+1. 在 Azure 门户中的 Azure OpenAI 资源的“**概述**”页上，向下滚动到“**开始**”部分，然后选择转到 **AI Studio** 的按钮。
+1. 在 Azure AI Studio 的左侧窗格中，选择“**部署**”页并查看现有模型部署。 如果没有模型部署，请使用以下设置创建新的“gpt-35-turbo-16k”**** 模型部署：
     - **部署名称**：你选择的唯一名称**
     - **模型**：gpt-35-turbo-16k *（如果 16k 模型不可用，请选择 gpt-35-turbo）*
-    - **模型版本**：自动更新为默认值
+    - **模型版本**：*使用默认版本*
     - **部署类型**：标准
     - **每分钟令牌速率限制**：5K\*
     - **内容筛选器**：默认
-    - **启用动态配额**：已启用
+    - **启用动态配额**：已禁用
 
     > \*每分钟 5,000 个令牌的速率限制足以完成此练习，同时也为使用同一订阅的其他人留出容量。
 
@@ -95,7 +97,7 @@ Azure OpenAI 提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户�
     
 4. 更新配置值以包括：
     - 创建的 Azure OpenAI 资源的终结点**** 和密钥****（位于 Azure 门户中 Azure OpenAI 资源的“密钥和终结点”**** 页）
-    - 为模型部署指定的 **部署名称**（在 Azure OpenAI Studio 的“部署”页中提供****）。
+    - 为模型部署指定的**部署名称**（可在 Azure AI Studio 中的“**部署**”页中找到）。
 5. 保存此配置文件。
 
 ## 添加代码以使用 Azure OpenAI 服务

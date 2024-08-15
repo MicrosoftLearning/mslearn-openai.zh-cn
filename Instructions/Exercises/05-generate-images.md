@@ -16,7 +16,7 @@ Azure OpenAI 服务包括名为 DALL-E 的图像生成模型。 可以使用此�
 必须先在 Azure 订阅中预配 Azure OpenAI 资源，然后才能使用 Azure OpenAI 模型生成图像。 资源必须位于支持 DALL-E 模型的区域中。
 
 1. 登录到 Azure 门户，地址为 ****。
-2. 请使用以下设置创建 Azure OpenAI 资源：
+1. 请使用以下设置创建 Azure OpenAI 资源：
     - 订阅****：*选择已被批准访问 Azure OpenAI 服务（包括 DALL-E）的 Azure 订阅*
     - **资源组**：*创建或选择资源组*
     - **区域**：*选择“美国东部”**** 或“瑞典中部”*\*****
@@ -25,21 +25,29 @@ Azure OpenAI 服务包括名为 DALL-E 的图像生成模型。 可以使用此�
 
     > \* DALL-E 3 模型仅在 **美国东部** 和 **瑞典中部** 区域的 Azure OpenAI 服务资源中可用。
 
-3. 等待部署完成。 然后在 Azure 门户中转至部署的 Azure OpenAI 资源。
+1. 等待部署完成。 然后在 Azure 门户中转至部署的 Azure OpenAI 资源。
+1. 在 Azure OpenAI 资源的“**概述**”页上，向下滚动到“**开始**”部分，然后选择转到 **AI Studio** 的按钮。
+1. 在 Azure AI Studio 的左侧窗格中，选择“**部署**”页并查看现有模型部署。 如果没有 DALL-E 3 的模型部署，请使用以下设置创建新的 **dall-e-3**模型部署：
+    - **部署名称**：dalle3
+    - **模型版本**：*使用默认版本*
+    - **部署类型**：标准
+    - **容量单位**：1K
+    - **内容筛选器**：默认
+    - **启用动态配额**：已禁用
+1. 部署后，导航回到左侧窗格中的 **“图像**”页。
 
-## 探索 DALL-E 操场中的图像生成
+## 探索图像操场中的图像生成
 
-可以使用 Azure OpenAI Studio 中的 DALL-E 操场来试验图像生成。
+可以使用 **Azure AI Studio** 中的“图像”操场来试验图像生成。
 
-1. 在 Azure 门户中 Azure OpenAI 资源的“概述”页上，使用“浏览”按钮在新的浏览器选项卡中打开 Azure OpenAI Studio********。或者，直接在 `https://oai.azure.com` 导航到 [Azure OpenAI Studio ](https://oai.azure.com)。
-2. 在“操场”部分中，选择“DALL-E”操场。******** 将自动创建名为 *Dalle3* 的 DALL-E 模型部署。
-3. 在“提示”框中输入要生成的图像的说明。 例如，`An elephant on a skateboard`。然后选择“生成”并查看生成的图像****。
+1. 在 **“图像操场**”部分中，应自动选择 DALL-E 3 的部署。 如果没有，请从部署下拉列表中选择。
+1. 在“提示”框中输入要生成的图像的说明。 例如，`An elephant on a skateboard`。然后选择“生成”并查看生成的图像****。
 
-    ![Azure OpenAI Studio 中的 DALL-E 操场，其中包含生成的图像。](../media/dall-e-playground.png)
+    ![Azure AI Studio 中的“图像操场”，其中包含生成的图像。](../media/images-playground.png)
 
-4. 修改提示以提供更具体的说明。 例如，`An elephant on a skateboard in the style of Picasso`。 然后生成新图像并查看结果。
+1. 修改提示以提供更具体的说明。 例如，`An elephant on a skateboard in the style of Picasso`。 然后生成新图像并查看结果。
 
-    ![Azure OpenAI Studio 中的 DALL-E 操场，其中包含两个生成的图像。](../media/dall-e-playground-new-image.png)
+    ![Azure AI Studio 中的“图像操场”，其中包含两个生成的图像。](../media/images-playground-new-style.png)
 
 ## 使用 REST API 生成图像
 
@@ -87,6 +95,8 @@ Azure OpenAI 服务提供了一个 REST API，可用于提交关于内容生成�
     - 该代码会向服务的终结点发出 https 请求，且标头中包括服务的密钥。 这两个值都是从配置文件获取的。
     - 请求包括一些参数，其中图像应基于的提示、要生成的图像数以及所生成图像的大小。
     - 响应包括修订后的提示，即 DALL-E 模型从用户提供的提示中推断得出以使其更具描述性的提示，以及所生成图像的 URL。
+    
+    > **重要说明**：如果将部署命名为建议的 *dalle3* 以外的任何内容，则需要更新代码以使用部署的名称。
 
 ### 运行应用
 
