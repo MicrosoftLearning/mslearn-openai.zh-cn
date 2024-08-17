@@ -39,17 +39,19 @@ Azure OpenAI 服务模型可以使用自然语言提示为你生成代码、修�
 
 ## 部署模型
 
-Azure OpenAI 提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户，可用于部署、管理和探索模型。 你将使用 Azure OpenAI Studio 部署模型，开始探索 Azure OpenAI。
+Azure 提供了一个名为 **Azure AI Studio** 的基于 Web 的门户，可用于部署、管理和探索模型。 你将通过使用 Azure OpenAI Studio 部署模型，开始探索 Azure OpenAI。
 
-1. 在 Azure OpenAI 资源的“概述”**** 页上，使用“转到 Azure OpenAI Studio”**** 按钮在新的浏览器选项卡中打开 Azure OpenAI Studio。
-2. 在 Azure OpenAI Studio 中的“部署”**** 页上，查看现有模型部署。 如果没有模型部署，请使用以下设置创建新的“gpt-35-turbo-16k”**** 模型部署：
+> **备注**：使用 Azure AI Studio 时，可能会显示建议你执行任务的消息框。 可以关闭这些消息框并按照本练习中的步骤进行操作。
+
+1. 在 Azure 门户中的 Azure OpenAI 资源的“**概述**”页上，向下滚动到“**开始**”部分，然后选择转到 **AI Studio** 的按钮。
+1. 在 Azure AI Studio 的左侧窗格中，选择“**部署**”页并查看现有模型部署。 如果没有模型部署，请使用以下设置创建新的“gpt-35-turbo-16k”**** 模型部署：
     - **部署名称**：你选择的唯一名称**
     - **模型**：gpt-35-turbo-16k *（如果 16k 模型不可用，请选择 gpt-35-turbo）*
-    - **模型版本**：自动更新为默认值
+    - **模型版本**：*使用默认版本*
     - **部署类型**：标准
     - **每分钟令牌速率限制**：5K\*
     - **内容筛选器**：默认
-    - **启用动态配额**：已启用
+    - **启用动态配额**：已禁用
 
     > \*每分钟 5,000 个令牌的速率限制足以完成此练习，同时也为使用同一订阅的其他人留出容量。
 
@@ -57,13 +59,12 @@ Azure OpenAI 提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户�
 
 在将其用于应用之前，请检查 Azure OpenAI 如何在聊天操场中生成和解释代码。
 
-1. 在位于 `https://oai.azure.com` 的 **Azure OpenAI Studio** 中，在“操场”部分中选择“聊天”页。******** “聊天”操场页面由三个主要部分组成****：
-    - ****“设置”- 用于设置模型的响应的上下文。
+1. 在“操场”部分，选择“聊天”页面********。 “**聊天**”操场页面由一排按钮和两个主要面板组成（可能从右到左水平排列，也可能从上到下垂直排列，具体取决于屏幕分辨率）：
+    - **配置** - 用于选择部署、定义系统消息并设置用于与部署交互的参数。
     - ****“聊天会话”- 用于提交聊天消息和查看响应。
-    - ****“配置”- 用于配置模型部署的设置。
-2. 在“配置”**** 部分中，确保已选择模型部署。
-3. **** 在“设置”区域中，将系统消息设置为 `You are a programming assistant helping write code` 并应用更改。
-4. **** 在“聊天会话”中提交以下查询：
+1. 在“**部署**”下，确保已选择模型部署。
+1. 在“**系统消息**”区域中，将系统消息设置为 `You are a programming assistant helping write code` 并应用更改。
+1. **** 在“聊天会话”中提交以下查询：
 
     ```
     Write a function in python that takes a character and a string as input, and returns how many times the character appears in the string
@@ -71,11 +72,11 @@ Azure OpenAI 提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户�
 
     模型通常会响应一个函数，并说明该函数的作用和调用方式。
 
-5. 接下来，发送提示 `Do the same thing, but this time write it in C#`。
+1. 接下来，发送提示 `Do the same thing, but this time write it in C#`。
 
     模型响应的内容可能与第一次非常相似，但这次是用 C# 编码。 可以再次对其发出请求以获取你选择的其他语言，或获取函数来完成其他任务，例如反转输入字符串。
 
-6. 接下来，我们将探讨如何使用 AI 来理解代码。 以用户消息的形式提交以下提示。
+1. 接下来，我们将探讨如何使用 AI 来理解代码。 以用户消息的形式提交以下提示。
 
     ```
     What does the following function do?  
@@ -153,7 +154,7 @@ Azure OpenAI 提供了一个名为 Azure OpenAI Studio 的基于 Web 的门户�
     
 4. 更新配置值以包括：
     - 创建的 Azure OpenAI 资源的终结点**** 和密钥****（位于 Azure 门户中 Azure OpenAI 资源的“密钥和终结点”**** 页）
-    - 为模型部署指定的 **部署名称**（在 Azure OpenAI Studio 的“部署”页中提供****）。
+    - 为模型部署指定的**部署名称**（可在 Azure AI Studio 的“**部署**”页中找到）。
 5. 保存此配置文件。
 
 ## 添加代码以使用 Azure OpenAI 服务模型
