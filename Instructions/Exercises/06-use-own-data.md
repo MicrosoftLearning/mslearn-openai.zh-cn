@@ -73,10 +73,10 @@ lab:
 - 文本嵌入模型，用于*矢量化*手册中的文本，以便有效地编制索引，用于设置提示。
 - GPT 模型，应用程序可以使用 GPT 模型来生成基于数据的提示的响应。
 
-若要部署这些模型，将使用 AI Studio。
+若要部署这些模型，将使用 AI Foundry。
 
-1. 在 Azure 门户中，导航到 Azure OpenAI 资源。 然后使用链接在 **Azure AI Studio** 中打开资源。
-1. 在 Azure AI Studio 中的“**部署**”页上，查看现有模型部署。 然后使用以下设置创建新的 **text-embedding-ada-002**模型的基础模型部署：
+1. 在 Azure 门户中，导航到 Azure OpenAI 资源。 然后使用链接，在 **Azure AI Foundry 门户**中打开资源。
+1. 在 Azure AI Foundry 门户中的“**部署**”页上，查看现有模型部署。 然后使用以下设置创建新的 **text-embedding-ada-002**模型的基础模型部署：
     - **部署名称**：text-embedding-ada-002
     - **模型**：text-embedding-ada-002
     - **模型版本**：*默认版本*
@@ -151,7 +151,7 @@ C# 和 Python 的应用程序都已提供，并且这两个应用具有相同的
     **Python**：
 
     ```
-    pip install openai==1.13.3
+    pip install openai==1.55.3
     ```
 
 3. 在“资源管理器”窗格中****，在“CSharp”或“Python”文件夹中，打开首选语言的配置文件********
@@ -161,7 +161,7 @@ C# 和 Python 的应用程序都已提供，并且这两个应用具有相同的
     
 4. 更新配置值以包括：
     - 创建的 Azure OpenAI 资源的终结点**** 和密钥****（位于 Azure 门户中 Azure OpenAI 资源的“密钥和终结点”**** 页）
-    - 为 gpt-35-turbo 模型部署指定的**部署名称**（可在 Azure AI Studio 的“**部署**”页中找到）。
+    - 为 gpt-35-turbo 模型部署指定的**部署名称**（可在 Azure AI Foundry 门户的“**部署**”页中找到）。
     - 搜索服务的终结点（Azure 门户中搜索资源概述页上的“URL”**** 值）。
     - 搜索资源的密钥****（位于 Azure 门户中搜索资源的“密钥”**** 页 - 可以使用两个管理密钥中的任何一个）
     - 搜索索引的名称（应为 `margies-index`）。

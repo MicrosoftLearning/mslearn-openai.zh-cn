@@ -26,8 +26,8 @@ Azure OpenAI 服务包括名为 DALL-E 的图像生成模型。 可以使用此�
     > \* DALL-E 3 模型仅在 **美国东部** 和 **瑞典中部** 区域的 Azure OpenAI 服务资源中可用。
 
 1. 等待部署完成。 然后在 Azure 门户中转至部署的 Azure OpenAI 资源。
-1. 在 Azure OpenAI 资源的“**概述**”页上，向下滚动到“**开始**”部分，然后选择转到 **AI Studio** 的按钮。
-1. 在 Azure AI Studio 的左侧窗格中，选择“**部署**”页并查看现有模型部署。 如果没有 DALL-E 3 的模型部署，请使用以下设置创建新的 **dall-e-3**模型部署：
+1. 在 Azure OpenAI 资源的“**概述**”页上，向下滚动到“**开始**”部分，然后选择转到“**AI Foundry 门户**”（之前为 AI Studio）的按钮。
+1. 在 Azure AI Foundry 门户的左侧窗格中，选择“**部署**”页并查看现有模型部署。 如果没有 DALL-E 3 的模型部署，请使用以下设置创建新的 **dall-e-3**模型部署：
     - **部署名称**：dalle3
     - **模型版本**：*使用默认版本*
     - **部署类型**：标准
@@ -38,16 +38,16 @@ Azure OpenAI 服务包括名为 DALL-E 的图像生成模型。 可以使用此�
 
 ## 探索图像操场中的图像生成
 
-可以使用 **Azure AI Studio** 中的“图像”操场来试验图像生成。
+可以使用 **Azure AI Foundry 门户**中的“图像”操场来试验图像生成。
 
 1. 在 **“图像操场**”部分中，应自动选择 DALL-E 3 的部署。 如果没有，请从部署下拉列表中选择。
 1. 在“提示”框中输入要生成的图像的说明。 例如，`An elephant on a skateboard`。然后选择“生成”并查看生成的图像****。
 
-    ![Azure AI Studio 中的“图像操场”，其中包含生成的图像。](../media/images-playground.png)
+    ![Azure AI Foundry 门户中的“图像操场”，其中包含生成的图像。](../media/images-playground.png)
 
 1. 修改提示以提供更具体的说明。 例如，`An elephant on a skateboard in the style of Picasso`。 然后生成新图像并查看结果。
 
-    ![Azure AI Studio 中的“图像操场”，其中包含两个生成的图像。](../media/images-playground-new-style.png)
+    ![Azure AI Foundry 门户中的“图像操场”，其中包含两个生成的图像。](../media/images-playground-new-style.png)
 
 ## 使用 REST API 生成图像
 
