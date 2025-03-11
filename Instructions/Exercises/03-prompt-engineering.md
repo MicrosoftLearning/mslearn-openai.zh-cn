@@ -59,12 +59,12 @@ Azure 提供了一个名为“**Azure AI Foundry 门户**”的基于 Web 的门
 
 我们首先在聊天操场中探索一些提示工程技术。
 
-1. 在“操场”部分，选择“聊天”页面********。 “**聊天**”操场页面由一排按钮和两个主要面板组成（可能从右到左水平排列，也可能从上到下垂直排列，具体取决于屏幕分辨率）：
-    - **配置** - 用于选择部署、定义系统消息并设置用于与部署交互的参数。
-    - ****“聊天会话”- 用于提交聊天消息和查看响应。
-2. 在“**部署**”下，确保已选择 gpt-35-turbo-16k 模型部署。
-1. 查看默认的“**系统消息**”，该消息应是“*你是帮助人们查找信息的 AI 助手*”。
-4. **** 在“聊天会话”中提交以下查询：
+1. 在左侧窗格中的“**操场**”部分，选择“**聊天**”页。 “**聊天**”操场页面由一排按钮和两个主要面板组成（可能从右到左水平排列，也可能从上到下垂直排列，具体取决于屏幕分辨率）：
+    - **设置** - 用于选择部署、定义系统消息并设置用于与部署交互的参数。
+    - **历史聊天记录** - 用于提交聊天消息和查看响应。
+2. 在“**部署**”下，确保选择 gpt-35-turbo-16k 模型部署。
+1. 查看所选部署下方文本框中包含的默认系统消息，该消息应为“*你是帮助人们查找信息的 AI 助手*”。
+4. 在“**历史聊天记录**”中，提交以下查询：
 
     ```prompt
     What kind of article is this?
@@ -80,7 +80,7 @@ Azure 提供了一个名为“**Azure AI Foundry 门户**”的基于 Web 的门
 
     响应提供了文章的说明。 但假设你需要更具体的文章分类格式。
 
-5. 在“**设置**”部分中，将系统消息更改为 `You are a news aggregator that categorizes news articles.`
+5. **** 在“设置”部分中，将系统消息更改为 `You are a news aggregator that categorizes news articles.`
 
 6. 在新系统消息下，选择“**添加部分**”按钮，然后选择“**示例**”。 然后，添加以下示例。
 
@@ -127,9 +127,9 @@ Azure 提供了一个名为“**Azure AI Foundry 门户**”的基于 Web 的门
     Entertainment
     ```
 
-8. 使用“**配置**”部分顶部的“**应用更改**”按钮保存所做的更改。
+8. 使用“**设置**”部分中系统消息文本框下的“**应用更改**”按钮保存所做的更改。
 
-9. **** 在“聊天会话”部分中，重新提交以下提示：
+9. 在“**历史聊天记录**”部分中，重新提交以下提示：
 
     ```prompt
     What kind of article is this?
@@ -147,7 +147,7 @@ Azure 提供了一个名为“**Azure AI Foundry 门户**”的基于 Web 的门
 
 10. 将系统消息更改回默认模板，它应是不包含示例的 `You are an AI assistant that helps people find information.`。 然后应用更改。
 
-11. **** 在“聊天会话”部分中，提交以下提示：
+11. 在“**历史聊天记录**”部分中，提交以下提示：
 
     ```prompt
     # 1. Create a list of animals
@@ -359,7 +359,7 @@ C# 和 Python 的应用程序都已提供，并且这两个应用具有相同的
     - Rescue name is Contoso 
     - It specializes in elephants, as well as zebras and giraffes 
     - Call for donations to be given at our website 
-    \n Include a list of the current animals we have at our rescue after the signature, in the form of a table. These animals include elephants, zebras, gorillas, lizards, and jackrabbits.
+    Include a list of the current animals we have at our rescue after the signature, in the form of a table. These animals include elephants, zebras, gorillas, lizards, and jackrabbits.
     ```
 
 1. 观察输出，并查看电子邮件是如何根据明确的说明更改的。
@@ -378,7 +378,7 @@ C# 和 Python 的应用程序都已提供，并且这两个应用具有相同的
     - Rescue name is Contoso 
     - It specializes in elephants, as well as zebras and giraffes 
     - Call for donations to be given at our website 
-    \n Include a list of the current animals we have at our rescue after the signature, in the form of a table. These animals include elephants, zebras, gorillas, lizards, and jackrabbits.
+    Include a list of the current animals we have at our rescue after the signature, in the form of a table. These animals include elephants, zebras, gorillas, lizards, and jackrabbits.
     ```
 
 1. 观察输出。 这一次，你可能会看到采用类似格式的电子邮件，但语气要随意得多。 你甚至可能会看到笑话！
