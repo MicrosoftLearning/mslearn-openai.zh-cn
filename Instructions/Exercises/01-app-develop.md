@@ -11,6 +11,17 @@ lab:
 
 该练习大约需要 **30** 分钟。
 
+## 克隆本课程的存储库
+
+如果尚未克隆用于本课程的存储库，请克隆它：
+
+1. 启动 Visual Studio Code。
+2. 打开面板 (SHIFT+CTRL+P) 并运行“**Git：克隆**”命令，以将 `https://github.com/MicrosoftLearning/mslearn-openai` 存储库克隆到本地文件夹（任意文件夹均可）。
+3. 克隆存储库后，在 Visual Studio Code 中打开文件夹。
+4. 等待其他文件安装完毕，以支持存储库中的 C# 代码项目。
+
+    > **注意**：如果系统提示你添加生成和调试所需的资产，请选择**以后再说**。
+
 ## 预配 Azure OpenAI 资源
 
 如果还没有 Azure OpenAI 资源，请在 Azure 订阅中预配 Azure OpenAI 资源。
@@ -114,13 +125,8 @@ C# 和 Python 的应用程序都已提供，并且这两个应用具有相同的
 
     ```csharp
     // Configure the Azure OpenAI client
-       AzureOpenAIClient azureClient = new (new Uri(oaiEndpoint), new ApiKeyCredential(oaiKey));
-        ChatClient chatClient = azureClient.GetChatClient(oaiDeploymentName);
-        ChatCompletion completion = chatClient.CompleteChat(
-        [
-        new SystemChatMessage(systemMessage),
-        new UserChatMessage(userMessage),
-        ]);
+    AzureOpenAIClient azureClient = new (new Uri(oaiEndpoint), new ApiKeyCredential(oaiKey));
+    ChatClient chatClient = azureClient.GetChatClient(oaiDeploymentName);
     ```
 
     **Python**：application.py
@@ -140,8 +146,21 @@ C# 和 Python 的应用程序都已提供，并且这两个应用具有相同的
 
     ```csharp
     // Get response from Azure OpenAI
-    Console.WriteLine($"{completion.Role}: {completion.Content[0].Text}");
+    ChatCompletionOptions chatCompletionOptions = new ChatCompletionOptions()
+    {
+        Temperature = 0.7f,
+        MaxOutputTokenCount = 800
+    };
 
+    ChatCompletion completion = chatClient.CompleteChat(
+        [
+            new SystemChatMessage(systemMessage),
+            new UserChatMessage(userMessage)
+        ],
+        chatCompletionOptions
+    );
+
+    Console.WriteLine($"{completion.Role}: {completion.Content[0].Text}");
     ```
 
     **Python**：application.py
