@@ -43,8 +43,6 @@ Azure OpenAI 服务包括名为 DALL-E 的图像生成模型。 可以使用此�
 1. 在 **“图像操场**”部分中，应自动选择 DALL-E 3 的部署。 如果没有，请从部署下拉列表中选择。
 1. 在“提示”框中输入要生成的图像的说明。 例如，`An elephant on a skateboard`。然后选择“生成”并查看生成的图像****。
 
-    ![Azure AI Foundry 门户中的“图像操场”，其中包含生成的图像。](../media/images-playground.png)
-
 1. 修改提示以提供更具体的说明。 例如，`An elephant on a skateboard in the style of Picasso`。 然后生成新图像并查看结果。
 
     ![Azure AI Foundry 门户中的“图像操场”，其中包含两个生成的图像。](../media/images-playground-new-style.png)
@@ -60,10 +58,10 @@ Azure OpenAI 服务提供了一个 REST API，可用于提交关于内容生成�
 > **提示**：如果已克隆 **mslearn-openai** 存储库，请在 Visual Studio Code 中打开它。 否则，请按照以下步骤将其克隆到开发环境中。
 
 1. 启动 Visual Studio Code。
-2. 打开面板 (SHIFT+CTRL+P) 并运行“**Git：克隆**”命令，以将 `https://github.com/MicrosoftLearning/mslearn-openai` 存储库克隆到本地文件夹（任意文件夹均可）。
+2. 打开面板 (SHIFT+CTRL+P) 并运行“**Git：Clone**”命令，以将 `https://github.com/MicrosoftLearning/mslearn-openai` 存储库克隆到本地文件夹（任意文件夹均可）。
 3. 克隆存储库后，在 Visual Studio Code 中打开文件夹。
 
-    > **注意**：如果 Visual Studio Code 显示一条弹出消息，提示你信任打开的代码，请单击弹出窗口中的“是，我信任该作者”选项****。
+    > **注意**：如果 Visual Studio Code 显示一条弹出消息，提示你信任打开的代码，请单击弹出窗口中的“是，我信任该作者”选项。
 
 4. 等待其他文件安装完毕，以支持存储库中的 C# 代码项目。
 
