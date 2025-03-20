@@ -1,6 +1,7 @@
 ---
 lab:
   title: 使用 DALL-E 模型生成图像
+  status: stale
 ---
 
 # 使用 DALL-E 模型生成图像
