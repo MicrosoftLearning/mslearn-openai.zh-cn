@@ -1,6 +1,7 @@
 ---
 lab:
   title: Azure OpenAI 服务入门
+  status: stale
 ---
 
 # Azure OpenAI 服务入门

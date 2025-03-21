@@ -1,125 +1,299 @@
 ---
 lab:
-  title: 使用 DALL-E 模型生成图像
+  title: 使用 AI 生成图像
+  description: 了解如何使用 DALL-E OpenAI 模型生成图像。
+  status: new
 ---
 
-# 使用 DALL-E 模型生成图像
+# 使用 AI 生成图像
 
-Azure OpenAI 服务包括名为 DALL-E 的图像生成模型。 可以使用此模型提交描述所需图像的自然语言提示，该模型将根据你提供的内容生成原始图像。
+在本练习中，你将使用 OpenAI DALL-E 生成式 AI 模型生成图像。 你将使用 Azure AI Foundry 和 Azure OpenAI 服务开发应用。
 
-在本练习中，你将使用 DALL-E 版本 3 模型基于自然语言提示生成图像。
+此练习大约需要 **30** 分钟。
 
-该练习大约需要 25 分钟。
+## 创建 Azure AI Foundry 项目
 
-## 预配 Azure OpenAI 资源
+让我们首先创建 Azure AI Foundry 项目。
 
-必须先在 Azure 订阅中预配 Azure OpenAI 资源，然后才能使用 Azure OpenAI 模型生成图像。 资源必须位于支持 DALL-E 模型的区域中。
+1. 在 Web 浏览器中打开 [Azure AI Foundry 门户](https://ai.azure.com)，网址为：`https://ai.azure.com`，然后使用 Azure 凭据登录。 关闭首次登录时打开的任何使用技巧或快速入门窗格，如有必要，请使用左上角的 **Azure AI Foundry** 徽标导航到主页，如下图所示：
 
-1. 登录到 Azure 门户，地址为 ****。
-1. 请使用以下设置创建 Azure OpenAI 资源：
-    - 订阅****：*选择已被批准访问 Azure OpenAI 服务（包括 DALL-E）的 Azure 订阅*
-    - **资源组**：*创建或选择资源组*
-    - **区域**：*选择“**美国东部**”、“**澳大利亚东部**”或**瑞典中部***\*
-    - **名称**：所选项的唯一名称**
-    - **定价层**：标准版 S0
+    ![Azure AI Foundry 门户的屏幕截图。](../media/ai-foundry-home.png)
 
-    > \*DALL-E 3 模型仅在**美国东部**、**澳大利亚东部**和**瑞典中部**区域的 Azure OpenAI 服务资源中可用。
+1. 在主页中，选择“**+ 创建项目**”。
+1. 在“**创建项目**”向导中，输入合适的项目名称（例如 `my-ai-project`），然后查看为支持项目而自动创建的 Azure 资源。
+1. 选择“**自定义**”并为中心指定以下设置：
+    - **中心名称**：*唯一名称 - 例如`my-ai-hub`*
+    - **订阅**：Azure 订阅
+    - **资源组**：*新建资源组并提供唯一名称（例如 `my-ai-resources`），或选择现有资源组*
+    - **位置**：选择“**帮助我选择**”，然后在“位置帮助程序”窗口中选择“**dalle**”，并使用推荐的区域\*
+    - **连接 Azure AI 服务或 Azure OpenAI**：*新建 AI 服务资源并提供适当的名称（例如 `my-ai-services`）或使用现有资源*
+    - **连接 Azure AI 搜索**：跳过连接
 
-1. 等待部署完成。 然后在 Azure 门户中转至部署的 Azure OpenAI 资源。
+    > \* Azure OpenAI 资源受区域配额限制在租户级别。 如果稍后在练习中达到配额限制，你可能需要在不同的区域中创建另一个资源。
 
-## 部署模型
+1. 选择“**下一步**”查看配置。 然后，选择“**创建**”并等待该进程完成。
+1. 创建项目后，关闭显示的所有使用技巧，并查看 Azure AI Foundry 门户中的项目页面，如下图所示：
 
-接下来，你将从 CLI 创建 **dalle3** 模型的部署。 在Azure 门户，从顶部菜单栏中选择“**Cloud Shell**”图标，并确保终端设置为 **Bash**。 参考此示例，将以下变量替换为自己的值：
+    ![Azure AI Foundry 门户中 Azure AI 项目详细信息的屏幕截图。](../media/ai-foundry-project.png)
 
-```dotnetcli
-az cognitiveservices account deployment create \
-   -g *your resource group* \
-   -n *your Open AI resource* \
-   --deployment-name dall-e-3 \
-   --model-name dall-e-3 \
-   --model-version 3.0  \
-   --model-format OpenAI \
-   --sku-name "Standard" \
-   --sku-capacity 1
-```
+## 部署 DALL-E 模型
 
-    > \* Sku-capacity is measured in thousands of tokens per minute. A rate limit of 1,000 tokens per minute is more than adequate to complete this exercise while leaving capacity for other people using the same subscription.
+现在，你已准备好部署 DALL-E 模型以支持图像生成。
 
+1. 在 Azure AI Foundry 项目页右上角的工具栏中，使用“**预览功能**”图标启用“**将模型部署到 Azure AI 模型推理服务**”功能。
+1. 在项目左侧窗格的“**我的资产**”部分中，选择“**模型 + 终结点**”页。
+1. 在“**模型 + 终结点**”页的“**模型部署**”选项卡中，在“**+ 部署模型**”菜单中，选择“**部署基础模型**”。
+1. 在列表中搜索 **dall-e-3** 模型，然后选择并确认。
+1. 如果出现提示，请同意许可协议，然后在部署详细信息中选择“**自定义**”并使用以下设置部署模型：
+    - **部署名称**：*模型部署的唯一名称 - 例如 `dall-e-3`（请记住你分配的名称，稍后将需要它*）
+    - **部署类型**：标准
+    - **部署详细信息**：*使用默认设置*
+1. 等待部署预配状态为“**完成**”。
 
-## 使用 REST API 生成图像
+## 在操场中测试模型
 
-Azure OpenAI 服务提供了一个 REST API，可用于提交关于内容生成（包括 DALL-E 模型生成的图像）的提示。
+在创建客户端应用程序之前，让我们在操场中测试 DALL-E 模型。
 
-### 准备在 Visual Studio Code 中开发应用
+1. 在部署的 DALL-E 模型的页面中，选择“**在操场中打开**”（或在“**操场**”页中，打开“**图像操场**”）。
+1. 确保已选择 DALL-E 模型部署。 然后，在“**提示**”框中输入提示，如 `Create an image of an robot eating spaghetti`。
+1. 查看操场中生成的图像：
 
-现在，我们来探讨如何构建使用 Azure OpenAI 服务生成图像的自定义应用。 你将使用 Visual Studio Code 开发应用。 应用程序的代码文件已在 GitHub repo 中提供。
+    ![图像操场的屏幕截图，其中包含生成的图像。](../media/images-playground.png)
 
-> **提示**：如果已克隆 **mslearn-openai** 存储库，请在 Visual Studio Code 中打开它。 否则，请按照以下步骤将其克隆到开发环境中。
+1. 输入跟进提示，例如 `Show the robot in a restaurant` 并查看生成的图像。
+1. 继续测试新的提示以优化图像，直到对图像感到满意。
 
-1. 启动 Visual Studio Code。
-2. 打开面板 (SHIFT+CTRL+P) 并运行“**Git：克隆**”命令，以将 `https://github.com/MicrosoftLearning/mslearn-openai` 存储库克隆到本地文件夹（任意文件夹均可）。
-3. 克隆存储库后，在 Visual Studio Code 中打开文件夹。
+## 创建客户端应用程序
 
-    > **注意**：如果 Visual Studio Code 显示一条弹出消息，提示你信任打开的代码，请单击弹出窗口中的“是，我信任该作者”选项****。
+模型似乎在操场上工作。 现在可以使用 Azure OpenAI SDK 在客户端应用程序中使用它。
 
-4. 等待其他文件安装完毕，以支持存储库中的 C# 代码项目。
+> **提示**：可以选择使用 Python 或 Microsoft C# 开发解决方案。 按照所选语言的相应部分中的说明进行操作。
 
-    > **注意**：如果系统提示你添加生成和调试所需的资产，请选择**以后再说**。
+### 准备应用程序配置
 
-### 配置应用程序
+1. 在 Azure AI Foundry 门户中，查看项目的“**概述**”页。
+1. 在“**项目详细信息**”区域中，记下**项目连接字符串**。 你将使用此连接字符串连接到客户端应用程序中的项目。
+1. 打开新的浏览器选项卡（使 Azure AI Foundry 门户在现有选项卡中保持打开状态）。 然后在新选项卡中，浏览到 [Azure 门户](https://portal.azure.com)，网址为：`https://portal.azure.com`；如果出现提示，请使用 Azure 凭据登录。
+1. 使用页面顶部搜索栏右侧的 **[\>_]** 按钮在 Azure 门户中创建新的 Cloud Shell，选择 ***PowerShell*** 环境。 Cloud Shell 在 Azure 门户底部的窗格中提供命令行接口。
 
-已提供适用于 C# 和 Python 的应用程序。 这两个应用具有相同的功能。 首先，将 Azure OpenAI 资源的终结点和密钥添加到应用的配置文件中。
+    > **备注**：如果以前创建了使用 *Bash* 环境的 Cloud Shell，请将其切换到 ***PowerShell***。
 
-1. 在 Visual Studio Code 中，于“**资源管理器**”窗格中，导航到 **Labfiles/03-image-generation** 文件夹，并根据您的语言首选项展开 **CSharp** 或 **Python** 文件夹。 每个文件夹都包含要集成 Azure OpenAI 功能的应用程序的特定语言文件。
-2. 在“资源管理器”窗格中****，在“CSharp”或“Python”文件夹中，打开首选语言的配置文件********
+1. 在 Cloud Shell 工具栏的“**设置**”菜单中，选择“**转到经典版本**”（这是使用代码编辑器所必需的）。
 
-    - **C#** ：appsettings.json
-    - **Python**：.env
-    
-3. 更新配置值，以包含你创建的 Azure OpenAI 资源的 **终结点** 和 **密钥**（在 Azure 门户中 Azure OpenAI 资源的“密钥和终结点”页上提供****）。
-4. 保存此配置文件。
+    > **提示**：将命令粘贴到 cloudshell 中时，输出可能会占用大量屏幕缓冲区。 可以通过输入 `cls` 命令来清除屏幕，以便更轻松地专注于每项任务。
 
-### 查看应用程序代码
+1. 在 PowerShell 窗格中，输入以下命令以克隆包含此练习的 GitHub 存储库：
 
-现在你可以浏览用于调用 REST API 和生成图像的代码。
+    ```
+    rm -r mslearn-openai -f
+    git clone https://github.com/microsoftlearning/mslearn-openai mslearn-openai
+    ```
 
-1. 在“资源管理器”窗格中，选择应用程序的主代码文件****：
+> **备注**：按照所选编程语言的步骤操作。
 
-    - C#：`Program.cs`
-    - Python： `generate-image.py`
+1. 克隆存储库后，导航到包含聊天应用程序代码文件的文件夹：  
 
-2. 查看文件包含的代码，并留意以下关键功能：
-    - 该代码会向服务的终结点发出 https 请求，且标头中包括服务的密钥。 这两个值都是从配置文件获取的。
-    - 请求包括一些参数，其中图像应基于的提示、要生成的图像数以及所生成图像的大小。
-    - 响应包括修订后的提示，即 DALL-E 模型从用户提供的提示中推断得出以使其更具描述性的提示，以及所生成图像的 URL。
-    
-    > **重要说明**：如果将部署命名为建议的 *dalle3* 以外的任何内容，则需要更新代码以使用部署的名称。
+    **Python**
 
-### 运行应用
+    ```
+   cd mslearn-openai/Labfiles/03-image-generation/Python
+    ```
 
-现在你已查看代码，接下来可以运行该代码并生成一些图像。
+    **C#**
 
-1. 右键单击包含代码文件的“CSharp”或“Python”文件夹，并打开集成终端。******** 然后输入相应的命令来运行应用程序：
+    ```
+   cd mslearn-openai/Labfiles/03-image-generation/CSharp
+    ```
 
-   **C#**
-   ```
+1. 在 Cloud Shell 命令行窗格中，输入以下命令安装将使用的库：
+
+    **Python**
+
+    ```
+   pip install python-dotenv azure-identity azure-ai-projects openai requests
+    ```
+
+    *可以忽略有关 pip 版本和本地路径的错误*
+
+    **C#**
+
+    ```
+   dotnet add package Azure.Identity
+   dotnet add package Azure.AI.Projects --prerelease
+   dotnet add package Azure.AI.OpenAI
+    ```
+
+1. 输入以下命令以编辑已提供的配置文件：
+
+    **Python**
+
+    ```
+   code .env
+    ```
+
+    **C#**
+
+    ```
+   code appsettings.json
+    ```
+
+    该文件已在代码编辑器中打开。
+
+1. 在代码文件中，将 **your_project_endpoint** 占位符替换为项目的连接字符串（从 Azure AI Foundry 门户中的项目“**概述**”页复制），并将 **your_model_deployment** 占位符替换为分配给 dall-e-3 模型部署的名称。
+1. 替换占位符后，使用 **Ctrl+S** 命令保存更改，然后使用 **Ctrl+Q** 命令关闭代码编辑器，同时使 Cloud Shell 命令行保持打开状态。
+
+### 写入代码以连接到项目并与模型聊天
+
+> **提示**：添加代码时，请务必保持正确的缩进。
+
+1. 输入以下命令以编辑已提供的代码文件：
+
+    **Python**
+
+    ```
+   code dalle-client.py
+    ```
+
+    **C#**
+
+    ```
+   code Program.cs
+    ```
+
+1. 在代码文件中，请注意在文件顶部添加的现有语句，以导入必要的 SDK 命名空间。 然后，在注释“**添加引用**”下，添加以下代码以引用之前安装的库中的命名空间：
+
+    **Python**
+
+    ```
+   from dotenv import load_dotenv
+   from azure.identity import DefaultAzureCredential
+   from azure.ai.projects import AIProjectClient
+   from openai import AzureOpenAI
+   import requests
+    ```
+
+    **C#**
+
+    ```
+   using Azure.Identity;
+   using Azure.AI.Projects;
+   using Azure.AI.OpenAI;
+   using OpenAI.Images;
+    ```
+
+1. 在 **main** 函数的注释“**获取配置设置**”下，请注意，代码将加载配置文件中定义的项目连接字符串和模型部署名称值。
+1. 在注释“**初始化项目客户端**”下，添加以下代码，以使用当前登录所使用的 Azure 凭据连接到 Azure AI Foundry 项目：
+
+    **Python**
+
+    ```
+   project_client = AIProjectClient.from_connection_string(
+        conn_str=project_connection,
+        credential=DefaultAzureCredential())
+    ```
+
+    **C#**
+
+    ```
+   var projectClient = new AIProjectClient(project_connection,
+                        new DefaultAzureCredential());
+    ```
+
+1. 在注释“**获取 OpenAI 客户端**”下，添加以下代码，以创建与模型聊天的客户端对象：
+
+    **Python**
+
+    ```
+   openai_client = project_client.inference.get_azure_openai_client(api_version="2024-06-01")
+
+    ```
+
+    **C#**
+
+    ```
+   ConnectionResponse connection = projectClient.GetConnectionsClient().GetDefaultConnection(ConnectionType.AzureOpenAI, withCredential: true);
+
+   var connectionProperties = connection.Properties as ConnectionPropertiesApiKeyAuth;
+
+   AzureOpenAIClient openAIClient = new(
+        new Uri(connectionProperties.Target),
+        new AzureKeyCredential(connectionProperties.Credentials.Key));
+
+   ImageClient openAIimageClient = openAIClient.GetImageClient(model_deployment);
+
+    ```
+
+1. 请注意，代码包含一个循环，允许用户输入提示，直到输入“退出”。 然后，在循环部分的注释“**获取图像**”下，添加以下代码，以提交提示，并从模型中获取生成图像的 URL：
+
+    **Python**
+
+    ```python
+   result = openai_client.images.generate(
+        model=model_deployment,
+        prompt=input_text,
+        n=1
+    )
+
+    json_response = json.loads(result.model_dump_json())
+    image_url = json_response["data"][0]["url"] 
+    ```
+
+    **C#**
+
+    ```
+   var imageGeneration = await openAIimageClient.GenerateImageAsync(
+            input_text,
+            new ImageGenerationOptions()
+            {
+                Size = GeneratedImageSize.W1024xH1024
+            }
+   );
+   imageUrl= imageGeneration.Value.ImageUri;
+    ```
+
+1. 请注意，**main** 函数其余部分的代码将图像 URL 和文件名传递给提供的函数，该函数下载生成的图像并将其保存为.png文件。
+
+1. 使用 **Ctrl+S** 命令保存对代码文件的更改，然后使用 **Ctrl+Q** 命令关闭代码编辑器，同时保持 Cloud Shell 命令行处于打开状态。
+
+### 运行客户端应用程序
+
+1. 在 Cloud Shell 命令行窗格中，输入以下命令以运行应用：
+
+    **Python**
+
+    ```
+   python dalle-client.py
+    ```
+
+    **C#**
+
+    ```
    dotnet run
-   ```
-   
-   **Python**
-   ```
-   pip install requests
-   python generate-image.py
-   ```
+    ```
 
-3. 出现提示时，输入图像的说明。 例如“A giraffe flying a kite”（放风筝的长颈鹿）。
+1. 出现提示时，输入图像请求，例如 `Create an image of a robot eating pizza`。 一两分钟后，应用应确认图像已保存。
+1. 再尝试一些提示。 完成后，输入`quit`退出程序。
 
-4. 等待图像生成，系统随后将在中断窗格中显示超链接。 然后选择该超链接以打开新的浏览器选项卡并查看生成的图像。
+    > **备注**：在此简单应用中，我们尚未实现用于保留对话历史记录的逻辑；因此模型会将每个提示视为一个新请求，且没有上一提示的上下文。
 
-   > **提示**：如果应用未返回响应，请等待一分钟，然后重试。 新部署的资源最多可能需要 5 分钟才能可用。
+1. 若要下载和查看应用生成的图像，在 Cloud Shell 窗格的工具栏中，使用“**上传/下载文件**”按钮下载文件，然后打开它。 要下载文件，请在下载界面中完成其文件路径；例如：
 
-5. 关闭包含已生成图像的浏览器选项卡，然后重新运行应用以使用不同的提示生成新图像。
+    **Python**
+
+    /home/*user*`/mslearn-openai/Labfiles/03-image-generation/Python/images/image_1.png`
+
+    **C#**
+
+    /home/*user*`/mslearn-openai/Labfiles/03-image-generation/CSharp/images/image_1.png`
+
+## 总结
+
+在本练习中，你使用 Azure AI Foundry 和 Azure OpenAI SDK 创建客户端应用程序，使用 DALL-E 模型生成图像。
 
 ## 清理
 
-使用完 Azure OpenAI 资源后，请记得在位于 `https://portal.azure.com` 的 **Azure 门户** 中删除该资源。
+如果已完成对 DALL-E 的探索，则应删除在本练习中创建的资源，以避免产生不必要的 Azure 成本。
+
+1. 返回到包含 Azure 门户的浏览器选项卡（或在新的浏览器选项卡中重新打开 [Azure 门户](https://portal.azure.com)，网址为：`https://portal.azure.com`），查看已在其中部署本练习中使用的资源的资源组内容。
+1. 在工具栏中，选择“删除资源组”****。
+1. 输入资源组名称，并确认要删除该资源组。
