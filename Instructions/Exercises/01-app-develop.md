@@ -17,7 +17,7 @@ lab:
 如果尚未克隆用于本课程的存储库，请克隆它：
 
 1. 启动 Visual Studio Code。
-2. 打开面板 (SHIFT+CTRL+P) 并运行“**Git：Clone**”命令，以将 `https://github.com/MicrosoftLearning/mslearn-openai` 存储库克隆到本地文件夹（任意文件夹均可）。
+2. 打开命令面板（SHIFT+CTRL+P 或**视图** > **命令面板...**）并运行 **Git: Clone** 命令将`https://github.com/MicrosoftLearning/mslearn-openai`存储库克隆到本地文件夹（任意文件夹均可）。
 3. 克隆存储库后，在 Visual Studio Code 中打开文件夹。
 4. 等待其他文件安装完毕，以支持存储库中的 C# 代码项目。
 
@@ -47,7 +47,7 @@ lab:
 
     > \* Azure OpenAI 资源受区域配额约束。 列出的区域包括本练习中使用的模型类型的默认配额。 在与其他用户共享订阅的情况下，随机选择一个区域可以降低单个区域达到配额限制的风险。 如果稍后在练习中达到配额限制，你可能需要在不同的区域中创建另一个资源。
 
-3. 等待部署完成。 然后在 Azure 门户中转至部署的 Azure OpenAI 资源。
+1. 等待部署完成。 然后在 Azure 门户中转至部署的 Azure OpenAI 资源。
 
 ## 部署模型
 
@@ -55,20 +55,17 @@ lab:
 
 ```dotnetcli
 az cognitiveservices account deployment create \
-   -g *Your resource group* \
-   -n *Name of your OpenAI service* \
-   --deployment-name gpt-35-turbo \
-   --model-name gpt-35-turbo \
-   --model-version 0125  \
+   -g <your_resource_group> \
+   -n <your_OpenAI_service> \
+   --deployment-name gpt-4o \
+   --model-name gpt-4o \
+   --model-version 2024-05-13 \
    --model-format OpenAI \
    --sku-name "Standard" \
    --sku-capacity 5
 ```
 
-    > \* Sku-capacity is measured in thousands of tokens per minute. A rate limit of 5,000 tokens per minute is more than adequate to complete this exercise while leaving capacity for other people using the same subscription.
-
-> [!NOTE]
-> 如果看到有关 net7.0 框架不受支持的警告，则可以在本练习中忽略它们。
+> **备注**：SKU 容量以每分钟多少千个令牌进行度量。 每分钟 5,000 个令牌的速率限制足以完成此练习，同时也为使用同一订阅的其他用户留出容量。
 
 ## 配置应用程序
 
@@ -79,21 +76,21 @@ C# 和 Python 的应用程序都已提供，并且这两个应用具有相同的
 
     **C#：**
 
-    ```
-    dotnet add package Azure.AI.OpenAI --version 2.0.0
+    ```powershell
+    dotnet add package Azure.AI.OpenAI --version 2.1.0
     ```
 
     **Python**：
 
-    ```
-    pip install openai==1.54.3
+    ```powershell
+    pip install openai==1.65.2
     ```
 
 3. 在“资源管理器”窗格中****，在“CSharp”或“Python”文件夹中，打开首选语言的配置文件********
 
     - **C#** ：appsettings.json
     - **Python**：.env
-    
+
 4. 更新配置值以包括：
     - 创建的 Azure OpenAI 资源的终结点**** 和密钥****（位于 Azure 门户中 Azure OpenAI 资源的“密钥和终结点”**** 页）
     - 为模型部署指定的**部署名称**。
@@ -138,7 +135,7 @@ C# 和 Python 的应用程序都已提供，并且这两个应用具有相同的
         azure_endpoint = azure_oai_endpoint, 
         api_key=azure_oai_key,  
         api_version="2024-02-15-preview"
-        )
+    )
     ```
 
 3. 在调用 Azure OpenAI 模型的函数中，位于注释***从 Azure OpenAI 获取响应***下方，添加代码以格式化并向模型发送请求。
@@ -271,28 +268,112 @@ C# 和 Python 的应用程序都已提供，并且这两个应用具有相同的
     ```
 
 1. 观察输出。 这一次，你可能会看到采用类似格式的电子邮件，但语气要随意得多。 你甚至可能会看到笑话！
-1. 对于最终迭代，我们将偏离电子邮件生成并探索 *锚定上下文*。 你在此处提供了简单的系统消息，并更改应用，以在用户提示开始时提供锚定上下文。 然后，应用将追加用户输入，并从锚定上下文中提取信息以回答用户提示。
+
+## 使用锚定上下文并维护聊天历史记录
+
+1. 在最后一次迭代中，我们将偏离电子邮件生成，探索*锚定上下文*并维护聊天记录。 你在此处提供了简单的系统消息并更改应用，以提供锚定上下文作为聊天历史记录的开头。 然后，应用将追加用户输入，并从锚定上下文中提取信息以回答用户提示。
 1. 打开文件 `grounding.txt` 并快速阅读要插入的锚定上下文。
-1. 在应用中的注释“设置请求格式并将其发送到模型”之后和任何现有代码之前******，添加以下从 `grounding.txt` 读取文本的代码片段，以使用锚定文本增强用户提示。
+1. 在应用中紧跟注释“***初始化消息列表***”之后和任何现有代码之前，添加以下从`grounding.txt`读取文本的代码片段，以使用锚定文本初始化聊天历史记录。
 
     **C#** ：Program.cs
 
     ```csharp
-    // Format and send the request to the model
+    // Initialize messages list
     Console.WriteLine("\nAdding grounding context from grounding.txt");
     string groundingText = System.IO.File.ReadAllText("grounding.txt");
-    userMessage = groundingText + userMessage;
+    var messagesList = new List<ChatMessage>()
+    {
+        new UserChatMessage(groundingText),
+    };
+    ```
+
+    **Python**：application.py
+
+    ```python
+    # Initialize messages array
+    print("\nAdding grounding context from grounding.txt")
+    grounding_text = open(file="grounding.txt", encoding="utf8").read().strip()
+    messages_array = [{"role": "user", "content": grounding_text}]
+    ```
+
+1. 在注释“***设置格式并向模型发送请求***”下，将 **while** 循环末尾的注释中的代码替换为以下代码。 代码大致相同，但现在使用消息数组向模型发送请求。
+
+    **C#** ：Program.cs
+   
+    ```csharp
+    // Format and send the request to the model
+    messagesList.Add(new SystemChatMessage(systemMessage));
+    messagesList.Add(new UserChatMessage(userMessage));
+    GetResponseFromOpenAI(messagesList);
     ```
 
     **Python**：application.py
 
     ```python
     # Format and send the request to the model
-    print("\nAdding grounding context from grounding.txt")
-    grounding_text = open(file="grounding.txt", encoding="utf8").read().strip()
-    user_message = grounding_text + user_message
+    messages_array.append({"role": "system", "content": system_text})
+    messages_array.append({"role": "user", "content": user_text})
+    await call_openai_model(messages=messages_array, 
+        model=azure_oai_deployment, 
+        client=client
+    )
     ```
 
+1. 在注释“***定义将从 Azure OpenAI 终结点获取响应的函数***”下，将函数声明替换为以下代码，以便在为 C# 调用函数`GetResponseFromOpenAI`或为 Python `call_openai_model`时使用聊天历史记录列表。
+
+    **C#** ：Program.cs
+   
+    ```csharp
+    // Define the function that gets the response from Azure OpenAI endpoint
+    private static void GetResponseFromOpenAI(List<ChatMessage> messagesList)
+    ```
+
+    **Python**：application.py
+
+    ```python
+    # Define the function that will get the response from Azure OpenAI endpoint
+    async def call_openai_model(messages, model, client):
+    ```
+    
+1. 最后，替换***从 Azure OpenAI 获取响应***下的所有代码。 代码大致相同，但现在使用消息数组来存储对话历史记录。
+
+    **C#** ：Program.cs
+   
+    ```csharp
+    // Get response from Azure OpenAI
+    ChatCompletionOptions chatCompletionOptions = new ChatCompletionOptions()
+    {
+        Temperature = 0.7f,
+        MaxOutputTokenCount = 800
+    };
+
+    ChatCompletion completion = chatClient.CompleteChat(
+        messagesList,
+        chatCompletionOptions
+    );
+
+    Console.WriteLine($"{completion.Role}: {completion.Content[0].Text}");
+    messagesList.Add(new AssistantChatMessage(completion.Content[0].Text));
+    ```
+
+    **Python**：application.py
+
+    ```python
+    # Get response from Azure OpenAI
+    print("\nSending request to Azure OpenAI model...\n")
+
+    # Call the Azure OpenAI model
+    response = await client.chat.completions.create(
+        model=model,
+        messages=messages,
+        temperature=0.7,
+        max_tokens=800
+    )   
+
+    print("Response:\n" + response.choices[0].message.content + "\n")
+    messages.append({"role": "assistant", "content": response.choices[0].message.content})
+    ```
+    
 1. 保存文件并重新运行应用。
 1. 输入以下提示（仍然输入 **系统消息** 并保存在 `system.txt` 中）。
 
@@ -308,8 +389,18 @@ C# 和 Python 的应用程序都已提供，并且这两个应用具有相同的
     What animal is the favorite of children at Contoso?
     ```
 
-> **提示**：如果想要查看 Azure OpenAI 的完整响应，可以将 **printFullResponse** 变量设置为 `True`，然后重新运行应用。
+   请注意，模型使用锚定文本信息来回答你的问题。
 
+1. 如果不更改系统消息，请输入以下用户消息提示：
+
+    **用户消息：**
+
+    ```prompt
+    How can they interact with it at Contoso?
+    ```
+
+    请注意，模型将“他们”识别为“儿童”，将“它”识别为他们最喜欢的动物，因为现在它有权访问聊天历史记录中上一个问题。
+   
 ## 清理
 
 使用完 Azure OpenAI 资源后，请记得在位于 `https://portal.azure.com` 的 **Azure 门户** 中删除部署或整个资源。

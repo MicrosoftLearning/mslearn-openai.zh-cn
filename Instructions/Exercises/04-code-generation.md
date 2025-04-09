@@ -45,9 +45,9 @@ Azure 提供了一个名为“**Azure AI Foundry 门户**”的基于 Web 的门
 > **备注**：使用 Azure AI Foundry 门户时，可能会显示建议你执行任务的消息框。 可以关闭这些消息框并按照本练习中的步骤进行操作。
 
 1. 在 Azure 门户中，对于您的 Azure OpenAI 资源的“**概述**”页面，向下滚动到“**入门**”部分，并选择按钮前往“**AI Foundry 门户**”（之前称为 AI Studio）。
-1. 在 Azure AI Foundry 门户的左侧窗格中，选择“**部署**”页并查看现有模型部署。 如果没有模型部署，请使用以下设置创建新的“gpt-35-turbo-16k”**** 模型部署：
+1. 在 Azure AI Foundry 门户的左侧窗格中，选择“**部署**”页并查看现有模型部署。 如果没有模型部署，请使用以下设置新建 **GPT-4o** 模型部署：
     - **部署名称**：你选择的唯一名称**
-    - **模型**：gpt-35-turbo-16k *（如果 16k 模型不可用，请选择 gpt-35-turbo）*
+    - **模型**：GPT-4o
     - **模型版本**：*使用默认版本*
     - **部署类型**：标准
     - **每分钟令牌速率限制**：5K\*
@@ -67,7 +67,7 @@ Azure 提供了一个名为“**Azure AI Foundry 门户**”的基于 Web 的门
 1. 在“**系统消息**”区域中，将系统消息设置为 `You are a programming assistant helping write code` 并应用更改。
 1. **** 在“聊天会话”中提交以下查询：
 
-    ```
+    ```prompt
     Write a function in python that takes a character and a string as input, and returns how many times the character appears in the string
     ```
 
@@ -79,7 +79,7 @@ Azure 提供了一个名为“**Azure AI Foundry 门户**”的基于 Web 的门
 
 1. 接下来，我们将探讨如何使用 AI 来理解代码。 以用户消息的形式提交以下提示。
 
-    ```
+    ```prompt
     What does the following function do?  
     ---  
     def multiply(a, b):  
@@ -105,11 +105,11 @@ Azure 提供了一个名为“**Azure AI Foundry 门户**”的基于 Web 的门
 
     模型应描述函数的作用，即使用循环将两个数字相乘。
 
-7. 提交提示 `Can you simplify the function?`。
+1. 提交提示 `Can you simplify the function?`。
 
     该模型应编写函数的简化版本。
 
-8. 提交提示：`Add some comments to the function.`
+1. 提交提示：`Add some comments to the function.`
 
     模型将注释添加到代码。
 
@@ -120,7 +120,7 @@ Azure 提供了一个名为“**Azure AI Foundry 门户**”的基于 Web 的门
 > **提示**：如果已克隆 **mslearn-openai** 存储库，请在 Visual Studio Code 中打开它。 否则，请按照以下步骤将其克隆到开发环境中。
 
 1. 启动 Visual Studio Code。
-2. 打开面板 (SHIFT+CTRL+P) 并运行“**Git：Clone**”命令，以将 `https://github.com/MicrosoftLearning/mslearn-openai` 存储库克隆到本地文件夹（任意文件夹均可）。
+2. 打开命令面板（SHIFT+CTRL+P 或**视图** > **命令面板...**）并运行 **Git: Clone** 命令将`https://github.com/MicrosoftLearning/mslearn-openai`存储库克隆到本地文件夹（任意文件夹均可）。
 3. 克隆存储库后，在 Visual Studio Code 中打开文件夹。
 
     > **注意**：如果 Visual Studio Code 显示一条弹出消息，提示你信任打开的代码，请单击弹出窗口中的“是，我信任该作者”选项。
@@ -138,21 +138,21 @@ Azure 提供了一个名为“**Azure AI Foundry 门户**”的基于 Web 的门
 
     **C#：**
 
-    ```
-    dotnet add package Azure.AI.OpenAI --version 1.0.0-beta.14
+    ```powershell
+    dotnet add package Azure.AI.OpenAI --version 2.1.0
     ```
 
     **Python**：
 
-    ```
-    pip install openai==1.55.3
+    ```powershell
+    pip install openai==1.65.2
     ```
 
 3. 在“资源管理器”窗格中****，在“CSharp”或“Python”文件夹中，打开首选语言的配置文件********
 
     - **C#** ：appsettings.json
     - **Python**：.env
-    
+
 4. 更新配置值以包括：
     - 创建的 Azure OpenAI 资源的终结点**** 和密钥****（位于 Azure 门户中 Azure OpenAI 资源的“密钥和终结点”**** 页）
     - 为模型部署指定的**部署名称**（可在 Azure AI Foundry 门户的“**部署**”页中找到）。
@@ -168,23 +168,19 @@ Azure 提供了一个名为“**Azure AI Foundry 门户**”的基于 Web 的门
 
     ```csharp
     // Format and send the request to the model
-    var chatCompletionsOptions = new ChatCompletionsOptions()
+    var chatCompletionsOptions = new ChatCompletionOptions()
     {
-        Messages =
-        {
-            new ChatRequestSystemMessage(systemPrompt),
-            new ChatRequestUserMessage(userPrompt)
-        },
         Temperature = 0.7f,
-        MaxTokens = 1000,
-        DeploymentName = oaiDeploymentName
+        MaxOutputTokenCount = 800
     };
-
+    
     // Get response from Azure OpenAI
-    Response<ChatCompletions> response = await client.GetChatCompletionsAsync(chatCompletionsOptions);
-
-    ChatCompletions completions = response.Value;
-    string completion = completions.Choices[0].Message.Content;
+    ChatCompletion response = await chatClient.CompleteChatAsync(
+        [
+            new SystemChatMessage(systemPrompt),
+            new UserChatMessage(userPrompt),
+        ],
+        chatCompletionsOptions);
     ```
 
     **Python**：code-generation.py
@@ -205,7 +201,7 @@ Azure 提供了一个名为“**Azure AI Foundry 门户**”的基于 Web 的门
     )
     ```
 
-4. 保存代码文件中的更改。
+1. 保存代码文件中的更改。
 
 ## 运行应用程序
 
@@ -249,7 +245,7 @@ Azure 提供了一个名为“**Azure AI Foundry 门户**”的基于 Web 的门
     - **Python**：修正第 18 行和第 31 行的内容
 
     如果将包含 bug 的行替换为 Azure OpenAI 的响应，则可以运行 **sample-code** 中的 Go Fish 应用。 如果在未修复的情况下运行，该应用将无法正常工作。
-    
+
     > **注意**：请务必注意，即使此 Go Fish 应用的代码已针对某些语法进行了更正，但严格来说这并不是该游戏的准确表示形式。 如果你仔细观察，就会发现在抽牌时不会检查牌组是否为空、在玩家拿到一对牌时不从玩家手中移除对子，以及其他一些需要了解纸牌游戏才能意识到的 bug。 这是一个很好的示例，说明生成式 AI 模型在帮助代码生成方面是多么有用，但也不能完全信任它，需要由开发人员对其生成的内容进行验证。
 
     如果想要查看 Azure OpenAI 的完整响应，可以将 **printFullResponse** 变量设置为 `True`，然后重新运行应用。
