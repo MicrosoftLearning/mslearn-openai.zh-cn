@@ -74,15 +74,14 @@ lab:
 - 文本嵌入模型，用于*矢量化*手册中的文本，以便有效地编制索引，用于设置提示。
 - GPT 模型，应用程序可以使用 GPT 模型来生成基于数据的提示的响应。
 
-
 ## 部署模型
 
 接下来，你将从 CLI 部署 Azure OpenAI 模型资源。 在Azure 门户，从顶部菜单栏中选择“**Cloud Shell**”图标，并确保终端设置为 **Bash**。 参考此示例，将以下变量替换为自己的值：
 
 ```dotnetcli
 az cognitiveservices account deployment create \
-   -g *your resource group* \
-   -n *your Open AI resource* \
+   -g <your_resource_group> \
+   -n <your_OpenAI_resource> \
    --deployment-name text-embedding-ada-002 \
    --model-name text-embedding-ada-002 \
    --model-version "2"  \
@@ -91,24 +90,21 @@ az cognitiveservices account deployment create \
    --sku-capacity 5
 ```
 
-    > \* Sku-capacity is measured in thousands of tokens per minute. A rate limit of 5,000 tokens per minute is more than adequate to complete this exercise while leaving capacity for other people using the same subscription.
+> **备注**：SKU 容量以每分钟多少千个令牌进行度量。 每分钟 5,000 个令牌的速率限制足以完成此练习，同时也为使用同一订阅的其他用户留出容量。
 
-
-部署文本嵌入模型后，使用以下设置创建新的 **gpt-35-turbo-16k** 模型部署：
+部署文本嵌入模型后，使用以下设置新建 **GPT-4o** 模型部署：
 
 ```dotnetcli
 az cognitiveservices account deployment create \
-   -g *your resource group* \
-   -n *your Open AI resource* \
-   --deployment-name gpt-35-turbo-16k \
-   --model-name gpt-35-turbo-16k \
-   --model-version "0125"  \
+   -g <your_resource_group> \
+   -n <your_OpenAI_resource> \
+   --deployment-name gpt-4o \
+   --model-name gpt-4o \
+   --model-version "2024-05-13" \
    --model-format OpenAI \
    --sku-name "Standard" \
    --sku-capacity 5
 ```
-
-    > \* Sku-capacity is measured in thousands of tokens per minute. A rate limit of 5,000 tokens per minute is more than adequate to complete this exercise while leaving capacity for other people using the same subscription.
 
 ## 创建索引
 
@@ -130,7 +126,7 @@ az cognitiveservices account deployment create \
     - **模型部署**：text-embedding-ada-002
     - **身份验证类型**：API 密钥
     - **我确认连接到 Azure OpenAI 服务将产生额外的帐户费用**：已选定
-1. 在下一页上，请<u>不要</u>选择使用 AI 技能矢量化图像或提取数据的选项。
+1. 在下一页上，请**不要**选择使用 AI 技能矢量化图像或提取数据的选项。
 1. 在下一页上，启用语义排名并计划索引器运行一次。
 1. 在最后一页上，将“**对象名称前缀**”设置为 `margies-index`，然后创建索引。
 
@@ -141,7 +137,7 @@ az cognitiveservices account deployment create \
 > **提示**：如果已克隆 **mslearn-openai** 存储库，请在 Visual Studio Code 中打开它。 否则，请按照以下步骤将其克隆到开发环境中。
 
 1. 启动 Visual Studio Code。
-2. 打开面板 (SHIFT+CTRL+P) 并运行“**Git：Clone**”命令，以将 `https://github.com/MicrosoftLearning/mslearn-openai` 存储库克隆到本地文件夹（任意文件夹均可）。
+2. 打开面板（SHIFT+CTRL+P 或**视图** > **命令面板...**）并运行 **Git: Clone** 命令将`https://github.com/MicrosoftLearning/mslearn-openai`存储库克隆到本地文件夹（任意文件夹均可）。
 3. 克隆存储库后，在 Visual Studio Code 中打开文件夹。
 
     > **注意**：如果 Visual Studio Code 显示一条弹出消息，提示你信任打开的代码，请单击弹出窗口中的“是，我信任该作者”选项。
@@ -159,24 +155,25 @@ C# 和 Python 的应用程序都已提供，并且这两个应用具有相同的
 
     **C#：**
 
-    ```
-    dotnet add package Azure.AI.OpenAI --version 1.0.0-beta.17
+    ```powershell
+    dotnet add package Azure.AI.OpenAI --version 2.1.0
+    dotnet add package Azure.Search.Documents --version 11.6.0
     ```
 
     **Python**：
 
-    ```
-    pip install openai==1.54.3
+    ```powershell
+    pip install openai==1.65.2
     ```
 
 3. 在“资源管理器”窗格中****，在“CSharp”或“Python”文件夹中，打开首选语言的配置文件********
 
     - **C#** ：appsettings.json
     - **Python**：.env
-    
+
 4. 更新配置值以包括：
     - 创建的 Azure OpenAI 资源的终结点**** 和密钥****（位于 Azure 门户中 Azure OpenAI 资源的“密钥和终结点”**** 页）
-    - 为 gpt-35-turbo 模型部署指定的**部署名称**（应为 `gpt-35-turbo-16k`。
+    - 为 GPT-4o 模型部署指定的**部署名称**（应为`gpt-4o`）。
     - 搜索服务的终结点（Azure 门户中搜索资源概述页上的“URL”**** 值）。
     - 搜索资源的密钥****（位于 Azure 门户中搜索资源的“密钥”**** 页 - 可以使用两个管理密钥中的任何一个）
     - 搜索索引的名称（应为 `margies-index`）。
@@ -186,55 +183,62 @@ C# 和 Python 的应用程序都已提供，并且这两个应用具有相同的
 
 现在，你已准备好使用 Azure OpenAI SDK 来使用已部署的模型。
 
-1. ****************** 在“资源管理器”窗格的“CSharp”和“Python”文件夹中，打开首选语言的代码文件，并将注释“配置数据源”替换为代码以添加 Azure OpenAI SDK 库：
+1. 在“**资源管理器**”窗格的 **CSharp** 或 **Python** 文件夹中，打开首选语言的代码文件，并将注释“***配置数据源***”替换为索引的代码，作为聊天补全的数据源：
 
     **C#**：ownData.cs
 
     ```csharp
     // Configure your data source
-    AzureSearchChatExtensionConfiguration ownDataConfig = new()
+    // Extension methods to use data sources with options are subject to SDK surface changes. Suppress the warning to acknowledge this and use the subject-to-change AddDataSource method.
+    #pragma warning disable AOAI001
+    
+    ChatCompletionOptions chatCompletionsOptions = new ChatCompletionOptions()
     {
-            SearchEndpoint = new Uri(azureSearchEndpoint),
-            Authentication = new OnYourDataApiKeyAuthenticationOptions(azureSearchKey),
-            IndexName = azureSearchIndex
+        MaxOutputTokenCount = 600,
+        Temperature = 0.9f,
     };
+    
+    chatCompletionsOptions.AddDataSource(new AzureSearchChatDataSource()
+    {
+        Endpoint = new Uri(azureSearchEndpoint),
+        IndexName = azureSearchIndex,
+        Authentication = DataSourceAuthentication.FromApiKey(azureSearchKey),
+    });
     ```
 
     **Python**：ownData.py
 
     ```python
-# Configure your data source
-text = input('\nEnter a question:\n')
-
-completion = client.chat.completions.create(
-    model=deployment,
-    messages=[
-        {
-            "role": "user",
-            "content": text,
-        },
-    ],
-    extra_body={
-        "data_sources":[
+    # Configure your data source
+    text = input('\nEnter a question:\n')
+    
+    completion = client.chat.completions.create(
+        model=deployment,
+        messages=[
             {
-                "type": "azure_search",
-                "parameters": {
-                    "endpoint": os.environ["AZURE_SEARCH_ENDPOINT"],
-                    "index_name": os.environ["AZURE_SEARCH_INDEX"],
-                    "authentication": {
-                        "type": "api_key",
-                        "key": os.environ["AZURE_SEARCH_KEY"],
+                "role": "user",
+                "content": text,
+            },
+        ],
+        extra_body={
+            "data_sources":[
+                {
+                    "type": "azure_search",
+                    "parameters": {
+                        "endpoint": os.environ["AZURE_SEARCH_ENDPOINT"],
+                        "index_name": os.environ["AZURE_SEARCH_INDEX"],
+                        "authentication": {
+                            "type": "api_key",
+                            "key": os.environ["AZURE_SEARCH_KEY"],
+                        }
                     }
                 }
-            }
-        ],
-    }
-)
+            ],
+        }
+    )
     ```
 
-2. 查看代码的其余部分，注意如何在用于提供有关数据源设置信息的请求正文中使用该 *扩展*。
-
-3. 保存代码文件中的更改。
+1. 保存代码文件中的更改。
 
 ## 运行应用程序
 

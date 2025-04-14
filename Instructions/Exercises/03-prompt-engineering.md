@@ -45,9 +45,9 @@ Azure 提供了一个名为“**Azure AI Foundry 门户**”的基于 Web 的门
 > **备注**：使用 Azure AI Foundry 门户时，可能会显示建议你执行任务的消息框。 可以关闭这些消息框并按照本练习中的步骤进行操作。
 
 1. 在 Azure 门户中，对于您的 Azure OpenAI 资源的“**概述**”页面，向下滚动到“**入门**”部分，并选择按钮前往“**AI Foundry 门户**”（之前称为 AI Studio）。
-1. 在 Azure AI Foundry 门户的左侧窗格中，选择“**部署**”页并查看现有模型部署。 如果没有模型部署，请使用以下设置创建新的“gpt-35-turbo-16k”**** 模型部署：
+1. 在 Azure AI Foundry 门户的左侧窗格中，选择“**部署**”页并查看现有模型部署。 如果没有模型部署，请使用以下设置新建 **GPT-4o** 模型部署：
     - **部署名称**：你选择的唯一名称**
-    - **模型**：gpt-35-turbo-16k *（如果 16k 模型不可用，请选择 gpt-35-turbo）*
+    - **模型**：GPT-4o
     - **模型版本**：*使用默认版本*
     - **部署类型**：标准
     - **每分钟令牌速率限制**：5K\*
@@ -63,9 +63,9 @@ Azure 提供了一个名为“**Azure AI Foundry 门户**”的基于 Web 的门
 1. 在左侧窗格中的“**操场**”部分，选择“**聊天**”页。 “**聊天**”操场页面由一排按钮和两个主要面板组成（可能从右到左水平排列，也可能从上到下垂直排列，具体取决于屏幕分辨率）：
     - **设置** - 用于选择部署、定义系统消息并设置用于与部署交互的参数。
     - **历史聊天记录** - 用于提交聊天消息和查看响应。
-2. 在“**部署**”下，确保选择 gpt-35-turbo-16k 模型部署。
+1. 在“**部署**”下，确保已选择 GPT-4o 模型部署。
 1. 查看所选部署下方文本框中包含的默认系统消息，该消息应为“*你是帮助人们查找信息的 AI 助手*”。
-4. 在“**历史聊天记录**”中，提交以下查询：
+1. 在“**历史聊天记录**”中，提交以下查询：
 
     ```prompt
     What kind of article is this?
@@ -81,12 +81,12 @@ Azure 提供了一个名为“**Azure AI Foundry 门户**”的基于 Web 的门
 
     响应提供了文章的说明。 但假设你需要更具体的文章分类格式。
 
-5. **** 在“设置”部分中，将系统消息更改为 `You are a news aggregator that categorizes news articles.`
+1. **** 在“设置”部分中，将系统消息更改为 `You are a news aggregator that categorizes news articles.`
 
-6. 在新系统消息下，选择“**添加部分**”按钮，然后选择“**示例**”。 然后，添加以下示例。
+1. 在新系统消息下，选择“**添加部分**”按钮，然后选择“**示例**”。 然后，添加以下示例。
 
     **用户**:
-    
+
     ```prompt
     What kind of article is this?
     ---
@@ -98,17 +98,17 @@ Azure 提供了一个名为“**Azure AI Foundry 门户**”的基于 Web 的门
     
     The Chicago Cyclones' two hits came in the 2nd and the 5th innings but were unable to get the runner home to score.
     ```
-    
+
     **助手：**
-    
+
     ```prompt
     Sports
       ```
 
-7. 添加另一个包含以下文本的示例。
+1. 添加另一个包含以下文本的示例。
 
     **用户：**
-    
+
     ```prompt
     Categorize this article:
     ---
@@ -121,16 +121,16 @@ Azure 提供了一个名为“**Azure AI Foundry 门户**”的基于 Web 的门
     
     From Robin Kline's history-making win to a full performance by none other than Casey Jensen herself, don't miss tomorrows rerun of all the festivities.
     ```
-    
+
     **助手：**
-    
+
     ```prompt
     Entertainment
     ```
 
-8. 使用“**设置**”部分中系统消息文本框下的“**应用更改**”按钮保存所做的更改。
+1. 使用“**设置**”部分中系统消息文本框下的“**应用更改**”按钮保存所做的更改。
 
-9. 在“**历史聊天记录**”部分中，重新提交以下提示：
+1. 在“**历史聊天记录**”部分中，重新提交以下提示：
 
     ```prompt
     What kind of article is this?
@@ -146,9 +146,9 @@ Azure 提供了一个名为“**Azure AI Foundry 门户**”的基于 Web 的门
 
     更具体的系统消息和预期查询和响应的一些示例的组合可以生成格式一致的结果。
 
-10. 将系统消息更改回默认模板，它应是不包含示例的 `You are an AI assistant that helps people find information.`。 然后应用更改。
+1. 将系统消息更改回默认模板，它应是不包含示例的 `You are an AI assistant that helps people find information.`。 然后应用更改。
 
-11. 在“**历史聊天记录**”部分中，提交以下提示：
+1. 在“**历史聊天记录**”部分中，提交以下提示：
 
     ```prompt
     # 1. Create a list of animals
@@ -158,10 +158,10 @@ Azure 提供了一个名为“**Azure AI Foundry 门户**”的基于 Web 的门
 
     模型可能会用一个答案进行响应以满足提示，拆分为编号列表。 这是一个适当的响应，但假设你实际上是希望模型编写执行所描述任务的 Python 程序，该怎么办？
 
-12. 将系统消息更改为 `You are a coding assistant helping write python code.` 并应用更改。
-13. 将以下提示重新提交到模型：
+1. 将系统消息更改为 `You are a coding assistant helping write python code.` 并应用更改。
+1. 将以下提示重新提交到模型：
 
-    ```
+    ```prompt
     # 1. Create a list of animals
     # 2. Create a list of whimsical names for those animals
     # 3. Combine them randomly into a list of 25 animal and name pairs
@@ -176,7 +176,7 @@ Azure 提供了一个名为“**Azure AI Foundry 门户**”的基于 Web 的门
 > **提示**：如果已克隆 **mslearn-openai** 存储库，请在 Visual Studio Code 中打开它。 否则，请按照以下步骤将其克隆到开发环境中。
 
 1. 启动 Visual Studio Code。
-2. 打开面板 (SHIFT+CTRL+P) 并运行“**Git：Clone**”命令，以将 `https://github.com/MicrosoftLearning/mslearn-openai` 存储库克隆到本地文件夹（任意文件夹均可）。
+2. 打开面板（SHIFT+CTRL+P 或**视图** > **命令面板...**）并运行 **Git: Clone** 命令将`https://github.com/MicrosoftLearning/mslearn-openai`存储库克隆到本地文件夹（任意文件夹均可）。
 3. 克隆存储库后，在 Visual Studio Code 中打开文件夹。
 
     > **注意**：如果 Visual Studio Code 显示一条弹出消息，提示你信任打开的代码，请单击弹出窗口中的“是，我信任该作者”选项。
@@ -194,21 +194,21 @@ C# 和 Python 的应用程序都已提供，并且这两个应用具有相同的
 
     **C#：**
 
-    ```
-    dotnet add package Azure.AI.OpenAI --version 1.0.0-beta.14
+    ```powershell
+    dotnet add package Azure.AI.OpenAI --version 2.1.0
     ```
 
     **Python**：
 
-    ```
-    pip install openai==1.55.3
+    ```powershell
+    pip install openai==1.65.2
     ```
 
 3. 在“资源管理器”窗格中****，在“CSharp”或“Python”文件夹中，打开首选语言的配置文件********
 
     - **C#** ：appsettings.json
     - **Python**：.env
-    
+
 4. 更新配置值以包括：
     - 创建的 Azure OpenAI 资源的终结点**** 和密钥****（位于 Azure 门户中 Azure OpenAI 资源的“密钥和终结点”**** 页）
     - 为模型部署指定的**部署名称**（可在 Azure AI Foundry 门户的“**部署**”页中找到）。
@@ -225,6 +225,7 @@ C# 和 Python 的应用程序都已提供，并且这两个应用具有相同的
     ```csharp
     // Add Azure OpenAI package
     using Azure.AI.OpenAI;
+    using OpenAI.Chat;
     ```
 
     **Python**：prompt-engineering.py
@@ -240,7 +241,8 @@ C# 和 Python 的应用程序都已提供，并且这两个应用具有相同的
 
     ```csharp
     // Configure the Azure OpenAI client
-    OpenAIClient client = new OpenAIClient(new Uri(oaiEndpoint), new AzureKeyCredential(oaiKey));
+    AzureOpenAIClient azureClient = new (new Uri(oaiEndpoint), new ApiKeyCredential(oaiKey));
+    ChatClient chatClient = azureClient.GetChatClient(oaiDeploymentName);
     ```
 
     **Python**：prompt-engineering.py
@@ -260,20 +262,19 @@ C# 和 Python 的应用程序都已提供，并且这两个应用具有相同的
 
     ```csharp
     // Format and send the request to the model
-    var chatCompletionsOptions = new ChatCompletionsOptions()
+    var chatCompletionsOptions = new ChatCompletionOptions()
     {
-        Messages =
-        {
-            new ChatRequestSystemMessage(systemMessage),
-            new ChatRequestUserMessage(userMessage)
-        },
         Temperature = 0.7f,
-        MaxTokens = 800,
-        DeploymentName = oaiDeploymentName
+        MaxOutputTokenCount = 800
     };
     
     // Get response from Azure OpenAI
-    Response<ChatCompletions> response = await client.GetChatCompletionsAsync(chatCompletionsOptions);
+    ChatCompletion response = await chatClient.CompleteChatAsync(
+        [
+            new SystemChatMessage(systemMessage),
+            new UserChatMessage(userMessage),
+        ],
+        chatCompletionsOptions);
     ```
 
     **Python**：prompt-engineering.py
