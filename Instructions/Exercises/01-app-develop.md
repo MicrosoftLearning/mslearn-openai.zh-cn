@@ -33,15 +33,13 @@ lab:
     - 订阅****：*选择已被批准访问 Azure OpenAI 服务的 Azure 订阅*
     - **资源组**：*创建或选择资源组*
     - 区域****：从以下任何区域中进行随机选择******\*
-        - 加拿大东部
         - 美国东部
         - 美国东部 2
-        - 法国中部
-        - 日本东部
         - 美国中北部
+        - 美国中南部
         - 瑞典中部
-        - 瑞士北部
-        - 英国南部
+        - 美国西部
+        - 美国西部 3
     - **名称**：所选项的唯一名称**
     - **定价层**：标准版 S0
 
@@ -51,19 +49,25 @@ lab:
 
 ## 部署模型
 
-接下来，你将从 CLI 部署 Azure OpenAI 模型资源。 参考此示例，将下列变量替换为上述自己的值：
+接下来，你将从 Cloud Shell 部署 Azure OpenAI 模型资源。
 
-```dotnetcli
-az cognitiveservices account deployment create \
-   -g <your_resource_group> \
-   -n <your_OpenAI_service> \
-   --deployment-name gpt-4o \
-   --model-name gpt-4o \
-   --model-version 2024-05-13 \
-   --model-format OpenAI \
-   --sku-name "Standard" \
-   --sku-capacity 5
-```
+1. 使用页面顶部搜索栏右侧的 **[\>_]** 按钮在 Azure 门户中创建新的 Cloud Shell，选择 ***Bash*** 环境。 Cloud Shell 在 Azure 门户底部的窗格中提供命令行接口。
+
+    > **备注**：如果以前创建了使用 *PowerShell* 环境的 Cloud Shell，请将其切换到 ***Bash***。
+
+1. 参考此示例，将下列变量替换为上述自己的值：
+
+    ```dotnetcli
+    az cognitiveservices account deployment create \
+       -g <your_resource_group> \
+       -n <your_OpenAI_service> \
+       --deployment-name gpt-4o \
+       --model-name gpt-4o \
+       --model-version 2024-05-13 \
+       --model-format OpenAI \
+       --sku-name "Standard" \
+       --sku-capacity 5
+    ```
 
 > **备注**：SKU 容量以每分钟多少千个令牌进行度量。 每分钟 5,000 个令牌的速率限制足以完成此练习，同时也为使用同一订阅的其他用户留出容量。
 
@@ -245,7 +249,7 @@ C# 和 Python 的应用程序都已提供，并且这两个应用具有相同的
     - Rescue name is Contoso 
     - It specializes in elephants, as well as zebras and giraffes 
     - Call for donations to be given at our website 
-    \n Include a list of the current animals we have at our rescue after the signature, in the form of a table. These animals include elephants, zebras, gorillas, lizards, and jackrabbits.
+    Include a list of the current animals we have at our rescue after the signature, in the form of a table. These animals include elephants, zebras, gorillas, lizards, and jackrabbits.
     ```
 
 1. 观察输出，并查看电子邮件是如何根据明确的说明更改的。
@@ -264,7 +268,7 @@ C# 和 Python 的应用程序都已提供，并且这两个应用具有相同的
     - Rescue name is Contoso 
     - It specializes in elephants, as well as zebras and giraffes 
     - Call for donations to be given at our website 
-    \n Include a list of the current animals we have at our rescue after the signature, in the form of a table. These animals include elephants, zebras, gorillas, lizards, and jackrabbits.
+    Include a list of the current animals we have at our rescue after the signature, in the form of a table. These animals include elephants, zebras, gorillas, lizards, and jackrabbits.
     ```
 
 1. 观察输出。 这一次，你可能会看到采用类似格式的电子邮件，但语气要随意得多。 你甚至可能会看到笑话！
