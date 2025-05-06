@@ -20,16 +20,16 @@ lab:
     ![Azure AI Foundry 门户的屏幕截图。](../media/ai-foundry-home.png)
 
 1. 在主页中，选择“**+ 创建项目**”。
-1. 在“**创建项目**”向导中，输入合适的项目名称（例如 `my-ai-project`），然后查看为支持项目而自动创建的 Azure 资源。
+1. 在**创建项目**向导中，输入项目的有效名，如果出现建议使用现有中心的提示，请选择新建中心的选项。 然后查看将自动创建的 Azure 资源以支持中心和项目。
 1. 选择“**自定义**”并为中心指定以下设置：
-    - **中心名称**：*唯一名称 - 例如`my-ai-hub`*
+    - **中心名称**：*中心的有效名称*
     - **订阅**：Azure 订阅
-    - **资源组**：*新建资源组并提供唯一名称（例如 `my-ai-resources`），或选择现有资源组*
+    - **资源组**：*创建或选择资源组*
     - **位置**：选择“**帮助我选择**”，然后在“位置帮助程序”窗口中选择“**dalle**”，并使用推荐的区域\*
-    - **连接 Azure AI 服务或 Azure OpenAI**：*新建 AI 服务资源并提供适当的名称（例如 `my-ai-services`）或使用现有资源*
+    - **连接 Azure AI 服务或 Azure OpenAI**：*新建 AI 服务资源*
     - **连接 Azure AI 搜索**：跳过连接
 
-    > \* Azure OpenAI 资源受区域配额限制在租户级别。 如果稍后在练习中达到配额限制，你可能需要在不同的区域中创建另一个资源。
+    > \* Azure OpenAI 资源受区域配额约束。 如果稍后在练习中达到配额限制，你可能需要在不同的区域中创建另一个资源。
 
 1. 选择“**下一步**”查看配置。 然后，选择“**创建**”并等待该进程完成。
 1. 创建项目后，关闭显示的所有使用技巧，并查看 Azure AI Foundry 门户中的项目页面，如下图所示：
@@ -40,12 +40,12 @@ lab:
 
 现在，你已准备好部署 DALL-E 模型以支持图像生成。
 
-1. 在 Azure AI Foundry 项目页右上角的工具栏中，使用“**预览功能**”图标启用“**将模型部署到 Azure AI 模型推理服务**”功能。
+1. 在 Azure AI Foundry 项目页右上角的工具栏中，使用“**预览功能**”图标启用“**将模型部署到 Azure AI 模型推理服务**”功能。 此功能可确保模型部署可供 Azure AI 推理服务使用，你可在应用程序代码中使用该服务。
 1. 在项目左侧窗格的“**我的资产**”部分中，选择“**模型 + 终结点**”页。
 1. 在“**模型 + 终结点**”页的“**模型部署**”选项卡中，在“**+ 部署模型**”菜单中，选择“**部署基础模型**”。
 1. 在列表中搜索 **dall-e-3** 模型，然后选择并确认。
 1. 如果出现提示，请同意许可协议，然后在部署详细信息中选择“**自定义**”并使用以下设置部署模型：
-    - **部署名称**：*模型部署的唯一名称 - 例如 `dall-e-3`（请记住你分配的名称，稍后将需要它*）
+    - **部署名**：*有效的模型部署名*
     - **部署类型**：标准
     - **部署详细信息**：*使用默认设置*
 1. 等待部署预配状态为“**完成**”。
@@ -78,20 +78,20 @@ lab:
 
     > **备注**：如果以前创建了使用 *Bash* 环境的 Cloud Shell，请将其切换到 ***PowerShell***。
 
-1. 在 Cloud Shell 工具栏的“**设置**”菜单中，选择“**转到经典版本**”（这是使用代码编辑器所必需的）。
+5. 在 Cloud Shell 工具栏的“**设置**”菜单中，选择“**转到经典版本**”（这是使用代码编辑器所必需的）。
 
-    > **提示**：将命令粘贴到 cloudshell 中时，输出可能会占用大量屏幕缓冲区。 可以通过输入 `cls` 命令来清除屏幕，以便更轻松地专注于每项任务。
+    **<font color="red">在继续作之前，请确保已切换到 Cloud Shell 的经典版本。</font>**
 
-1. 在 PowerShell 窗格中，输入以下命令以克隆包含此练习的 GitHub 存储库：
+1. 在 Cloud Shell 窗格中，输入以下命令以克隆包含此练习代码文件的 GitHub 存储库（键入命令，或将其复制到剪贴板后，在命令行中右键单击并粘贴为纯文本）：
 
     ```
     rm -r mslearn-openai -f
     git clone https://github.com/microsoftlearning/mslearn-openai mslearn-openai
     ```
 
-> **备注**：按照所选编程语言的步骤操作。
+    > **提示**：将命令粘贴到 cloudshell 中时，输出可能会占用大量屏幕缓冲区。 可以通过输入 `cls` 命令来清除屏幕，以便更轻松地专注于每项任务。
 
-1. 克隆存储库后，导航到包含聊天应用程序代码文件的文件夹：  
+1. 克隆存储库后，根据所选编程语言（Python 或 C#）导航到包含应用程序代码文件的特定语言文件夹：  
 
     **Python**
 
@@ -110,10 +110,10 @@ lab:
     **Python**
 
     ```
+   python -m venv labenv
+   ./labenv/bin/Activate.ps1
    pip install python-dotenv azure-identity azure-ai-projects openai requests
     ```
-
-    *可以忽略有关 pip 版本和本地路径的错误*
 
     **C#**
 
@@ -164,7 +164,8 @@ lab:
 
     **Python**
 
-    ```
+    ```python
+   # Add references
    from dotenv import load_dotenv
    from azure.identity import DefaultAzureCredential
    from azure.ai.projects import AIProjectClient
@@ -174,7 +175,8 @@ lab:
 
     **C#**
 
-    ```
+    ```csharp
+   // Add references
    using Azure.Identity;
    using Azure.AI.Projects;
    using Azure.AI.OpenAI;
@@ -186,7 +188,8 @@ lab:
 
     **Python**
 
-    ```
+    ```python
+   # Initialize the project client
    project_client = AIProjectClient.from_connection_string(
         conn_str=project_connection,
         credential=DefaultAzureCredential())
@@ -194,7 +197,8 @@ lab:
 
     **C#**
 
-    ```
+    ```csharp
+   // Initialize the project client
    var projectClient = new AIProjectClient(project_connection,
                         new DefaultAzureCredential());
     ```
@@ -203,14 +207,16 @@ lab:
 
     **Python**
 
-    ```
+    ```python
+   # Get an OpenAI client
    openai_client = project_client.inference.get_azure_openai_client(api_version="2024-06-01")
 
     ```
 
     **C#**
 
-    ```
+    ```csharp
+   // Get an OpenAI client
    ConnectionResponse connection = projectClient.GetConnectionsClient().GetDefaultConnection(ConnectionType.AzureOpenAI, withCredential: true);
 
    var connectionProperties = connection.Properties as ConnectionPropertiesApiKeyAuth;
@@ -228,6 +234,7 @@ lab:
     **Python**
 
     ```python
+   # Generate an image
    result = openai_client.images.generate(
         model=model_deployment,
         prompt=input_text,
@@ -240,7 +247,8 @@ lab:
 
     **C#**
 
-    ```
+    ```csharp
+   // Generate an image
    var imageGeneration = await openAIimageClient.GenerateImageAsync(
             input_text,
             new ImageGenerationOptions()
@@ -276,15 +284,13 @@ lab:
 
     > **备注**：在此简单应用中，我们尚未实现用于保留对话历史记录的逻辑；因此模型会将每个提示视为一个新请求，且没有上一提示的上下文。
 
-1. 若要下载和查看应用生成的图像，在 Cloud Shell 窗格的工具栏中，使用“**上传/下载文件**”按钮下载文件，然后打开它。 要下载文件，请在下载界面中完成其文件路径；例如：
+1. 要下载和查看应用生成的图像，请使用 Cloud Shell **下载**命令 - 指定生成的 .png 文件：
 
-    **Python**
+    ```
+   download ./images/image_1.png
+    ```
 
-    /home/*user*`/mslearn-openai/Labfiles/03-image-generation/Python/images/image_1.png`
-
-    **C#**
-
-    /home/*user*`/mslearn-openai/Labfiles/03-image-generation/CSharp/images/image_1.png`
+    下载命令会在浏览器右下角创建一个弹出链接，可以选择此链接下载并打开该文件。
 
 ## 总结
 

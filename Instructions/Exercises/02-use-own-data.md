@@ -25,15 +25,13 @@ lab:
     - 订阅****：*选择已被批准访问 Azure OpenAI 服务的 Azure 订阅*
     - **资源组**：*创建或选择资源组*
     - 区域****：从以下任何区域中进行随机选择******\*
-        - 加拿大东部
         - 美国东部
         - 美国东部 2
-        - 法国中部
-        - 日本东部
         - 美国中北部
+        - 美国中南部
         - 瑞典中部
-        - 瑞士北部
-        - 英国南部
+        - 美国西部
+        - 美国西部 3
     - **名称**：所选项的唯一名称**
     - **定价层**：标准版 S0
 
@@ -76,7 +74,11 @@ lab:
 
 ## 部署模型
 
-接下来，你将从 CLI 部署 Azure OpenAI 模型资源。 在Azure 门户，从顶部菜单栏中选择“**Cloud Shell**”图标，并确保终端设置为 **Bash**。 参考此示例，将以下变量替换为自己的值：
+接下来，你将从 Cloud Shell 部署 Azure OpenAI 模型。
+
+1. 使用页面顶部搜索栏右侧的 **[\>_]** 按钮在 Azure 门户中创建新的 Cloud Shell，选择 ***Bash*** 环境。 Cloud Shell 在 Azure 门户底部的窗格中提供命令行接口。
+
+    > **备注**：如果以前创建了使用 *PowerShell* 环境的 Cloud Shell，请将其切换到 ***Bash***。
 
 ```dotnetcli
 az cognitiveservices account deployment create \
